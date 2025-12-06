@@ -1276,6 +1276,195 @@
             .product-card .card-img-placeholder {
                 height: 180px;
             }
+            
+            /* Mobile: Top bar */
+            .top-bar {
+                padding: 8px 0;
+                font-size: 0.75rem;
+            }
+            
+            .top-bar .d-flex {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .top-bar .btn {
+                padding: 4px 10px !important;
+                font-size: 0.75rem !important;
+            }
+            
+            /* Mobile: Logo */
+            .logo {
+                font-size: 1.25rem;
+            }
+            
+            .logo img {
+                height: 32px;
+            }
+            
+            /* Mobile: Navigation */
+            .navbar-collapse {
+                background: var(--smile-card);
+                border-radius: 12px;
+                padding: 15px;
+                margin-top: 15px;
+                border: 1px solid var(--smile-border);
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                gap: 5px;
+            }
+            
+            .nav-link {
+                width: 100%;
+                padding: 12px 15px !important;
+            }
+            
+            /* Mobile: Search */
+            .search-box {
+                max-width: 100% !important;
+                margin: 15px 0 !important;
+                order: -1;
+            }
+            
+            .search-box input {
+                padding: 10px 15px 10px 40px;
+                font-size: 0.9rem;
+            }
+            
+            .search-box button {
+                padding: 6px 15px;
+                font-size: 0.8rem;
+            }
+            
+            /* Mobile: Header actions */
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid var(--smile-border);
+            }
+            
+            .action-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            /* Mobile: Footer */
+            .footer-section {
+                text-align: center;
+            }
+            
+            .footer-section h5 {
+                margin-top: 20px;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            /* Mobile: Product grid */
+            .product-card {
+                margin-bottom: 15px;
+            }
+            
+            .product-card .card-body {
+                padding: 12px;
+            }
+            
+            .product-card .card-title {
+                font-size: 0.95rem;
+            }
+            
+            .product-card .price {
+                font-size: 1rem;
+            }
+            
+            /* Mobile: Cart offcanvas */
+            .offcanvas {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Mobile: Buttons */
+            .btn-lg {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+            
+            /* Mobile: Cards */
+            .card {
+                margin-bottom: 15px;
+            }
+            
+            /* Mobile: Tables */
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+            
+            /* Mobile: Forms */
+            .form-control, .form-select {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+            
+            /* Mobile: Hero */
+            .hero-section h1 {
+                font-size: 1.75rem;
+                line-height: 1.3;
+            }
+            
+            .hero-section p {
+                font-size: 0.95rem;
+            }
+            
+            /* Mobile: Breadcrumb */
+            .breadcrumb {
+                font-size: 0.8rem;
+            }
+            
+            /* Mobile: Pagination */
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-link {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .product-card .card-img-top,
+            .product-card .card-img-placeholder {
+                height: 150px;
+            }
+            
+            .btn {
+                font-size: 0.85rem;
+            }
+            
+            .top-bar .d-none.d-md-flex {
+                display: none !important;
+            }
         }
         
         /* ========== ANIMATIONS ========== */
@@ -1477,7 +1666,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
-                    <span><i class="bi bi-truck me-2"></i>{% trans "Free shipping on orders over" %} {{ free_shipping_threshold|default:"50" }}€</span>
+                    <span><i class="bi bi-emoji-smile me-2"></i>{% trans "Welcome to" %} {{ site_name|default:'Smile Shop' }}</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <div class="d-flex justify-content-center justify-content-md-end gap-3 align-items-center">
