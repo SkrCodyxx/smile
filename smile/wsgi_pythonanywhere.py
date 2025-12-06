@@ -21,7 +21,7 @@ if path not in sys.path:
 # Variables d'environnement
 os.environ['DJANGO_SETTINGS_MODULE'] = 'smile.settings_pythonanywhere'
 os.environ['SECRET_KEY'] = 'smile-secret-key-2024-production-change-me'
-os.environ['DATABASE_URL'] = 'postgresql://postgres:Sm%21le2000Sm%21@db.crieerueopsntuhraatj.supabase.co:5432/postgres'
+os.environ['DATABASE_URL'] = 'postgresql://postgres.crieerueopsntuhraatj:Sm%21le2000Sm%21@aws-0-eu-central-1.pooler.supabase.com:6543/postgres'
 
 # Application WSGI
 from django.core.wsgi import get_wsgi_application

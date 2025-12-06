@@ -33,13 +33,12 @@ SESSION_COOKIE_SECURE = True
 # =============================================================================
 # BASE DE DONNÉES - SUPABASE PostgreSQL (GRATUIT)
 # =============================================================================
-# Ton projet Supabase: crieerueopsntuhraatj
-# Va dans Supabase Dashboard → Settings → Database → Connection string
-# Utilise le "Transaction pooler" (port 6543) pour PythonAnywhere
+# Utilise le Transaction Pooler (port 6543) car PythonAnywhere gratuit ne supporte pas IPv6
+# Format: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
 
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
-    'postgresql://postgres:Sm%21le2000Sm%21@db.crieerueopsntuhraatj.supabase.co:5432/postgres'
+    'postgresql://postgres.crieerueopsntuhraatj:Sm%21le2000Sm%21@aws-0-eu-central-1.pooler.supabase.com:6543/postgres'
 )
 
 DATABASES = {

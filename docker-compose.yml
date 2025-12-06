@@ -57,7 +57,8 @@ services:
       # =======================================================================
       # SUPABASE PostgreSQL - Base de données cloud gratuite
       # =======================================================================
-      DATABASE_URL: "postgresql://postgres:Sm%21le2000Sm%21@db.crieerueopsntuhraatj.supabase.co:5432/postgres"
+      # Utilise le Transaction Pooler (port 6543) pour compatibilité IPv4
+      DATABASE_URL: "postgresql://postgres.crieerueopsntuhraatj:Sm%21le2000Sm%21@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
       # Pour utiliser la DB locale Docker, commentez la ligne ci-dessus et décommentez:
       # DATABASE_URL: "postgres://smile_user:smile_password_2024@db:5432/smile_db"
       REDIS_URL: "redis://redis:6379/0"
