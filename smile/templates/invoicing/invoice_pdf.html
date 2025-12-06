@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Facture {{ invoice.invoice_number }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6366f1;
+        }
+        .invoice-title {
+            text-align: right;
+            font-size: 32px;
+            color: #999;
+            text-transform: uppercase;
+        }
+        .invoice-info {
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f5f5f5;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .totals {
+            width: 300px;
+            margin-left: auto;
+        }
+        .total-row {
+            font-weight: bold;
+            background: #6366f1;
+            color: white;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .badge-success { background: #10b981; color: white; }
+        .badge-warning { background: #f59e0b; color: white; }
+        .badge-danger { background: #ef4444; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            <div>
+                <div class="company-name">😊 Smile Shop</div>
+                <p>
+                    123 Rue du Commerce<br>
+                    75001 Paris, France<br>
+                    contact@smile-shop.com<br>
+                    +33 1 23 45 67 89
+                </p>
+            </div>
+            <div>
+                <div class="invoice-title">Facture</div>
+                <div class="invoice-info">
+                    <p>
+                        <strong>{{ invoice.invoice_number }}</strong><br>
+                        Date: {{ invoice.issue_date|date:"d/m/Y" }}<br>
+                        Échéance: {{ invoice.due_date|date:"d/m/Y" }}
+                    </p>
+                    <span class="badge 
+                        {% if invoice.status == 'paid' %}badge-success
+                        {% elif invoice.status == 'overdue' %}badge-danger
+                        {% else %}badge-warning{% endif %}">
+                        {{ invoice.get_status_display }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Client -->
+        <div style="margin-bottom: 30px;">
+            <strong>Facturé à:</strong><br>
+            {{ invoice.user.first_name }} {{ invoice.user.last_name }}<br>
+            {{ invoice.user.email }}
+        </div>
+        
+        <!-- Articles -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="text-right">Quantité</th>
+                    <th class="text-right">Prix HT</th>
+                    <th class="text-right">Total HT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in invoice.items.all %}
+                <tr>
+                    <td>{{ item.description }}</td>
+                    <td class="text-right">{{ item.quantity }}</td>
+                    <td class="text-right">{{ item.unit_price }} €</td>
+                    <td class="text-right">{{ item.total_price }} €</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Totaux -->
+        <table class="totals">
+            <tr>
+                <td>Sous-total HT</td>
+                <td class="text-right">{{ invoice.subtotal }} €</td>
+            </tr>
+            <tr>
+                <td>TVA ({{ invoice.tax_rate }}%)</td>
+                <td class="text-right">{{ invoice.tax_amount }} €</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Total TTC</strong></td>
+                <td class="text-right"><strong>{{ invoice.total }} €</strong></td>
+            </tr>
+        </table>
+        
+        {% if invoice.notes %}
+        <div style="margin-top: 40px;">
+            <strong>Notes:</strong>
+            <p>{{ invoice.notes }}</p>
+        </div>
+        {% endif %}
+        
+        <div style="margin-top: 60px; text-align: center; color: #999; font-size: 12px;">
+            Smile Shop - SIRET: 123 456 789 00012 - TVA: FR12345678901
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "À propos" %} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Accueil" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "À propos" %}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Hero section -->
+            <div class="text-center mb-5">
+                {% if site_logo %}
+                <img src="{{ site_logo.url }}" alt="{{ site_name }}" class="mb-4" style="max-height: 100px;">
+                {% endif %}
+                <h1 class="display-5 fw-bold">{{ site_name }}</h1>
+                {% if site_slogan %}
+                <p class="lead text-muted">{{ site_slogan }}</p>
+                {% endif %}
+            </div>
+            
+            {% if about_content %}
+            <!-- Contenu dynamique de la page À propos -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4 p-md-5">
+                    <div class="about-content">
+                        {{ about_content.content|safe }}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Contenu par défaut si pas de page "about" créée -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="h4 mb-4">{% trans "Notre histoire" %}</h2>
+                    <p class="text-muted">
+                        {% trans "Bienvenue chez" %} {{ site_name }}! 
+                        {% trans "Nous sommes passionnés par ce que nous faisons et nous nous engageons à vous offrir les meilleurs produits et services." %}
+                    </p>
+                    
+                    {% if site_settings.site_description %}
+                    <p class="text-muted">{{ site_settings.site_description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Informations légales -->
+            {% if site_settings.company_name %}
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">
+                        <i class="bi bi-building me-2"></i>
+                        {% trans "Informations légales" %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>{% trans "Raison sociale" %}:</strong><br>
+                            {{ site_settings.company_name }}
+                        </div>
+                        {% if site_settings.siret %}
+                        <div class="col-md-6">
+                            <strong>SIRET:</strong><br>
+                            {{ site_settings.siret }}
+                        </div>
+                        {% endif %}
+                        {% if site_settings.tva_number %}
+                        <div class="col-md-6">
+                            <strong>{% trans "N° TVA" %}:</strong><br>
+                            {{ site_settings.tva_number }}
+                        </div>
+                        {% endif %}
+                        {% if site_settings.rcs %}
+                        <div class="col-md-6">
+                            <strong>RCS:</strong><br>
+                            {{ site_settings.rcs }}
+                        </div>
+                        {% endif %}
+                        {% if site_settings.capital %}
+                        <div class="col-md-6">
+                            <strong>{% trans "Capital social" %}:</strong><br>
+                            {{ site_settings.capital }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Contacts et adresses -->
+            <div class="row g-4">
+                {% if primary_address %}
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="h5 mb-3">
+                                <i class="bi bi-geo-alt text-primary me-2"></i>
+                                {% trans "Notre adresse" %}
+                            </h4>
+                            <p class="mb-0">
+                                {{ primary_address.street_line1 }}<br>
+                                {% if primary_address.street_line2 %}{{ primary_address.street_line2 }}<br>{% endif %}
+                                {{ primary_address.postal_code }} {{ primary_address.city }}<br>
+                                {{ primary_address.country }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if primary_email or primary_phone %}
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="h5 mb-3">
+                                <i class="bi bi-telephone text-primary me-2"></i>
+                                {% trans "Nous contacter" %}
+                            </h4>
+                            {% if primary_email %}
+                            <p class="mb-2">
+                                <i class="bi bi-envelope me-2"></i>
+                                <a href="mailto:{{ primary_email.value }}">{{ primary_email.value }}</a>
+                            </p>
+                            {% endif %}
+                            {% if primary_phone %}
+                            <p class="mb-0">
+                                <i class="bi bi-phone me-2"></i>
+                                <a href="tel:{{ primary_phone.value }}">{{ primary_phone.value }}</a>
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Réseaux sociaux -->
+            {% if social_links.facebook or social_links.instagram or social_links.twitter or social_links.youtube %}
+            <div class="text-center mt-5">
+                <h4 class="h5 mb-4">{% trans "Suivez-nous sur les réseaux sociaux" %}</h4>
+                <div class="d-flex justify-content-center gap-4">
+                    {% if social_links.facebook %}
+                    <a href="{{ social_links.facebook }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-facebook fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% if social_links.instagram %}
+                    <a href="{{ social_links.instagram }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-instagram fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% if social_links.twitter %}
+                    <a href="{{ social_links.twitter }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-twitter-x fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% if social_links.youtube %}
+                    <a href="{{ social_links.youtube }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-youtube fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% if social_links.linkedin %}
+                    <a href="{{ social_links.linkedin }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-linkedin fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% if social_links.tiktok %}
+                    <a href="{{ social_links.tiktok }}" class="text-decoration-none" target="_blank">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px;">
+                            <i class="bi bi-tiktok fs-4"></i>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- CTA Contact -->
+            <div class="text-center mt-5">
+                <a href="{% url 'core:contact' %}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-envelope me-2"></i>
+                    {% trans "Contactez-nous" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--bs-primary);
+}
+.about-content h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+.about-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+</style>
+{% endblock %}

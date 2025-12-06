@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "FAQ" %} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Home" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "FAQ" %}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h1 class="display-5 mb-3">{% trans "Frequently Asked Questions" %}</h1>
+                <p class="lead text-muted">{% trans "Find answers to the most common questions" %}</p>
+            </div>
+
+            {% if faq_content %}
+            <!-- Contenu dynamique -->
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    {{ faq_content.content|safe }}
+                </div>
+            </div>
+            {% else %}
+            <!-- Contenu par défaut -->
+            
+            <!-- Commandes -->
+            <h3 class="mb-4"><i class="bi bi-cart text-primary me-2"></i>{% trans "Orders" %}</h3>
+            <div class="accordion mb-5" id="faqOrders">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            {% trans "How do I place an order?" %}
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqOrders">
+                        <div class="accordion-body">
+                            {% trans "Simply browse our products, add items to your cart, and proceed to checkout. You'll need to create an account or log in, enter your delivery address, and complete payment." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            {% trans "Can I modify or cancel my order?" %}
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqOrders">
+                        <div class="accordion-body">
+                            {% trans "You can modify or cancel your order within 1 hour of placing it by contacting our customer service. After this period, the order may already be in preparation." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            {% trans "How can I track my order?" %}
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqOrders">
+                        <div class="accordion-body">
+                            {% trans "Once your order is shipped, you'll receive an email with a tracking number. You can also track your order from your account in the 'My Orders' section." %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Livraison -->
+            <h3 class="mb-4"><i class="bi bi-truck text-primary me-2"></i>{% trans "Delivery" %}</h3>
+            <div class="accordion mb-5" id="faqDelivery">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            {% trans "What are the delivery times?" %}
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>{% trans "Standard delivery:" %}</strong> {% trans "3-5 business days" %}</li>
+                                <li><strong>{% trans "Express delivery:" %}</strong> {% trans "24-48 hours" %}</li>
+                            </ul>
+                            {% trans "Delivery times start from the date of order confirmation." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            {% trans "What are the shipping costs?" %}
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            {% trans "Shipping costs are calculated based on your location and order weight. Free shipping is available for orders over 50€." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            {% trans "Do you deliver internationally?" %}
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+                        <div class="accordion-body">
+                            {% trans "Yes, we deliver to many countries worldwide. International shipping costs and delivery times vary by destination. Please check during checkout for specific rates." %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paiement -->
+            <h3 class="mb-4"><i class="bi bi-credit-card text-primary me-2"></i>{% trans "Payment" %}</h3>
+            <div class="accordion mb-5" id="faqPayment">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            {% trans "What payment methods do you accept?" %}
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqPayment">
+                        <div class="accordion-body">
+                            {% trans "We accept all major credit cards (Visa, MasterCard, American Express), as well as PayPal and bank transfers for larger orders." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                            {% trans "Is my payment secure?" %}
+                        </button>
+                    </h2>
+                    <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqPayment">
+                        <div class="accordion-body">
+                            {% trans "Absolutely! All transactions are encrypted using SSL technology. We never store your credit card information on our servers." %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Retours -->
+            <h3 class="mb-4"><i class="bi bi-arrow-return-left text-primary me-2"></i>{% trans "Returns & Refunds" %}</h3>
+            <div class="accordion mb-5" id="faqReturns">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                            {% trans "What is your return policy?" %}
+                        </button>
+                    </h2>
+                    <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            {% trans "You have 14 days from delivery to return any product in its original condition. Items must be unused and in their original packaging." %}
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq10">
+                            {% trans "How do I return a product?" %}
+                        </button>
+                    </h2>
+                    <div id="faq10" class="accordion-collapse collapse" data-bs-parent="#faqReturns">
+                        <div class="accordion-body">
+                            {% trans "Contact our customer service to initiate a return. You'll receive instructions and a return label. Once we receive and verify the product, your refund will be processed within 5-7 business days." %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Contact CTA -->
+            <div class="card bg-primary text-white text-center p-5">
+                <h4>{% trans "Can't find what you're looking for?" %}</h4>
+                <p class="mb-4">{% trans "Our customer service team is here to help!" %}</p>
+                <a href="{% url 'core:contact' %}" class="btn btn-light btn-lg">
+                    <i class="bi bi-envelope me-2"></i>{% trans "Contact Us" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

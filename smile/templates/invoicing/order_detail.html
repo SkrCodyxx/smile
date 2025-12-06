@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Commande {{ order.order_number }} - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'invoicing:order_list' %}">Mes commandes</a></li>
+            <li class="breadcrumb-item active">{{ order.order_number }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Commande {{ order.order_number }}</h5>
+                    <span class="badge 
+                        {% if order.status == 'delivered' %}bg-success
+                        {% elif order.status == 'shipped' %}bg-info
+                        {% elif order.status == 'cancelled' %}bg-danger
+                        {% else %}bg-warning text-dark{% endif %} fs-6">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Passée le {{ order.created_at|date:"d F Y à H:i" }}</p>
+                    
+                    <!-- Articles -->
+                    <h6 class="mb-3">Articles commandés</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Produit</th>
+                                    <th class="text-center">Quantité</th>
+                                    <th class="text-end">Prix</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items.all %}
+                                <tr>
+                                    <td>
+                                        {{ item.product_name }}
+                                        {% if item.product_sku %}
+                                        <br><small class="text-muted">SKU: {{ item.product_sku }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="text-end">{{ item.unit_price }} €</td>
+                                    <td class="text-end"><strong>{{ item.total_price }} €</strong></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Adresses -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-white">
+                            <h6 class="mb-0"><i class="bi bi-geo-alt"></i> Adresse de livraison</h6>
+                        </div>
+                        <div class="card-body">
+                            {{ order.shipping_address|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-white">
+                            <h6 class="mb-0"><i class="bi bi-receipt"></i> Adresse de facturation</h6>
+                        </div>
+                        <div class="card-body">
+                            {{ order.billing_address|default:order.shipping_address|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if order.tracking_number %}
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="bi bi-truck"></i> Suivi de livraison</h6>
+                    <p class="mb-0">Numéro de suivi: <strong>{{ order.tracking_number }}</strong></p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Récapitulatif -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 80px;">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Récapitulatif</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Sous-total</span>
+                        <span>{{ order.subtotal }} €</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>TVA</span>
+                        <span>{{ order.tax_amount }} €</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Livraison</span>
+                        {% if order.shipping_amount == 0 %}
+                        <span class="text-success">Gratuit</span>
+                        {% else %}
+                        <span>{{ order.shipping_amount }} €</span>
+                        {% endif %}
+                    </div>
+                    {% if order.discount_amount > 0 %}
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>Réduction</span>
+                        <span>-{{ order.discount_amount }} €</span>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between">
+                        <strong class="fs-5">Total</strong>
+                        <strong class="fs-5 text-primary">{{ order.total }} €</strong>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Paiement</span>
+                        <span class="badge 
+                            {% if order.payment_status == 'paid' %}bg-success
+                            {% elif order.payment_status == 'failed' %}bg-danger
+                            {% else %}bg-warning text-dark{% endif %}">
+                            {{ order.get_payment_status_display }}
+                        </span>
+                    </div>
+                    
+                    {% if order.invoice %}
+                    <a href="{% url 'invoicing:invoice_detail' invoice_id=order.invoice.id %}" 
+                       class="btn btn-outline-primary w-100 mt-3">
+                        <i class="bi bi-file-text"></i> Voir la facture
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Products" %} - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 40px;">
+    <div class="container">
+        <!-- Header -->
+        <div class="row align-items-center mb-5" data-aos="fade-up">
+            <div class="col-lg-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Home" %}</a></li>
+                        <li class="breadcrumb-item active">{% trans "Products" %}</li>
+                    </ol>
+                </nav>
+                <h1 class="section-title mb-2">
+                    {% if search_query %}
+                    {% trans "Search results for" %} "<span>{{ search_query }}</span>"
+                    {% else %}
+                    <span>{% trans "All Products" %}</span>
+                    {% endif %}
+                </h1>
+                <p class="section-subtitle mb-0">{{ page_obj.paginator.count }} {% trans "products" %}</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="d-flex gap-3 justify-content-lg-end flex-wrap">
+                    <!-- Sort -->
+                    <select class="form-select" style="width: auto; min-width: 180px;" onchange="location = this.value;">
+                        <option value="?sort=-created_at{% if search_query %}&q={{ search_query }}{% endif %}" 
+                                {% if current_sort == '-created_at' %}selected{% endif %}>
+                            {% trans "Most recent" %}
+                        </option>
+                        <option value="?sort=price_asc{% if search_query %}&q={{ search_query }}{% endif %}" 
+                                {% if current_sort == 'price_asc' %}selected{% endif %}>
+                            {% trans "Price: low to high" %}
+                        </option>
+                        <option value="?sort=price_desc{% if search_query %}&q={{ search_query }}{% endif %}" 
+                                {% if current_sort == 'price_desc' %}selected{% endif %}>
+                            {% trans "Price: high to low" %}
+                        </option>
+                        <option value="?sort=name{% if search_query %}&q={{ search_query }}{% endif %}" 
+                                {% if current_sort == 'name' %}selected{% endif %}>
+                            {% trans "Name A-Z" %}
+                        </option>
+                    </select>
+                    
+                    {% if search_query %}
+                    <a href="{% url 'shop:product_list' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-x-lg me-2"></i>{% trans "Clear" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4" data-aos="fade-right">
+                <div class="card p-4">
+                    <h5 class="mb-4 d-flex align-items-center">
+                        <i class="bi bi-funnel me-2 text-gradient"></i> {% trans "Filter" %}
+                    </h5>
+                    
+                    <!-- Categories -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">
+                            {% trans "Categories" %}
+                        </h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <a href="{% url 'shop:product_list' %}" 
+                                   class="text-decoration-none d-flex justify-content-between align-items-center p-2 rounded {% if not current_category %}bg-primary bg-opacity-10{% endif %}">
+                                    <span>{% trans "All categories" %}</span>
+                                </a>
+                            </li>
+                            {% for cat in all_categories %}
+                            <li class="mb-2">
+                                <a href="{% url 'shop:category' slug=cat.slug %}" 
+                                   class="text-decoration-none d-flex justify-content-between align-items-center p-2 rounded">
+                                    <span>{{ cat.name }}</span>
+                                    <span class="badge bg-secondary">{{ cat.product_count }}</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                {% if products %}
+                <div class="row g-4">
+                    {% for product in products %}
+                    <div class="col-6 col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|divisibleby:3|yesno:'0,50,100' }}">
+                        {% include 'shop/includes/product_card.html' %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                <nav class="mt-5" data-aos="fade-up">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_sort %}&sort={{ current_sort }}{% endif %}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                
+                {% else %}
+                <!-- No Products -->
+                <div class="text-center py-5" data-aos="fade-up">
+                    <div class="card p-5">
+                        <i class="bi bi-search display-1 text-muted mb-4"></i>
+                        <h4 class="mb-3">{% trans "No products found" %}</h4>
+                        <p class="text-muted mb-4">{% trans "Try other keywords" %}</p>
+                        <a href="{% url 'shop:product_list' %}" class="btn btn-primary">
+                            {% trans "View All" %} {% trans "Products" %}
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

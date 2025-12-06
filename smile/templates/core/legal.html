@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Legal Notice" %} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Home" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "Legal Notice" %}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="mb-4">{% trans "Legal Notice" %}</h1>
+            <p class="text-muted mb-5">{% trans "Legal information and privacy policy" %}</p>
+
+            {% if legal_content %}
+            <!-- Contenu dynamique -->
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    {{ legal_content.content|safe }}
+                </div>
+            </div>
+            {% else %}
+            <!-- Contenu par défaut -->
+
+            <!-- Éditeur du site -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "1. Website Publisher" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>{{ site_name|default:"Smile Shop" }}</strong></p>
+                    
+                    {% if site_settings.company_name %}
+                    <p>
+                        {% trans "Company" %}: {{ site_settings.company_name }}<br>
+                        {% if site_settings.siret %}SIRET: {{ site_settings.siret }}<br>{% endif %}
+                        {% if site_settings.tva_number %}{% trans "VAT Number" %}: {{ site_settings.tva_number }}<br>{% endif %}
+                    </p>
+                    {% endif %}
+                    
+                    {% for address in footer_addresses|slice:":1" %}
+                    <p>
+                        {% trans "Address" %}: {{ address.street_line1 }}<br>
+                        {{ address.postal_code }} {{ address.city }}, {{ address.country }}
+                    </p>
+                    {% empty %}
+                    <p>{% trans "Address" %}: {% trans "Please configure in admin" %}</p>
+                    {% endfor %}
+                    
+                    {% for contact in footer_contacts %}
+                    {% if contact.contact_type == 'email' %}
+                    <p>{% trans "Email" %}: <a href="mailto:{{ contact.value }}">{{ contact.value }}</a></p>
+                    {% endif %}
+                    {% if contact.contact_type == 'phone' %}
+                    <p>{% trans "Phone" %}: <a href="tel:{{ contact.value }}">{{ contact.value }}</a></p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Hébergement -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "2. Hosting" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% blocktrans with site_name=site_name %}
+                        The {{ site_name }} website is hosted by a professional hosting provider ensuring security and availability of services.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Protection des données -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "3. Personal Data Protection" %}</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{% trans "3.1 Data Controller" %}</h5>
+                    <p>
+                        {% blocktrans with site_name=site_name %}
+                        {{ site_name }} is responsible for processing personal data collected on this site, in accordance with the General Data Protection Regulation (GDPR).
+                        {% endblocktrans %}
+                    </p>
+
+                    <h5>{% trans "3.2 Data Collected" %}</h5>
+                    <p>{% trans "We collect the following data:" %}</p>
+                    <ul>
+                        <li>{% trans "Identification data (name, first name, email, phone)" %}</li>
+                        <li>{% trans "Delivery data (postal address)" %}</li>
+                        <li>{% trans "Order data (purchase history)" %}</li>
+                        <li>{% trans "Connection data (IP address, browser)" %}</li>
+                    </ul>
+
+                    <h5>{% trans "3.3 Processing Purposes" %}</h5>
+                    <p>{% trans "Your data is collected for:" %}</p>
+                    <ul>
+                        <li>{% trans "Processing your orders and ensuring their delivery" %}</li>
+                        <li>{% trans "Managing your customer account" %}</li>
+                        <li>{% trans "Sending you communications related to your orders" %}</li>
+                        <li>{% trans "Improving our services and website" %}</li>
+                        <li>{% trans "Complying with our legal obligations" %}</li>
+                    </ul>
+
+                    <h5>{% trans "3.4 Data Retention Period" %}</h5>
+                    <p>
+                        {% trans "Personal data is retained for the duration of the commercial relationship and up to 3 years after the last purchase for marketing data. Billing data is retained for 10 years in accordance with legal obligations." %}
+                    </p>
+
+                    <h5>{% trans "3.5 Your Rights" %}</h5>
+                    <p>{% trans "In accordance with GDPR, you have the following rights:" %}</p>
+                    <ul>
+                        <li><strong>{% trans "Right of access:" %}</strong> {% trans "obtain a copy of your data" %}</li>
+                        <li><strong>{% trans "Right of rectification:" %}</strong> {% trans "correct inaccurate data" %}</li>
+                        <li><strong>{% trans "Right to erasure:" %}</strong> {% trans "request deletion of your data" %}</li>
+                        <li><strong>{% trans "Right to portability:" %}</strong> {% trans "receive your data in a structured format" %}</li>
+                        <li><strong>{% trans "Right to object:" %}</strong> {% trans "object to certain processing" %}</li>
+                        <li><strong>{% trans "Right to restriction:" %}</strong> {% trans "limit the processing of your data" %}</li>
+                    </ul>
+                    <p>
+                        {% trans "To exercise your rights, contact us at:" %}
+                        {% for contact in footer_contacts %}
+                        {% if contact.contact_type == 'email' %}
+                        <a href="mailto:{{ contact.value }}">{{ contact.value }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cookies -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "4. Cookies" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "This site uses cookies to ensure proper functioning and improve user experience. Cookies used include:" %}
+                    </p>
+                    <ul>
+                        <li><strong>{% trans "Essential cookies:" %}</strong> {% trans "necessary for site operation (session, cart)" %}</li>
+                        <li><strong>{% trans "Preference cookies:" %}</strong> {% trans "remember your choices (language, currency)" %}</li>
+                    </ul>
+                    <p>
+                        {% trans "You can manage cookies through your browser settings." %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Intellectual Property -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "5. Intellectual Property" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% blocktrans with site_name=site_name %}
+                        All content on this site (texts, images, graphics, logos, icons) is the exclusive property of {{ site_name }} or its partners. Any reproduction, distribution, modification, or use without prior written authorization is prohibited.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Back link -->
+            <div class="text-center mt-5">
+                <a href="{% url 'shop:home' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-2"></i>{% trans "Back to Home" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

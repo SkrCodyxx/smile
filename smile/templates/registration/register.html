@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Create Account" %} - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="text-primary mb-2">😊</h2>
+                        <h4>{% trans "Create Account" %}</h4>
+                        <p class="text-muted">{% trans "Join" %} {{ site_name|default:'Smile Shop' }}</p>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {% trans "Please correct the errors below." %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{% trans "First name" %}</label>
+                                <input type="text" name="first_name" class="form-control 
+                                    {% if form.first_name.errors %}is-invalid{% endif %}"
+                                    value="{{ form.first_name.value|default:'' }}" required>
+                                {% if form.first_name.errors %}
+                                <div class="invalid-feedback">{{ form.first_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{% trans "Last name" %}</label>
+                                <input type="text" name="last_name" class="form-control
+                                    {% if form.last_name.errors %}is-invalid{% endif %}"
+                                    value="{{ form.last_name.value|default:'' }}" required>
+                                {% if form.last_name.errors %}
+                                <div class="invalid-feedback">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "Email" %}</label>
+                            <input type="email" name="email" class="form-control
+                                {% if form.email.errors %}is-invalid{% endif %}"
+                                value="{{ form.email.value|default:'' }}" required>
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "Password" %}</label>
+                            <input type="password" name="password1" class="form-control
+                                {% if form.password1.errors %}is-invalid{% endif %}" required>
+                            {% if form.password1.errors %}
+                            <div class="invalid-feedback">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">{% trans "Minimum 8 characters" %}</small>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "Confirm password" %}</label>
+                            <input type="password" name="password2" class="form-control
+                                {% if form.password2.errors %}is-invalid{% endif %}" required>
+                            {% if form.password2.errors %}
+                            <div class="invalid-feedback">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="cgv" required>
+                            <label class="form-check-label" for="cgv">
+                                {% trans "I accept the" %} <a href="{% url 'shop:cgv' %}" target="_blank">{% trans "Terms and Conditions" %}</a> 
+                                {% trans "and the" %} <a href="{% url 'shop:legal' %}" target="_blank">{% trans "Privacy Policy" %}</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                {% trans "Create my account" %}
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p class="text-muted mb-0">
+                            {% trans "Already have an account?" %} 
+                            <a href="{% url 'login' %}" class="text-primary">{% trans "Sign in" %}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

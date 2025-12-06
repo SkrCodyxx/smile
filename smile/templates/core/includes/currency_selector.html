@@ -1,0 +1,26 @@
+{% load i18n %}
+<div class="dropdown d-inline-block">
+    <a class="text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" style="color: inherit;">
+        {% if current_currency %}
+        {{ current_currency.symbol }} {{ current_currency.code }}
+        {% else %}
+        € EUR
+        {% endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        {% for currency in currencies %}
+        <li>
+            <form action="{% url 'core:set_currency' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="currency" value="{{ currency.code }}">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="dropdown-item {% if current_currency.code == currency.code %}active{% endif %}">
+                    {{ currency.symbol }} {{ currency.name }}
+                </button>
+            </form>
+        </li>
+        {% empty %}
+        <li><span class="dropdown-item text-muted">€ Euro</span></li>
+        {% endfor %}
+    </ul>
+</div>

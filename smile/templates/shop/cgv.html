@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Conditions Générales de Vente - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="mb-4">Conditions Générales de Vente</h1>
+            <p class="text-muted mb-5">Dernière mise à jour : Décembre 2024</p>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 1 - Objet</h4>
+                    <p>
+                        Les présentes conditions générales de vente (CGV) régissent les relations contractuelles 
+                        entre Smile Shop et ses clients dans le cadre de la vente de produits sur le site 
+                        smile-shop.com.
+                    </p>
+                    <p>
+                        Toute commande implique l'acceptation sans réserve des présentes CGV.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 2 - Prix</h4>
+                    <p>
+                        Les prix sont indiqués en euros TTC (toutes taxes comprises). Smile Shop se réserve 
+                        le droit de modifier ses prix à tout moment. Les produits seront facturés au prix 
+                        en vigueur lors de la validation de la commande.
+                    </p>
+                    <p>
+                        Les frais de livraison sont indiqués avant la validation de la commande et 
+                        peuvent varier selon le mode de livraison choisi.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 3 - Commande</h4>
+                    <p>
+                        Pour passer commande, le client doit :
+                    </p>
+                    <ul>
+                        <li>Sélectionner les produits souhaités et les ajouter au panier</li>
+                        <li>Valider le contenu du panier</li>
+                        <li>Renseigner ses coordonnées de livraison et facturation</li>
+                        <li>Choisir le mode de livraison</li>
+                        <li>Accepter les présentes CGV</li>
+                        <li>Procéder au paiement</li>
+                    </ul>
+                    <p>
+                        Un email de confirmation sera envoyé après validation de la commande.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 4 - Paiement</h4>
+                    <p>
+                        Le paiement s'effectue en ligne par carte bancaire via une plateforme sécurisée.
+                        Les données bancaires sont cryptées et ne sont jamais stockées sur nos serveurs.
+                    </p>
+                    <p>
+                        La commande est confirmée après validation du paiement par notre établissement bancaire.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 5 - Livraison</h4>
+                    <p>
+                        Les produits sont livrés à l'adresse indiquée lors de la commande. 
+                        Les délais de livraison sont donnés à titre indicatif.
+                    </p>
+                    <ul>
+                        <li><strong>Livraison standard :</strong> 3-5 jours ouvrés</li>
+                        <li><strong>Livraison express :</strong> 24-48h</li>
+                    </ul>
+                    <p>
+                        <strong>Livraison gratuite</strong> à partir de 50€ d'achat.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 6 - Droit de rétractation</h4>
+                    <p>
+                        Conformément à la législation en vigueur, le client dispose d'un délai de 
+                        <strong>14 jours</strong> à compter de la réception des produits pour exercer 
+                        son droit de rétractation, sans avoir à justifier de motifs.
+                    </p>
+                    <p>
+                        Pour exercer ce droit, le client doit nous contacter via le formulaire de contact 
+                        ou par email. Les produits doivent être retournés dans leur état d'origine, 
+                        complets et non utilisés.
+                    </p>
+                    <p>
+                        Le remboursement sera effectué dans un délai de 14 jours suivant la réception 
+                        des produits retournés.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 7 - Garanties</h4>
+                    <p>
+                        Tous nos produits bénéficient de la garantie légale de conformité (2 ans) 
+                        et de la garantie contre les vices cachés.
+                    </p>
+                    <p>
+                        En cas de produit défectueux ou non conforme, le client peut demander 
+                        l'échange ou le remboursement du produit.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 8 - Réclamations</h4>
+                    <p>
+                        Pour toute réclamation, le client peut nous contacter :
+                    </p>
+                    <ul>
+                        <li>Par email : contact@smile-shop.com</li>
+                        <li>Par téléphone : +33 1 23 45 67 89</li>
+                        <li>Via le <a href="{% url 'shop:contact' %}">formulaire de contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4>Article 9 - Données personnelles</h4>
+                    <p>
+                        Les données collectées sont nécessaires au traitement des commandes et sont 
+                        traitées conformément au RGPD. Pour plus d'informations, consultez notre 
+                        <a href="{% url 'shop:legal' %}">politique de confidentialité</a>.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h4>Article 10 - Droit applicable</h4>
+                    <p>
+                        Les présentes CGV sont soumises au droit français. En cas de litige, 
+                        les tribunaux français seront seuls compétents.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

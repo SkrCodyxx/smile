@@ -1,0 +1,2009 @@
+{% load i18n currency_tags %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ site_slogan|default:'Votre boutique en ligne' }}">
+    <title>{% block title %}{{ site_name|default:'Smile Shop' }}{% endblock %}</title>
+    {% if site_favicon %}
+    <link rel="icon" href="{{ site_favicon.url }}" type="image/x-icon">
+    {% endif %}
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --smile-primary: #7c3aed;
+            --smile-primary-hover: #6d28d9;
+            --smile-secondary: #ec4899;
+            --smile-accent: #06b6d4;
+            --smile-success: #10b981;
+            --smile-warning: #f59e0b;
+            --smile-danger: #ef4444;
+            --smile-dark: #0f0f0f;
+            --smile-darker: #080808;
+            --smile-card: #1a1a1a;
+            --smile-card-hover: #222222;
+            --smile-border: #2a2a2a;
+            --smile-text: #f5f5f5;
+            --smile-text-muted: #888888;
+            --gradient-primary: linear-gradient(135deg, var(--smile-primary) 0%, var(--smile-secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--smile-accent) 0%, var(--smile-primary) 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--smile-dark);
+            color: var(--smile-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* ========== MOTIFS ANIMÉS GLOBAUX ========== */
+        
+        /* Container des motifs de fond */
+        .global-patterns {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        /* Bulles flottantes */
+        .floating-bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.03;
+            animation: floatBubble 20s infinite ease-in-out;
+        }
+        
+        .floating-bubble:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--smile-primary), var(--smile-secondary));
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .floating-bubble:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--smile-secondary), var(--smile-accent));
+            bottom: 10%;
+            left: -100px;
+            animation-delay: -7s;
+        }
+        
+        .floating-bubble:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--smile-accent), var(--smile-primary));
+            top: 40%;
+            right: 10%;
+            animation-delay: -14s;
+        }
+        
+        .floating-bubble:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--smile-primary), var(--smile-accent));
+            bottom: 30%;
+            left: 30%;
+            animation-delay: -3s;
+        }
+        
+        @keyframes floatBubble {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+            }
+            25% { 
+                transform: translate(30px, -30px) scale(1.1) rotate(5deg); 
+            }
+            50% { 
+                transform: translate(0, -50px) scale(1) rotate(0deg); 
+            }
+            75% { 
+                transform: translate(-30px, -20px) scale(0.9) rotate(-5deg); 
+            }
+        }
+        
+        /* Vagues animées */
+        .wave-pattern {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 200px;
+            opacity: 0.02;
+        }
+        
+        .wave-pattern svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .wave-pattern path {
+            fill: var(--smile-primary);
+        }
+        
+        .wave-pattern.wave-1 {
+            animation: waveMove 25s linear infinite;
+        }
+        
+        .wave-pattern.wave-2 {
+            animation: waveMove 30s linear infinite reverse;
+            opacity: 0.015;
+        }
+        
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Lignes courbes décoratives */
+        .curve-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.015;
+        }
+        
+        .curve-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Particules flottantes */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--smile-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: particleFloat 15s infinite;
+        }
+        
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; top: 60%; animation-delay: -2s; }
+        .particle:nth-child(3) { left: 35%; top: 30%; animation-delay: -4s; }
+        .particle:nth-child(4) { left: 50%; top: 70%; animation-delay: -6s; }
+        .particle:nth-child(5) { left: 65%; top: 40%; animation-delay: -8s; }
+        .particle:nth-child(6) { left: 80%; top: 80%; animation-delay: -10s; }
+        .particle:nth-child(7) { left: 90%; top: 25%; animation-delay: -12s; }
+        .particle:nth-child(8) { left: 5%; top: 85%; animation-delay: -3s; }
+        .particle:nth-child(9) { left: 45%; top: 15%; animation-delay: -7s; }
+        .particle:nth-child(10) { left: 75%; top: 55%; animation-delay: -11s; }
+        
+        @keyframes particleFloat {
+            0%, 100% { 
+                transform: translateY(0) translateX(0); 
+                opacity: 0.1;
+            }
+            50% { 
+                transform: translateY(-100px) translateX(20px); 
+                opacity: 0.3;
+            }
+        }
+        
+        /* Grille de points subtile */
+        .dot-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--smile-primary) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.02;
+            animation: gridPulse 10s infinite ease-in-out;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.02; }
+            50% { opacity: 0.04; }
+        }
+        
+        /* Cercles concentriques */
+        .concentric-circles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            opacity: 0.02;
+        }
+        
+        .concentric-circle {
+            position: absolute;
+            border: 1px solid var(--smile-primary);
+            border-radius: 50%;
+            animation: concentricPulse 8s infinite ease-out;
+        }
+        
+        .concentric-circle:nth-child(1) {
+            width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation-delay: 0s;
+        }
+        .concentric-circle:nth-child(2) {
+            width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation-delay: -2s;
+        }
+        .concentric-circle:nth-child(3) {
+            width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation-delay: -4s;
+        }
+        .concentric-circle:nth-child(4) {
+            width: 800px; height: 800px; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation-delay: -6s;
+        }
+        
+        @keyframes concentricPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.05; }
+            50% { opacity: 0.02; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+        }
+        
+        /* Gradient orbs */
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.08;
+            animation: orbFloat 20s infinite ease-in-out;
+        }
+        
+        .gradient-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: var(--smile-primary);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+        
+        .gradient-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: var(--smile-secondary);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -10s;
+        }
+        
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 30px); }
+        }
+        
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--smile-darker);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--smile-primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--smile-primary-hover);
+        }
+        
+        /* Contenu principal au-dessus des motifs */
+        .site-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ========== HEADER ========== */
+        .top-bar {
+            background: var(--gradient-primary);
+            padding: 10px 0;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1100;
+        }
+        
+        .top-bar .dropdown-menu {
+            z-index: 1200;
+        }
+        
+        /* Sélecteurs Langue/Devise - Plus visibles */
+        .top-bar .btn-outline-light {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 6px 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .top-bar .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .top-bar .dropdown-toggle::after {
+            margin-left: 8px;
+        }
+        
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .top-bar a:hover {
+            opacity: 0.8;
+        }
+        
+        .main-header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--smile-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .main-header.scrolled {
+            box-shadow: 0 4px 30px rgba(124, 58, 237, 0.15);
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+            border-radius: 8px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-link {
+            color: var(--smile-text) !important;
+            font-weight: 500;
+            padding: 10px 16px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--smile-primary) !important;
+        }
+        
+        .nav-link i {
+            margin-right: 6px;
+        }
+        
+        /* Search Bar */
+        .search-box {
+            position: relative;
+            max-width: 400px;
+        }
+        
+        .search-box input {
+            background: var(--smile-card);
+            border: 1px solid var(--smile-border);
+            border-radius: 50px;
+            padding: 12px 20px 12px 45px;
+            color: var(--smile-text);
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--smile-primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+        
+        .search-box input::placeholder {
+            color: var(--smile-text-muted);
+        }
+        
+        .search-box .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--smile-text-muted);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+        
+        /* Header Actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 1px solid var(--smile-border);
+            background: var(--smile-card);
+            color: var(--smile-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+        }
+        
+        .action-btn:hover {
+            background: var(--smile-primary);
+            border-color: var(--smile-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--smile-secondary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 7px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        
+        /* Dropdown */
+        .dropdown-menu {
+            background: var(--smile-card);
+            border: 1px solid var(--smile-border);
+            border-radius: 12px;
+            padding: 8px;
+            margin-top: 10px !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dropdown-item {
+            color: var(--smile-text);
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover, .dropdown-item.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--smile-primary);
+        }
+        
+        .dropdown-divider {
+            border-color: var(--smile-border);
+        }
+        
+        /* ========== BUTTONS ========== */
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--smile-primary);
+            color: var(--smile-primary);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--smile-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+        
+        /* ========== CARDS ========== */
+        .card {
+            background: var(--smile-card);
+            border: 1px solid var(--smile-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .card:hover {
+            background: var(--smile-card-hover);
+            border-color: var(--smile-primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.15);
+        }
+        
+        /* ========== HERO SECTION ========== */
+        .hero-section {
+            background: var(--smile-darker);
+            position: relative;
+            overflow: hidden;
+            padding: 100px 0;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--smile-text-muted);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+        
+        /* ========== SECTIONS ========== */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-header {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-subtitle {
+            color: var(--smile-text-muted);
+            font-size: 1.1rem;
+        }
+        
+        /* ========== PRODUCT CARD ========== */
+        .product-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: var(--smile-darker);
+        }
+        
+        .product-card .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .product-card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        
+        .product-card .card-img-placeholder {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--smile-darker);
+            color: var(--smile-text-muted);
+            font-size: 4rem;
+        }
+        
+        .product-badges {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .product-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-sale {
+            background: var(--smile-danger);
+            color: white;
+        }
+        
+        .badge-new {
+            background: var(--smile-accent);
+            color: white;
+        }
+        
+        .badge-featured {
+            background: var(--smile-warning);
+            color: var(--smile-darker);
+        }
+        
+        .product-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .product-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: white;
+            color: var(--smile-darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .product-action-btn:hover {
+            background: var(--smile-primary);
+            color: white;
+        }
+        
+        .product-action-btn.active {
+            background: var(--smile-danger);
+            color: white;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-category {
+            font-size: 0.8rem;
+            color: var(--smile-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--smile-text);
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        
+        .product-title:hover {
+            color: var(--smile-primary);
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+        
+        .product-rating i {
+            color: var(--smile-warning);
+            font-size: 0.9rem;
+        }
+        
+        .product-rating span {
+            color: var(--smile-text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--smile-primary);
+        }
+        
+        .old-price {
+            font-size: 1rem;
+            color: var(--smile-text-muted);
+            text-decoration: line-through;
+        }
+        
+        .product-stock {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .stock-in {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--smile-success);
+        }
+        
+        .stock-low {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--smile-warning);
+        }
+        
+        .stock-out {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--smile-danger);
+        }
+        
+        .btn-add-cart {
+            width: 100%;
+            background: var(--gradient-primary);
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+        
+        .btn-add-cart:disabled {
+            background: var(--smile-border);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* ========== CATEGORY CARD ========== */
+        .category-card {
+            text-align: center;
+            padding: 30px 20px;
+            cursor: pointer;
+        }
+        
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .category-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin: 0 auto 20px;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            color: var(--smile-text);
+            margin-bottom: 5px;
+        }
+        
+        .category-count {
+            font-size: 0.85rem;
+            color: var(--smile-text-muted);
+        }
+        
+        /* ========== FEATURES ========== */
+        .feature-card {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 25px;
+            border-radius: 16px;
+            background: rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--smile-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-text {
+            color: var(--smile-text-muted);
+            font-size: 0.95rem;
+        }
+        
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--smile-darker);
+            border-top: 1px solid var(--smile-border);
+            padding: 80px 0 30px;
+            margin-top: 80px;
+        }
+        
+        .footer-brand {
+            margin-bottom: 25px;
+        }
+        
+        .footer-logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            border-radius: 8px;
+        }
+        
+        .footer-desc {
+            color: var(--smile-text-muted);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 1px solid var(--smile-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--smile-text);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background: var(--smile-primary);
+            border-color: var(--smile-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--smile-text);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--smile-text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--smile-primary);
+            padding-left: 5px;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: var(--smile-text-muted);
+        }
+        
+        .footer-contact-item i {
+            color: var(--smile-primary);
+            font-size: 1.1rem;
+            margin-top: 3px;
+        }
+        
+        .footer-contact-item a {
+            color: var(--smile-text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-contact-item a:hover {
+            color: var(--smile-primary);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--smile-border);
+            padding-top: 30px;
+            margin-top: 50px;
+        }
+        
+        .footer-copyright {
+            color: var(--smile-text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .payment-methods {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .payment-methods span {
+            color: var(--smile-text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .payment-methods i {
+            font-size: 1.5rem;
+            color: var(--smile-text-muted);
+        }
+        
+        /* ========== FORMS ========== */
+        .form-control, .form-select {
+            background: var(--smile-card);
+            border: 1px solid var(--smile-border);
+            color: var(--smile-text);
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: var(--smile-card);
+            border-color: var(--smile-primary);
+            color: var(--smile-text);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+        
+        .form-control::placeholder {
+            color: var(--smile-text-muted);
+        }
+        
+        /* ========== ALERTS ========== */
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+        
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--smile-success);
+        }
+        
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--smile-danger);
+        }
+        
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--smile-warning);
+        }
+        
+        .alert-info {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--smile-accent);
+        }
+        
+        /* ========== PAGINATION ========== */
+        .pagination {
+            gap: 8px;
+        }
+        
+        .page-link {
+            background: var(--smile-card);
+            border: 1px solid var(--smile-border);
+            color: var(--smile-text);
+            border-radius: 10px !important;
+            padding: 10px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .page-link:hover {
+            background: var(--smile-primary);
+            border-color: var(--smile-primary);
+            color: white;
+        }
+        
+        .page-item.active .page-link {
+            background: var(--smile-primary);
+            border-color: var(--smile-primary);
+        }
+        
+        /* ========== BREADCRUMB ========== */
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--smile-text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb-item a:hover {
+            color: var(--smile-primary);
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--smile-text);
+        }
+        
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: var(--smile-text-muted);
+        }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 991px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .search-box {
+                max-width: 100%;
+                margin: 15px 0;
+            }
+            
+            .nav-menu {
+                padding: 20px 0;
+            }
+            
+            .header-actions {
+                margin-top: 15px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 50px 0;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .product-card .card-img-top,
+            .product-card .card-img-placeholder {
+                height: 180px;
+            }
+        }
+        
+        /* ========== ANIMATIONS ========== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* ========== UTILITIES ========== */
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .bg-gradient-primary {
+            background: var(--gradient-primary);
+        }
+        
+        .glass-effect {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--smile-border);
+        }
+        
+        /* ========== MODE CLAIR ========== */
+        [data-bs-theme="light"] {
+            --smile-dark: #ffffff;
+            --smile-darker: #f8f9fa;
+            --smile-card: #ffffff;
+            --smile-card-hover: #f8f9fa;
+            --smile-border: #e5e7eb;
+            --smile-text: #1f2937;
+            --smile-text-muted: #6b7280;
+        }
+        
+        [data-bs-theme="light"] body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        
+        [data-bs-theme="light"] .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        [data-bs-theme="light"] .nav-link,
+        [data-bs-theme="light"] .action-btn {
+            color: #374151;
+        }
+        
+        [data-bs-theme="light"] .nav-link:hover,
+        [data-bs-theme="light"] .action-btn:hover {
+            color: var(--smile-primary);
+        }
+        
+        [data-bs-theme="light"] .card,
+        [data-bs-theme="light"] .product-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        [data-bs-theme="light"] .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        [data-bs-theme="light"] .dropdown-menu {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        
+        [data-bs-theme="light"] .dropdown-item {
+            color: #374151;
+        }
+        
+        [data-bs-theme="light"] .dropdown-item:hover {
+            background: #f3f4f6;
+        }
+        
+        [data-bs-theme="light"] .search-box input {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+        }
+        
+        [data-bs-theme="light"] .footer-main {
+            background: #1f2937;
+        }
+        
+        [data-bs-theme="light"] .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e7eb;
+        }
+        
+        [data-bs-theme="light"] .btn-outline-light {
+            color: #374151;
+            border-color: #d1d5db;
+        }
+        
+        [data-bs-theme="light"] .btn-outline-light:hover {
+            background: #f3f4f6;
+            color: var(--smile-primary);
+        }
+        
+        /* Theme toggle button */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .theme-toggle i {
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Motifs animés globaux -->
+    <div class="global-patterns">
+        <!-- Bulles flottantes -->
+        <div class="floating-bubble"></div>
+        <div class="floating-bubble"></div>
+        <div class="floating-bubble"></div>
+        <div class="floating-bubble"></div>
+        
+        <!-- Gradient orbs -->
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+        
+        <!-- Particules -->
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <!-- Grille de points -->
+        <div class="dot-grid"></div>
+        
+        <!-- Cercles concentriques -->
+        <div class="concentric-circles">
+            <div class="concentric-circle"></div>
+            <div class="concentric-circle"></div>
+            <div class="concentric-circle"></div>
+            <div class="concentric-circle"></div>
+        </div>
+        
+        <!-- Vagues -->
+        <div class="wave-pattern wave-1">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+                <path d="M0,100 C320,180 420,20 720,100 C1020,180 1120,20 1440,100 L1440,200 L0,200 Z"/>
+            </svg>
+        </div>
+        <div class="wave-pattern wave-2">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+                <path d="M0,50 C360,150 540,0 900,80 C1260,160 1320,30 1440,100 L1440,200 L0,200 Z"/>
+            </svg>
+        </div>
+        
+        <!-- Lignes courbes -->
+        <div class="curve-lines">
+            <svg viewBox="0 0 1440 800" preserveAspectRatio="none">
+                <path d="M0,200 Q360,100 720,200 T1440,200" fill="none" stroke="var(--smile-primary)" stroke-width="1"/>
+                <path d="M0,400 Q360,300 720,400 T1440,400" fill="none" stroke="var(--smile-secondary)" stroke-width="1"/>
+                <path d="M0,600 Q360,500 720,600 T1440,600" fill="none" stroke="var(--smile-accent)" stroke-width="1"/>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- Contenu du site -->
+    <div class="site-content">
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <span><i class="bi bi-truck me-2"></i>{% trans "Free shipping on orders over" %} {{ free_shipping_threshold|default:"50" }}€</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-3 align-items-center">
+                        {% if primary_phone %}
+                        <a href="tel:{{ primary_phone.value }}" class="d-none d-lg-inline">
+                            <i class="bi bi-telephone me-1"></i>{{ primary_phone.value }}
+                        </a>
+                        {% endif %}
+                        
+                        <!-- Language Selector (dynamique depuis DB) -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-light dropdown-toggle px-3" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px;">
+                                {% for lang in languages %}
+                                    {% if lang.code == LANGUAGE_CODE %}{{ lang.flag_emoji }} {{ lang.code|upper }}{% endif %}
+                                {% empty %}
+                                    {% if LANGUAGE_CODE == 'fr' %}🇫🇷 FR
+                                    {% elif LANGUAGE_CODE == 'en' %}🇬🇧 EN
+                                    {% elif LANGUAGE_CODE == 'ht' %}🇭🇹 HT
+                                    {% else %}🌐 {{ LANGUAGE_CODE|upper }}{% endif %}
+                                {% endfor %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% for lang in languages %}
+                                <li>
+                                    <form action="/i18n/setlang/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="language" value="{{ lang.code }}">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == lang.code %}active{% endif %}">
+                                            {{ lang.flag_emoji }} {{ lang.native_name }}
+                                        </button>
+                                    </form>
+                                </li>
+                                {% empty %}
+                                <!-- Fallback si pas de langues en DB -->
+                                <li>
+                                    <form action="/i18n/setlang/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="language" value="fr">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == 'fr' %}active{% endif %}">🇫🇷 Français</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="/i18n/setlang/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="language" value="en">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == 'en' %}active{% endif %}">🇬🇧 English</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- Currency Selector (dynamique depuis DB) -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-light dropdown-toggle px-3" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 20px;">
+                                {% if current_currency %}
+                                    {{ current_currency.symbol }} {{ current_currency.code }}
+                                {% else %}
+                                    € EUR
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% for currency in currencies %}
+                                <li>
+                                    <form action="{% url 'core:set_currency' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="currency" value="{{ currency.code }}">
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                        <button type="submit" class="dropdown-item {% if current_currency.code == currency.code %}active{% endif %}">
+                                            {{ currency.symbol }} {{ currency.name }}
+                                        </button>
+                                    </form>
+                                </li>
+                                {% empty %}
+                                <li><span class="dropdown-item text-muted">€ EUR</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg py-3">
+                <!-- Logo -->
+                <a class="logo" href="{% url 'shop:home' %}">
+                    {% if site_logo %}
+                    <img src="{{ site_logo.url }}" alt="{{ site_name }}">
+                    {% else %}
+                    <i class="bi bi-bag-heart-fill"></i>
+                    {% endif %}
+                    {{ site_name|default:'Smile Shop' }}
+                </a>
+                
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <i class="bi bi-list fs-2 text-white"></i>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <!-- Navigation -->
+                    <ul class="navbar-nav nav-menu mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'shop:home' %}">
+                                <i class="bi bi-house"></i>{% trans "Home" %}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'shop:product_list' %}">
+                                <i class="bi bi-grid"></i>{% trans "Products" %}
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-tags"></i>{% trans "Categories" %}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for cat in all_categories %}
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'shop:category' slug=cat.slug %}">
+                                        {{ cat.name }}
+                                    </a>
+                                </li>
+                                {% empty %}
+                                <li><span class="dropdown-item text-muted">{% trans "No categories" %}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:contact' %}">
+                                <i class="bi bi-envelope"></i>{% trans "Contact" %}
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Search -->
+                    <form class="search-box me-3 flex-grow-1" action="{% url 'shop:product_list' %}" method="get" style="max-width: 350px;">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="search" name="q" placeholder="{% trans 'Search products...' %}" value="{{ search_query|default:'' }}">
+                        <button type="submit">{% trans "Search" %}</button>
+                    </form>
+                    
+                    <!-- Actions -->
+                    <div class="header-actions">
+                        <!-- Theme Toggle -->
+                        <button class="action-btn theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+                            <i class="bi bi-sun"></i>
+                        </button>
+                        
+                        {% if user.is_authenticated %}
+                        <!-- Wishlist -->
+                        <a href="{% url 'shop:wishlist' %}" class="action-btn" title="{% trans 'My Wishlist' %}">
+                            <i class="bi bi-heart"></i>
+                            {% if wishlist_count > 0 %}
+                            <span class="badge">{{ wishlist_count }}</span>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                        
+                        <!-- Cart (ouvre le offcanvas) -->
+                        <button type="button" class="action-btn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" title="{% trans 'Cart' %}">
+                            <i class="bi bi-bag"></i>
+                            {% if cart_count > 0 %}
+                            <span class="badge">{{ cart_count }}</span>
+                            {% endif %}
+                        </button>
+                        
+                        <!-- User -->
+                        {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a class="action-btn dropdown-toggle" href="#" data-bs-toggle="dropdown" title="{{ user.username }}">
+                                <i class="bi bi-person"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li class="px-3 py-2">
+                                    <strong class="text-gradient">{{ user.first_name|default:user.username }}</strong>
+                                    <br><small class="text-muted">{{ user.email }}</small>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'shop:profile' %}">
+                                        <i class="bi bi-person-gear me-2"></i>{% trans "My Profile" %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'invoicing:order_list' %}">
+                                        <i class="bi bi-box-seam me-2"></i>{% trans "My Orders" %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'invoicing:invoice_list' %}">
+                                        <i class="bi bi-receipt me-2"></i>{% trans "My Invoices" %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'shop:wishlist' %}">
+                                        <i class="bi bi-heart me-2"></i>{% trans "My Wishlist" %}
+                                    </a>
+                                </li>
+                                {% if user.is_staff %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'admin_dashboard' %}">
+                                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'admin:index' %}">
+                                        <i class="bi bi-gear me-2"></i>{% trans "Admin" %}
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                        <i class="bi bi-box-arrow-right me-2"></i>{% trans "Logout" %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm px-3">
+                            {% trans "Login" %}
+                        </a>
+                        <a href="{% url 'shop:register' %}" class="btn btn-primary btn-sm px-3">
+                            {% trans "Register" %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Announcement Banner -->
+    {% if announcement_banner %}
+    <div class="py-2 text-center" style="background: {{ announcement_banner.background_color|default:'var(--gradient-primary)' }}; color: {{ announcement_banner.text_color|default:'white' }};">
+        <div class="container">
+            <span class="fw-500">{{ announcement_banner.title }}</span>
+            {% if announcement_banner.button_text and announcement_banner.button_url %}
+            <a href="{{ announcement_banner.button_url }}" class="btn btn-sm btn-light ms-3">{{ announcement_banner.button_text }}</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <i class="bi bi-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Maintenance Mode -->
+    {% if maintenance_mode and not user.is_staff %}
+    <div class="container py-5 text-center">
+        <div class="display-1 mb-4">🔧</div>
+        <h1 class="mb-3">{% trans "Site under maintenance" %}</h1>
+        <p class="text-muted">{{ maintenance_message }}</p>
+    </div>
+    {% else %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Brand -->
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            {% if site_logo %}
+                            <img src="{{ site_logo.url }}" alt="{{ site_name }}">
+                            {% else %}
+                            <i class="bi bi-bag-heart-fill"></i>
+                            {% endif %}
+                            {{ site_name|default:'Smile Shop' }}
+                        </div>
+                        <p class="footer-desc">
+                            {{ site_slogan|default:"Votre boutique en ligne de confiance. Découvrez nos produits de qualité et profitez d'une expérience d'achat exceptionnelle." }}
+                        </p>
+                        <div class="social-links">
+                            {% if social_links.facebook %}
+                            <a href="{{ social_links.facebook }}" class="social-link" target="_blank" title="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.instagram %}
+                            <a href="{{ social_links.instagram }}" class="social-link" target="_blank" title="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.twitter %}
+                            <a href="{{ social_links.twitter }}" class="social-link" target="_blank" title="Twitter">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.youtube %}
+                            <a href="{{ social_links.youtube }}" class="social-link" target="_blank" title="YouTube">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.tiktok %}
+                            <a href="{{ social_links.tiktok }}" class="social-link" target="_blank" title="TikTok">
+                                <i class="bi bi-tiktok"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.whatsapp %}
+                            <a href="https://wa.me/{{ social_links.whatsapp|cut:' '|cut:'+' }}" class="social-link" target="_blank" title="WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shop Links -->
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-title">{% trans "Shop" %}</h5>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'shop:product_list' %}">{% trans "All Products" %}</a></li>
+                        {% for cat in all_categories|slice:":4" %}
+                        <li><a href="{% url 'shop:category' slug=cat.slug %}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <!-- Account Links -->
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-title">{% trans "Account" %}</h5>
+                    <ul class="footer-links">
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'shop:profile' %}">{% trans "My Profile" %}</a></li>
+                        <li><a href="{% url 'invoicing:order_list' %}">{% trans "My Orders" %}</a></li>
+                        <li><a href="{% url 'shop:wishlist' %}">{% trans "My Wishlist" %}</a></li>
+                        <li><a href="{% url 'shop:cart' %}">{% trans "Cart" %}</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
+                        <li><a href="{% url 'shop:register' %}">{% trans "Register" %}</a></li>
+                        <li><a href="{% url 'shop:cart' %}">{% trans "Cart" %}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <!-- Info Links -->
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-title">{% trans "Information" %}</h5>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:about' %}">{% trans "About Us" %}</a></li>
+                        <li><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
+                        <li><a href="{% url 'core:faq' %}">{% trans "FAQ" %}</a></li>
+                        <li><a href="{% url 'core:shipping' %}">{% trans "Shipping" %}</a></li>
+                        <li><a href="{% url 'core:returns' %}">{% trans "Returns" %}</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal Links -->
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-title">{% trans "Legal" %}</h5>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:cgv' %}">{% trans "Terms of Service" %}</a></li>
+                        <li><a href="{% url 'core:legal' %}">{% trans "Legal Notice" %}</a></li>
+                        <li><a href="{% url 'core:privacy' %}">{% trans "Privacy Policy" %}</a></li>
+                        {% for page in footer_legal_pages %}
+                        <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Contact Row -->
+            <div class="row mt-4 pt-4 border-top border-secondary">
+                <div class="col-lg-6">
+                    <h5 class="footer-title">{% trans "Contact Us" %}</h5>
+                    <div class="row">
+                        {% for address in footer_addresses|slice:":1" %}
+                        <div class="col-auto">
+                            <div class="footer-contact-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>{{ address.street_line1 }}, {{ address.postal_code }} {{ address.city }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% for contact in footer_contacts %}
+                        <div class="col-auto">
+                            <div class="footer-contact-item">
+                                {% if contact.contact_type == 'email' %}
+                                <i class="bi bi-envelope"></i>
+                                <a href="mailto:{{ contact.value }}">{{ contact.value }}</a>
+                                {% elif contact.contact_type == 'phone' %}
+                                <i class="bi bi-telephone"></i>
+                                <a href="tel:{{ contact.value }}">{{ contact.value }}</a>
+                                {% elif contact.contact_type == 'mobile' %}
+                                <i class="bi bi-phone"></i>
+                                <a href="tel:{{ contact.value }}">{{ contact.value }}</a>
+                                {% elif contact.contact_type == 'whatsapp' %}
+                                <i class="bi bi-whatsapp"></i>
+                                <a href="https://wa.me/{{ contact.value|cut:' '|cut:'+' }}" target="_blank">WhatsApp</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom -->
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="footer-copyright mb-0">
+                            &copy; {% now "Y" %} {{ site_name|default:'Smile Shop' }}. {% trans "All rights reserved." %}
+                        </p>
+                        {% if site_settings.company_name %}
+                        <small class="text-muted">{{ site_settings.company_name }}{% if site_settings.siret %} - SIRET: {{ site_settings.siret }}{% endif %}</small>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="payment-methods">
+                            <span>{% trans "Secure Payment" %}</span>
+                            <i class="bi bi-shield-check text-success"></i>
+                            <i class="bi bi-paypal"></i>
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    </div><!-- Fin site-content -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Panier coulissant -->
+    {% include 'shop/includes/cart_offcanvas.html' %}
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // ========== MODE CLAIR/SOMBRE ==========
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Mettre à jour l'icône
+            const icon = document.querySelector('.theme-toggle i');
+            if (icon) {
+                icon.className = newTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+            }
+        }
+        
+        // Charger le thème sauvegardé
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            
+            const icon = document.querySelector('.theme-toggle i');
+            if (icon) {
+                icon.className = savedTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+            }
+        });
+        
+        // Wishlist toggle
+        function toggleWishlist(productId) {
+            const btn = document.querySelector(`[data-product-id="${productId}"]`);
+            const isActive = btn.classList.contains('active');
+            
+            fetch(isActive ? 
+                `/wishlist/remove/${productId}/` : 
+                `/wishlist/add/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    btn.classList.toggle('active');
+                    const icon = btn.querySelector('i');
+                    icon.classList.toggle('bi-heart');
+                    icon.classList.toggle('bi-heart-fill');
+                }
+            });
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

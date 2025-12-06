@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Facture {{ invoice.invoice_number }} - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'invoicing:invoice_list' %}">Mes factures</a></li>
+                    <li class="breadcrumb-item active">{{ invoice.invoice_number }}</li>
+                </ol>
+            </nav>
+        </div>
+        <a href="{% url 'invoicing:invoice_pdf' invoice_id=invoice.id %}" class="btn btn-primary">
+            <i class="bi bi-download"></i> Télécharger PDF
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body p-5">
+            <!-- En-tête -->
+            <div class="row mb-5">
+                <div class="col-6">
+                    <h2 class="text-primary mb-0">😊 Smile Shop</h2>
+                    <p class="text-muted">
+                        123 Rue du Commerce<br>
+                        75001 Paris, France<br>
+                        contact@smile-shop.com
+                    </p>
+                </div>
+                <div class="col-6 text-end">
+                    <h1 class="display-6 text-uppercase text-muted">Facture</h1>
+                    <p class="mb-0"><strong>{{ invoice.invoice_number }}</strong></p>
+                    <p class="mb-0">Date: {{ invoice.issue_date|date:"d/m/Y" }}</p>
+                    <p class="mb-0">Échéance: {{ invoice.due_date|date:"d/m/Y" }}</p>
+                    <span class="badge 
+                        {% if invoice.status == 'paid' %}bg-success
+                        {% elif invoice.status == 'overdue' %}bg-danger
+                        {% else %}bg-warning text-dark{% endif %} mt-2">
+                        {{ invoice.get_status_display }}
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Client -->
+            <div class="row mb-5">
+                <div class="col-6">
+                    <h6 class="text-uppercase text-muted mb-2">Facturé à</h6>
+                    <p class="mb-0">
+                        <strong>{{ invoice.user.first_name }} {{ invoice.user.last_name }}</strong><br>
+                        {{ invoice.user.email }}
+                    </p>
+                </div>
+                {% if invoice.order %}
+                <div class="col-6 text-end">
+                    <h6 class="text-uppercase text-muted mb-2">Commande</h6>
+                    <p class="mb-0">{{ invoice.order.order_number }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Articles -->
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-center" style="width: 100px;">Quantité</th>
+                        <th class="text-end" style="width: 120px;">Prix HT</th>
+                        <th class="text-end" style="width: 120px;">Total HT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in invoice.items.all %}
+                    <tr>
+                        <td>{{ item.description }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-end">{{ item.unit_price }} €</td>
+                        <td class="text-end">{{ item.total_price }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <!-- Totaux -->
+            <div class="row">
+                <div class="col-md-6 offset-md-6">
+                    <table class="table table-sm">
+                        <tr>
+                            <td>Sous-total HT</td>
+                            <td class="text-end">{{ invoice.subtotal }} €</td>
+                        </tr>
+                        <tr>
+                            <td>TVA ({{ invoice.tax_rate }}%)</td>
+                            <td class="text-end">{{ invoice.tax_amount }} €</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td><strong>Total TTC</strong></td>
+                            <td class="text-end"><strong>{{ invoice.total }} €</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            {% if invoice.notes %}
+            <div class="mt-4">
+                <h6>Notes</h6>
+                <p class="text-muted">{{ invoice.notes }}</p>
+            </div>
+            {% endif %}
+            
+            {% if invoice.payment_terms %}
+            <div class="mt-4">
+                <h6>Conditions de paiement</h6>
+                <p class="text-muted">{{ invoice.payment_terms }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

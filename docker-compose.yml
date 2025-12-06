@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL (interne uniquement)
+  db:
+    image: postgres:15-alpine
+    container_name: smile_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: smile_user
+      POSTGRES_PASSWORD: smile_password_2024
+      POSTGRES_DB: smile_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - smile_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smile_user -d smile_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    expose:
+      - "5432"
+
+  # Redis pour le cache et les sessions (interne uniquement)
+  redis:
+    image: redis:7-alpine
+    container_name: smile_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - smile_internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    expose:
+      - "6379"
+
+  # Application Django (Backend + Frontend intégré)
+  web:
+    build:
+      context: ./smile
+      dockerfile: Dockerfile
+    container_name: smile_web
+    restart: unless-stopped
+    environment:
+      DEBUG: "False"
+      SECRET_KEY: "smile-secret-key-change-in-production-2024"
+      DATABASE_URL: "postgres://smile_user:smile_password_2024@db:5432/smile_db"
+      REDIS_URL: "redis://redis:6379/0"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,smile_web"
+    volumes:
+      - static_data:/app/staticfiles
+      - media_data:/app/media
+    networks:
+      - smile_internal
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  # Nginx - Point d'entrée unique
+  nginx:
+    image: nginx:alpine
+    container_name: smile_nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_data:/app/staticfiles:ro
+      - media_data:/app/media:ro
+    networks:
+      - smile_internal
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_data:
+  media_data:
+
+networks:
+  smile_internal:
+    driver: bridge

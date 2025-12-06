@@ -1,0 +1,329 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Dashboard - Smile Shop Admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">😊 Smile Shop - Dashboard</a></h1>
+{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 1rem;
+        height: 100%;
+    }
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #417690;
+    }
+    .metric-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+    .metric-icon {
+        font-size: 2.5rem;
+        opacity: 0.3;
+    }
+    .alert-card {
+        border-left: 4px solid;
+        background: #fff;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0 8px 8px 0;
+    }
+    .alert-danger { border-color: #e74c3c; }
+    .alert-warning { border-color: #f39c12; }
+    .alert-success { border-color: #27ae60; }
+    .alert-info { border-color: #3498db; }
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .table-mini {
+        font-size: 0.85rem;
+    }
+    .table-mini th, .table-mini td {
+        padding: 0.5rem;
+    }
+    .progress-bar-custom {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #417690, #79aec8);
+        border-radius: 4px;
+    }
+    @media (max-width: 768px) {
+        .grid-container { grid-template-columns: 1fr; }
+        .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+</style>
+
+<h1>📊 Tableau de bord Analytics</h1>
+
+<!-- Métriques principales -->
+<div class="grid-container grid-4">
+    <div class="dashboard-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="metric-value" style="color: #27ae60;">{{ revenue_today|floatformat:2 }} €</div>
+                <div class="metric-label">CA Aujourd'hui</div>
+            </div>
+            <div class="metric-icon">💰</div>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="metric-value" style="color: #3498db;">{{ revenue_month|floatformat:2 }} €</div>
+                <div class="metric-label">CA du mois</div>
+            </div>
+            <div class="metric-icon">📈</div>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="metric-value">{{ orders_today }}</div>
+                <div class="metric-label">Commandes aujourd'hui</div>
+            </div>
+            <div class="metric-icon">📦</div>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="metric-value" style="color: #9b59b6;">{{ avg_order|floatformat:2 }} €</div>
+                <div class="metric-label">Panier moyen (30j)</div>
+            </div>
+            <div class="metric-icon">🛒</div>
+        </div>
+    </div>
+</div>
+
+<!-- Alertes -->
+<div class="grid-container grid-2">
+    <div>
+        <h3>⚠️ Alertes Stock</h3>
+        {% if products_out_of_stock_count > 0 %}
+        <div class="alert-card alert-danger">
+            <strong>🔴 {{ products_out_of_stock_count }} produit(s) en rupture</strong>
+            <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
+                {% for p in products_out_of_stock|slice:":3" %}
+                <li><a href="{% url 'admin:shop_product_change' p.id %}">{{ p.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% if products_low_stock_count > 0 %}
+        <div class="alert-card alert-warning">
+            <strong>🟡 {{ products_low_stock_count }} produit(s) en stock bas</strong>
+            <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
+                {% for p in products_low_stock|slice:":3" %}
+                <li><a href="{% url 'admin:shop_product_change' p.id %}">{{ p.name }}</a> ({{ p.stock_quantity }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% if not products_out_of_stock_count and not products_low_stock_count %}
+        <div class="alert-card alert-success">
+            <strong>✅ Tous les stocks sont OK</strong>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div>
+        <h3>📋 À traiter</h3>
+        {% if orders_pending > 0 %}
+        <div class="alert-card alert-warning">
+            <strong>{{ orders_pending }} commande(s) en attente</strong>
+            <a href="{% url 'admin:invoicing_order_changelist' %}?status=pending" style="float: right;">Voir →</a>
+        </div>
+        {% endif %}
+        
+        {% if reviews_pending > 0 %}
+        <div class="alert-card alert-info">
+            <strong>{{ reviews_pending }} avis à modérer</strong>
+            <a href="{% url 'admin:shop_productreview_changelist' %}?is_approved=0" style="float: right;">Voir →</a>
+        </div>
+        {% endif %}
+        
+        {% if invoices_unpaid > 0 %}
+        <div class="alert-card alert-warning">
+            <strong>{{ invoices_unpaid }} facture(s) impayée(s)</strong> ({{ invoices_total_unpaid|floatformat:2 }} €)
+            <a href="{% url 'admin:invoicing_invoice_changelist' %}?status__in=draft,sent" style="float: right;">Voir →</a>
+        </div>
+        {% endif %}
+        
+        {% if abandoned_carts > 0 %}
+        <div class="alert-card alert-info">
+            <strong>{{ abandoned_carts }} panier(s) abandonné(s)</strong> (+24h)
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Graphique des ventes -->
+<div class="dashboard-card" style="margin-top: 1rem;">
+    <h3>📈 Évolution des ventes (30 derniers jours)</h3>
+    <canvas id="salesChart" height="100"></canvas>
+</div>
+
+<div class="grid-container grid-2" style="margin-top: 1rem;">
+    <!-- Top produits -->
+    <div class="dashboard-card">
+        <h3>🏆 Top 5 Produits (30j)</h3>
+        <table class="table-mini" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th style="text-align: right;">Vendus</th>
+                    <th style="text-align: right;">CA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in top_products %}
+                <tr>
+                    <td>{{ p.product__name|truncatechars:25 }}</td>
+                    <td style="text-align: right;">{{ p.total_sold }}</td>
+                    <td style="text-align: right;">{{ p.total_revenue|floatformat:2 }} €</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align: center; color: #999;">Aucune vente</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Dernières commandes -->
+    <div class="dashboard-card">
+        <h3>🕐 Dernières commandes</h3>
+        <table class="table-mini" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Client</th>
+                    <th style="text-align: right;">Montant</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in recent_orders %}
+                <tr>
+                    <td><a href="{% url 'admin:invoicing_order_change' o.id %}">{{ o.order_number }}</a></td>
+                    <td>{{ o.user.first_name|default:o.user.username|truncatechars:10 }}</td>
+                    <td style="text-align: right;">{{ o.total|floatformat:2 }} €</td>
+                    <td>
+                        {% if o.status == 'pending' %}
+                        <span style="color: #f39c12;">⏳</span>
+                        {% elif o.status == 'delivered' %}
+                        <span style="color: #27ae60;">✅</span>
+                        {% else %}
+                        <span style="color: #3498db;">🔄</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #999;">Aucune commande</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Stats générales -->
+<div class="grid-container grid-4" style="margin-top: 1rem;">
+    <div class="dashboard-card" style="text-align: center;">
+        <div class="metric-value">{{ total_products }}</div>
+        <div class="metric-label">Produits actifs</div>
+    </div>
+    <div class="dashboard-card" style="text-align: center;">
+        <div class="metric-value">{{ total_categories }}</div>
+        <div class="metric-label">Catégories</div>
+    </div>
+    <div class="dashboard-card" style="text-align: center;">
+        <div class="metric-value">{{ total_customers }}</div>
+        <div class="metric-label">Clients</div>
+        <small style="color: #27ae60;">+{{ new_customers_month }} ce mois</small>
+    </div>
+    <div class="dashboard-card" style="text-align: center;">
+        <div class="metric-value" style="color: #f39c12;">{{ avg_rating }} ★</div>
+        <div class="metric-label">Note moyenne</div>
+        <small>{{ reviews_total }} avis</small>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('salesChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: 'CA (€)',
+            data: {{ chart_revenue|safe }},
+            borderColor: '#417690',
+            backgroundColor: 'rgba(65, 118, 144, 0.1)',
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y'
+        }, {
+            label: 'Commandes',
+            data: {{ chart_orders|safe }},
+            borderColor: '#79aec8',
+            backgroundColor: 'transparent',
+            tension: 0.3,
+            yAxisID: 'y1'
+        }]
+    },
+    options: {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: { display: true, text: 'CA (€)' }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: { display: true, text: 'Commandes' },
+                grid: { drawOnChartArea: false }
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

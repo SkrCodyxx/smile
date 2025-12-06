@@ -1,0 +1,64 @@
+[
+  {
+    "model": "core.sitesettings",
+    "pk": 1,
+    "fields": {
+      "site_name": "Smile Shop",
+      "site_slogan": "Votre boutique en ligne préférée",
+      "site_description": "Smile Shop - La boutique en ligne où vous trouverez tout ce dont vous avez besoin avec le sourire!",
+      "currency": "EUR",
+      "currency_symbol": "€",
+      "tax_rate": "20.00",
+      "shipping_cost": "5.99",
+      "free_shipping_threshold": "50.00",
+      "order_prefix": "CMD",
+      "order_next_number": 1,
+      "invoice_prefix": "FAC",
+      "invoice_next_number": 1,
+      "product_sku_prefix": "PRD",
+      "product_next_number": 1,
+      "maintenance_mode": false,
+      "allow_guest_checkout": false,
+      "reviews_require_approval": true,
+      "show_stock_quantity": true,
+      "low_stock_threshold": 10
+    }
+  },
+  {
+    "model": "core.emailsettings",
+    "pk": 1,
+    "fields": {
+      "provider": "gmail",
+      "smtp_host": "smtp.gmail.com",
+      "smtp_port": 587,
+      "smtp_use_tls": true,
+      "smtp_use_ssl": false,
+      "smtp_username": "",
+      "smtp_password": "",
+      "default_from_email": "",
+      "default_from_name": "Smile Shop",
+      "reply_to_email": "",
+      "admin_email": "",
+      "send_order_notifications": true,
+      "send_review_notifications": true,
+      "send_contact_notifications": true,
+      "send_order_confirmation": true,
+      "send_shipping_notification": true,
+      "send_invoice_email": true,
+      "is_configured": false
+    }
+  },
+  {
+    "model": "core.paymentsettings",
+    "pk": 1,
+    "fields": {
+      "paypal_enabled": false,
+      "paypal_mode": "sandbox",
+      "stripe_enabled": false,
+      "stripe_mode": "test",
+      "bank_transfer_enabled": false,
+      "cod_enabled": false,
+      "currency": "EUR"
+    }
+  }
+]

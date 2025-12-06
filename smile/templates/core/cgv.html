@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Conditions Générales de Vente" %} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Home" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "Terms of Service" %}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="mb-4">{% trans "Terms of Service" %}</h1>
+            <p class="text-muted mb-5">{% trans "Last updated" %}: {% now "F Y" %}</p>
+
+            {% if cgv_content %}
+            <!-- Contenu dynamique -->
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    {{ cgv_content.content|safe }}
+                </div>
+            </div>
+            {% else %}
+            <!-- Contenu par défaut -->
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 1 - Purpose" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% blocktrans with site_name=site_name %}
+                        These general terms and conditions govern the contractual relationships between {{ site_name }} and its customers for the sale of products on this website.
+                        {% endblocktrans %}
+                    </p>
+                    <p>{% trans "Any order implies acceptance without reservation of these terms and conditions." %}</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 2 - Prices" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "Prices are indicated in the selected currency including all taxes (VAT). We reserve the right to modify prices at any time. Products will be invoiced at the price in effect at the time of order validation." %}
+                    </p>
+                    <p>
+                        {% trans "Shipping costs are indicated before order validation and may vary depending on the chosen delivery method." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 3 - Order" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>{% trans "To place an order, the customer must:" %}</p>
+                    <ul>
+                        <li>{% trans "Select the desired products and add them to the cart" %}</li>
+                        <li>{% trans "Validate the cart contents" %}</li>
+                        <li>{% trans "Enter delivery and billing information" %}</li>
+                        <li>{% trans "Choose the delivery method" %}</li>
+                        <li>{% trans "Accept these terms and conditions" %}</li>
+                        <li>{% trans "Proceed to payment" %}</li>
+                    </ul>
+                    <p>{% trans "A confirmation email will be sent after order validation." %}</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 4 - Payment" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "Payment is made online by credit card through a secure platform. Bank data is encrypted and never stored on our servers." %}
+                    </p>
+                    <p>{% trans "The order is confirmed after payment validation by our bank." %}</p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 5 - Delivery" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>{% trans "Products are delivered to the address indicated during the order. Delivery times are given as an indication." %}</p>
+                    <ul>
+                        <li><strong>{% trans "Standard delivery:" %}</strong> {% trans "3-5 business days" %}</li>
+                        <li><strong>{% trans "Express delivery:" %}</strong> {% trans "24-48 hours" %}</li>
+                    </ul>
+                    <p>
+                        <strong>{% trans "Free shipping" %}</strong> {% trans "from 50€ purchase." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 6 - Right of Withdrawal" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "In accordance with current legislation, the customer has a period of 14 days from receipt of the products to exercise their right of withdrawal, without having to justify reasons." %}
+                    </p>
+                    <p>
+                        {% trans "To exercise this right, the customer must contact us via the contact form or by email, then return the products in their original condition." %}
+                    </p>
+                    <p>
+                        {% trans "Return shipping costs are the responsibility of the customer unless the product is defective or does not match the description." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 7 - Warranty" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>{% trans "All products benefit from:" %}</p>
+                    <ul>
+                        <li><strong>{% trans "Legal warranty of conformity:" %}</strong> {% trans "2 years from delivery" %}</li>
+                        <li><strong>{% trans "Warranty against hidden defects:" %}</strong> {% trans "according to civil code" %}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 8 - Liability" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% blocktrans with site_name=site_name %}
+                        {{ site_name }} cannot be held responsible for any failure to perform the contract due to force majeure, strike, fire, flood, pandemic, or any other event beyond our control.
+                        {% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Article 9 - Disputes" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "In case of dispute, the customer can resort to conventional mediation or any alternative dispute resolution method." %}
+                    </p>
+                    <p>
+                        {% trans "These terms and conditions are governed by the applicable law. Any dispute will fall under the jurisdiction of the competent courts." %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Back link -->
+            <div class="text-center mt-5">
+                <a href="{% url 'shop:home' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-2"></i>{% trans "Back to Home" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

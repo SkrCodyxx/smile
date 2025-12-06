@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}À propos - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="hero text-center">
+    <div class="container">
+        <h1 class="display-5 fw-bold mb-3">À propos de Smile Shop 😊</h1>
+        <p class="lead">Votre satisfaction, notre priorité</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Notre histoire -->
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="mb-4">Notre histoire</h2>
+            <p class="lead text-muted">
+                Smile Shop est né d'une passion pour le commerce en ligne et d'une volonté 
+                de proposer des produits de qualité à des prix justes.
+            </p>
+            <p>
+                Fondée en 2024, notre boutique s'est donnée pour mission de rendre 
+                l'achat en ligne simple, sécurisé et agréable. Nous sélectionnons 
+                soigneusement chaque produit pour vous garantir satisfaction.
+            </p>
+            <p>
+                Notre équipe passionnée travaille chaque jour pour vous offrir 
+                la meilleure expérience d'achat possible.
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <div class="card bg-primary text-white p-5 text-center">
+                <div class="display-1 mb-3">😊</div>
+                <h3>Des milliers de clients satisfaits</h3>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Nos valeurs -->
+    <div class="text-center mb-5">
+        <h2 class="mb-4">Nos valeurs</h2>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-4">
+                <div class="display-4 text-primary mb-3">🎯</div>
+                <h5>Qualité</h5>
+                <p class="text-muted mb-0">
+                    Nous sélectionnons rigoureusement chaque produit pour vous 
+                    garantir une qualité irréprochable.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-4">
+                <div class="display-4 text-primary mb-3">💰</div>
+                <h5>Prix justes</h5>
+                <p class="text-muted mb-0">
+                    Nous négocions les meilleurs prix auprès de nos fournisseurs 
+                    pour vous les répercuter.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-4">
+                <div class="display-4 text-primary mb-3">🤝</div>
+                <h5>Service client</h5>
+                <p class="text-muted mb-0">
+                    Notre équipe est à votre écoute pour répondre à toutes 
+                    vos questions et vous accompagner.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chiffres clés -->
+    <div class="bg-light rounded p-5 mb-5">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div class="display-4 text-primary fw-bold">1000+</div>
+                <p class="text-muted mb-0">Produits disponibles</p>
+            </div>
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div class="display-4 text-primary fw-bold">5000+</div>
+                <p class="text-muted mb-0">Clients satisfaits</p>
+            </div>
+            <div class="col-md-3 mb-4 mb-md-0">
+                <div class="display-4 text-primary fw-bold">24h</div>
+                <p class="text-muted mb-0">Expédition rapide</p>
+            </div>
+            <div class="col-md-3">
+                <div class="display-4 text-primary fw-bold">4.8/5</div>
+                <p class="text-muted mb-0">Note moyenne</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="text-center">
+        <h3 class="mb-4">Prêt à découvrir nos produits ?</h3>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-primary btn-lg px-5">
+            Voir la boutique <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

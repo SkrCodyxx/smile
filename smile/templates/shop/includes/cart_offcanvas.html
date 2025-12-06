@@ -1,0 +1,712 @@
+{% load i18n currency_tags %}
+<!-- Bouton flottant du panier (pour mobile) -->
+<button class="cart-toggle-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
+    <i class="bi bi-bag"></i>
+    <span class="cart-badge" id="cartBadgeMobile">{{ cart_count|default:0 }}</span>
+</button>
+
+<!-- Offcanvas Panier -->
+<div class="offcanvas offcanvas-end cart-offcanvas" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="cartOffcanvasLabel">
+            <i class="bi bi-bag me-2"></i>{% trans "My Cart" %}
+            <span class="badge bg-primary ms-2" id="cartItemCount">{{ cart_count|default:0 }}</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    
+    <div class="offcanvas-body" id="cartOffcanvasBody">
+        {% if cart and cart.items.all %}
+        <!-- Liste des articles -->
+        <div class="cart-items" id="cartItemsList">
+            {% for item in cart.items.all %}
+            <div class="cart-item" data-item-id="{{ item.id }}">
+                <div class="cart-item-image">
+                    {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% else %}
+                    <div class="cart-item-placeholder">
+                        <i class="bi bi-image"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="cart-item-details">
+                    <a href="{{ item.product.get_absolute_url }}" class="cart-item-name">
+                        {{ item.product.name|truncatechars:30 }}
+                    </a>
+                    <div class="cart-item-price">
+                        {{ item.product.price|format_price:current_currency }}
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="qty-btn" onclick="updateCartItem({{ item.id }}, {{ item.quantity|add:-1 }})">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <span class="qty-value">{{ item.quantity }}</span>
+                        <button class="qty-btn" onclick="updateCartItem({{ item.id }}, {{ item.quantity|add:1 }})">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-item-total">
+                    {{ item.total_price|format_price:current_currency }}
+                </div>
+                <button class="cart-item-remove" onclick="removeCartItem({{ item.id }})">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Résumé -->
+        <div class="cart-summary">
+            <div class="cart-summary-row">
+                <span>{% trans "Subtotal" %}</span>
+                <span id="cartSubtotal">{{ cart.total|format_price:current_currency }}</span>
+            </div>
+            {% if free_shipping_threshold %}
+            <div class="cart-shipping-progress">
+                {% if cart.total >= free_shipping_threshold %}
+                <div class="text-success small">
+                    <i class="bi bi-check-circle"></i> {% trans "Free shipping!" %}
+                </div>
+                {% else %}
+                <div class="small text-muted mb-1">
+                    {% blocktrans with remaining=remaining_for_free_shipping|format_price:current_currency %}
+                    {{ remaining }} more for free shipping
+                    {% endblocktrans %}
+                </div>
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-primary" role="progressbar" 
+                         style="width: {{ cart.total|divisibleby:free_shipping_threshold|default:0 }}%"></div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Actions -->
+        <div class="cart-actions">
+            <a href="{% url 'shop:cart' %}" class="btn btn-outline-light w-100 mb-2">
+                <i class="bi bi-bag me-2"></i>{% trans "View Cart" %}
+            </a>
+            <a href="{% url 'shop:checkout' %}" class="btn btn-primary w-100">
+                <i class="bi bi-credit-card me-2"></i>{% trans "Checkout" %}
+            </a>
+        </div>
+        
+        {% else %}
+        <!-- Panier vide -->
+        <div class="cart-empty">
+            <i class="bi bi-bag-x"></i>
+            <h6>{% trans "Your cart is empty" %}</h6>
+            <p class="text-muted small">{% trans "Add some products to your cart to see them here." %}</p>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-primary btn-sm" data-bs-dismiss="offcanvas">
+                <i class="bi bi-grid me-2"></i>{% trans "Browse Products" %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+/* ========== PANIER COULISSANT ========== */
+.cart-offcanvas {
+    width: 420px;
+    max-width: 90vw;
+    background: var(--smile-card);
+    border-left: 1px solid var(--smile-border);
+    z-index: 1300 !important;
+}
+
+.cart-offcanvas .offcanvas-header {
+    background: linear-gradient(135deg, var(--smile-primary), var(--smile-secondary));
+    border-bottom: none;
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cart-offcanvas .offcanvas-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    animation: headerShine 3s infinite linear;
+}
+
+@keyframes headerShine {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.cart-offcanvas .offcanvas-title {
+    font-weight: 700;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.cart-offcanvas .offcanvas-title .badge {
+    background: rgba(255,255,255,0.2) !important;
+    backdrop-filter: blur(10px);
+}
+
+.cart-offcanvas .btn-close {
+    filter: invert(1);
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.cart-offcanvas .btn-close:hover {
+    transform: rotate(90deg);
+}
+
+.cart-offcanvas .offcanvas-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--smile-card) 0%, var(--smile-darker) 100%);
+    position: relative;
+}
+
+/* Motif décoratif dans l'offcanvas */
+.cart-offcanvas .offcanvas-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 10% 90%, rgba(124, 58, 237, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(236, 72, 153, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Liste des articles */
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.cart-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, var(--smile-primary), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.cart-item:hover {
+    background: rgba(124, 58, 237, 0.08);
+    transform: translateX(5px);
+}
+
+.cart-item:hover::before {
+    opacity: 1;
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover .cart-item-image {
+    transform: scale(1.05) rotate(-2deg);
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.cart-item:hover .cart-item-image img {
+    transform: scale(1.1);
+}
+
+.cart-item-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--smile-border), var(--smile-darker));
+    color: var(--smile-text-muted);
+    font-size: 1.75rem;
+}
+
+.cart-item-details {
+    min-width: 0;
+}
+
+.cart-item-name {
+    display: block;
+    color: var(--smile-text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+}
+
+.cart-item-name:hover {
+    color: var(--smile-primary);
+}
+
+.cart-item-price {
+    font-size: 0.9rem;
+    color: var(--smile-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--smile-darker);
+    border-radius: 50px;
+    padding: 0.2rem;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--smile-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.qty-btn:hover {
+    background: var(--smile-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.qty-btn:active {
+    transform: scale(0.95);
+}
+
+.qty-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
+}
+
+.cart-item-total {
+    font-weight: 700;
+    font-size: 1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cart-item-remove {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.cart-item-remove:hover {
+    background: #ef4444;
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Résumé */
+.cart-summary {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--smile-border);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+    position: relative;
+    z-index: 1;
+}
+
+.cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.cart-summary-row span:last-child {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.25rem;
+}
+
+.cart-shipping-progress {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 12px;
+}
+
+.cart-shipping-progress .progress {
+    background: var(--smile-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cart-shipping-progress .progress-bar {
+    background: var(--gradient-primary);
+    position: relative;
+}
+
+.cart-shipping-progress .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmerProgress 2s infinite;
+}
+
+@keyframes shimmerProgress {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Actions */
+.cart-actions {
+    padding: 1rem 1.5rem 1.5rem;
+    background: var(--smile-darker);
+    position: relative;
+    z-index: 1;
+}
+
+.cart-actions .btn {
+    border-radius: 14px;
+    font-weight: 600;
+    padding: 0.875rem 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.cart-actions .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+}
+
+.cart-actions .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.cart-actions .btn-primary:hover::before {
+    left: 100%;
+}
+
+.cart-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+}
+
+.cart-actions .btn-outline-light {
+    border: 2px solid var(--smile-border);
+    color: var(--smile-text);
+}
+
+.cart-actions .btn-outline-light:hover {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: var(--smile-primary);
+    color: var(--smile-primary);
+}
+
+/* Panier vide */
+.cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.cart-empty i {
+    font-size: 5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    animation: emptyCartBounce 2s ease-in-out infinite;
+}
+
+@keyframes emptyCartBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.cart-empty h6 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+/* Bouton flottant mobile */
+.cart-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.cart-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.6);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--smile-danger);
+    color: white;
+    font-size: 0.75rem;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Backdrop du offcanvas */
+.offcanvas-backdrop.show {
+    opacity: 0.7;
+    backdrop-filter: blur(5px);
+}
+
+/* Mode clair */
+[data-bs-theme="light"] .cart-offcanvas {
+    background: #ffffff;
+    border-left: 1px solid #e5e7eb;
+}
+
+[data-bs-theme="light"] .cart-offcanvas .offcanvas-body {
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+[data-bs-theme="light"] .cart-item {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[data-bs-theme="light"] .cart-item:hover {
+    background: rgba(124, 58, 237, 0.05);
+}
+
+[data-bs-theme="light"] .cart-item-name {
+    color: #1f2937;
+}
+
+[data-bs-theme="light"] .cart-item-quantity {
+    background: #f3f4f6;
+}
+
+[data-bs-theme="light"] .cart-summary {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.03) 0%, rgba(236, 72, 153, 0.03) 100%);
+}
+
+[data-bs-theme="light"] .cart-actions {
+    background: #f9fafb;
+}
+
+[data-bs-theme="light"] .cart-actions .btn-outline-light {
+    border-color: #e5e7eb;
+    color: #1f2937;
+}
+</style>
+
+<script>
+// Fonctions AJAX pour le panier
+function updateCartItem(itemId, quantity) {
+    if (quantity < 0) quantity = 0;
+    
+    fetch(`/cart/update/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            refreshCart();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function removeCartItem(itemId) {
+    fetch(`/cart/remove/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            refreshCart();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function addToCart(productId, quantity = 1) {
+    fetch(`/cart/add/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            refreshCart();
+            // Ouvrir le panier coulissant
+            var cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
+            cartOffcanvas.show();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function refreshCart() {
+    fetch('/cart/mini/', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('cartOffcanvasBody').innerHTML = html;
+        // Mettre à jour les badges
+        const countMatch = html.match(/data-cart-count="(\d+)"/);
+        if (countMatch) {
+            const count = countMatch[1];
+            document.querySelectorAll('.cart-badge, #cartItemCount').forEach(el => {
+                el.textContent = count;
+            });
+            // Badge dans le header
+            const headerBadge = document.querySelector('.header-actions .badge');
+            if (headerBadge) {
+                headerBadge.textContent = count;
+                headerBadge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>

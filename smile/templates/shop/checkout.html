@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Commande - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h3 mb-4"><i class="bi bi-credit-card"></i> Finaliser ma commande</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Formulaire -->
+            <div class="col-lg-8 mb-4">
+                <!-- Adresse de livraison -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Adresse de livraison</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" class="form-control" name="first_name" 
+                                       value="{{ user.first_name }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" name="last_name" 
+                                       value="{{ user.last_name }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Adresse</label>
+                                <textarea class="form-control" name="shipping_address" rows="3" 
+                                          required placeholder="Numéro, rue, code postal, ville"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" name="phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" 
+                                       value="{{ user.email }}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Adresse de facturation -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-receipt"></i> Adresse de facturation</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="same_address" checked 
+                                   onclick="toggleBillingAddress()">
+                            <label class="form-check-label" for="same_address">
+                                Identique à l'adresse de livraison
+                            </label>
+                        </div>
+                        <div id="billing_address_form" style="display: none;">
+                            <textarea class="form-control" name="billing_address" rows="3" 
+                                      placeholder="Adresse de facturation"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notes -->
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-chat-text"></i> Notes (optionnel)</h5>
+                    </div>
+                    <div class="card-body">
+                        <textarea class="form-control" name="notes" rows="2" 
+                                  placeholder="Instructions de livraison, commentaires..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Récapitulatif -->
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 80px;">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Votre commande</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Articles -->
+                        {% for item in cart.items.all %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>
+                                {{ item.product.name }}
+                                <small class="text-muted">x{{ item.quantity }}</small>
+                            </span>
+                            <span>{{ item.total_price }} €</span>
+                        </div>
+                        {% endfor %}
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Sous-total</span>
+                            <span>{{ subtotal }} €</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>TVA (20%)</span>
+                            <span>{{ tax|floatformat:2 }} €</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Livraison</span>
+                            {% if shipping == 0 %}
+                            <span class="text-success">Gratuit</span>
+                            {% else %}
+                            <span>{{ shipping }} €</span>
+                            {% endif %}
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong class="fs-5">Total</strong>
+                            <strong class="fs-5 text-primary">{{ total|floatformat:2 }} €</strong>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            <i class="bi bi-check-circle"></i> Confirmer la commande
+                        </button>
+                        
+                        <p class="text-muted text-center mt-3 small">
+                            <i class="bi bi-shield-check"></i> Paiement sécurisé
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% block extra_js %}
+<script>
+function toggleBillingAddress() {
+    const form = document.getElementById('billing_address_form');
+    const checkbox = document.getElementById('same_address');
+    form.style.display = checkbox.checked ? 'none' : 'block';
+}
+</script>
+{% endblock %}
+{% endblock %}

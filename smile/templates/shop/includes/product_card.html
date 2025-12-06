@@ -1,0 +1,110 @@
+{% load i18n currency_tags %}
+<div class="card product-card h-100">
+    <div class="card-img-wrapper">
+        <!-- Badges -->
+        <div class="product-badges">
+            {% if product.is_on_sale %}
+            <span class="product-badge badge-sale">-{{ product.discount_percentage }}%</span>
+            {% endif %}
+            {% if product.is_featured %}
+            <span class="product-badge badge-featured"><i class="bi bi-star-fill"></i></span>
+            {% endif %}
+        </div>
+        
+        <!-- Actions (apparaissent au hover) -->
+        <div class="product-actions">
+            {% if user.is_authenticated %}
+            <button class="product-action-btn {% if product in user_wishlist %}active{% endif %}" 
+                    onclick="toggleWishlist('{{ product.id }}')" 
+                    data-product-id="{{ product.id }}"
+                    title="{% trans 'Add to wishlist' %}">
+                <i class="bi bi-heart{% if product in user_wishlist %}-fill{% endif %}"></i>
+            </button>
+            {% endif %}
+            <a href="{{ product.get_absolute_url }}" class="product-action-btn" title="{% trans 'View details' %}">
+                <i class="bi bi-eye"></i>
+            </a>
+        </div>
+        
+        <!-- Image -->
+        <a href="{{ product.get_absolute_url }}">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            {% else %}
+            <div class="card-img-placeholder">
+                <i class="bi bi-image"></i>
+            </div>
+            {% endif %}
+        </a>
+    </div>
+    
+    <div class="product-info">
+        <!-- Catégorie -->
+        {% if product.category %}
+        <div class="product-category">{{ product.category.name }}</div>
+        {% endif %}
+        
+        <!-- Titre -->
+        <a href="{{ product.get_absolute_url }}" class="product-title">
+            {{ product.name|truncatechars:40 }}
+        </a>
+        
+        <!-- Note -->
+        {% if product.review_count > 0 %}
+        <div class="product-rating">
+            {% for i in "12345" %}
+                {% if forloop.counter <= product.average_rating %}
+                <i class="bi bi-star-fill"></i>
+                {% elif forloop.counter <= product.average_rating|add:0.5 %}
+                <i class="bi bi-star-half"></i>
+                {% else %}
+                <i class="bi bi-star"></i>
+                {% endif %}
+            {% endfor %}
+            <span>({{ product.review_count }})</span>
+        </div>
+        {% endif %}
+        
+        <!-- Prix -->
+        <div class="product-price">
+            {% if product.is_on_sale %}
+            <span class="current-price">{{ product.price|format_price:current_currency }}</span>
+            <span class="old-price">{{ product.compare_at_price|format_price:current_currency }}</span>
+            {% else %}
+            <span class="current-price">{{ product.price|format_price:current_currency }}</span>
+            {% endif %}
+        </div>
+        
+        <!-- Stock -->
+        <div>
+            {% if not product.is_in_stock %}
+            <span class="product-stock stock-out">
+                <i class="bi bi-x-circle"></i> {% trans "Out of stock" %}
+            </span>
+            {% elif product.is_low_stock %}
+            <span class="product-stock stock-low">
+                <i class="bi bi-exclamation-triangle"></i> {% trans "Low stock" %}
+            </span>
+            {% else %}
+            <span class="product-stock stock-in">
+                <i class="bi bi-check-circle"></i> {% trans "In stock" %}
+            </span>
+            {% endif %}
+        </div>
+        
+        <!-- Bouton Ajouter -->
+        {% if product.is_in_stock %}
+        <form action="{% url 'shop:add_to_cart' product_id=product.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn-add-cart">
+                <i class="bi bi-bag-plus"></i> {% trans "Add to Cart" %}
+            </button>
+        </form>
+        {% else %}
+        <button class="btn-add-cart" disabled>
+            <i class="bi bi-x-circle"></i> {% trans "Out of stock" %}
+        </button>
+        {% endif %}
+    </div>
+</div>

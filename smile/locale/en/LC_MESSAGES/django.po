@@ -1,0 +1,519 @@
+# Smile Shop - English Translations
+msgid ""
+msgstr ""
+"Project-Id-Version: Smile Shop 1.0\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Navigation
+msgid "Home"
+msgstr "Home"
+
+msgid "Products"
+msgstr "Products"
+
+msgid "Categories"
+msgstr "Categories"
+
+msgid "No categories"
+msgstr "No categories"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Cart"
+msgstr "Cart"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "My Profile"
+msgstr "My Profile"
+
+msgid "My Orders"
+msgstr "My Orders"
+
+msgid "My Invoices"
+msgstr "My Invoices"
+
+msgid "My Wishlist"
+msgstr "My Wishlist"
+
+msgid "Admin"
+msgstr "Admin"
+
+# Search
+msgid "Search products..."
+msgstr "Search products..."
+
+msgid "Search"
+msgstr "Search"
+
+# Hero Section
+msgid "Welcome to"
+msgstr "Welcome to"
+
+msgid "Your Online Store"
+msgstr "Your Online Store"
+
+msgid "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
+msgstr "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
+
+msgid "Shop Now"
+msgstr "Shop Now"
+
+msgid "About Us"
+msgstr "About Us"
+
+msgid "Browse Products"
+msgstr "Browse Products"
+
+# Categories
+msgid "Shop by"
+msgstr "Shop by"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Find exactly what you're looking for"
+msgstr "Find exactly what you're looking for"
+
+msgid "products"
+msgstr "products"
+
+# Products
+msgid "Featured Products"
+msgstr "Featured Products"
+
+msgid "Our best picks for you"
+msgstr "Our best picks for you"
+
+msgid "View All"
+msgstr "View All"
+
+msgid "New Arrivals"
+msgstr "New Arrivals"
+
+msgid "The latest additions to our collection"
+msgstr "The latest additions to our collection"
+
+msgid "Add to wishlist"
+msgstr "Add to wishlist"
+
+msgid "View details"
+msgstr "View details"
+
+msgid "Add to Cart"
+msgstr "Add to Cart"
+
+msgid "Add to cart"
+msgstr "Add to cart"
+
+msgid "In stock"
+msgstr "In stock"
+
+msgid "Low stock"
+msgstr "Low stock"
+
+msgid "Out of stock"
+msgstr "Out of stock"
+
+msgid "All Products"
+msgstr "All Products"
+
+msgid "All categories"
+msgstr "All categories"
+
+# Features
+msgid "Why Choose"
+msgstr "Why Choose"
+
+msgid "Us"
+msgstr "Us"
+
+msgid "We're committed to providing the best shopping experience"
+msgstr "We're committed to providing the best shopping experience"
+
+msgid "Fast Delivery"
+msgstr "Fast Delivery"
+
+msgid "Free shipping on orders over 50€. Express delivery available."
+msgstr "Free shipping on orders over 50€. Express delivery available."
+
+msgid "Secure Payment"
+msgstr "Secure Payment"
+
+msgid "Your data is protected with SSL encryption. Multiple payment options."
+msgstr "Your data is protected with SSL encryption. Multiple payment options."
+
+msgid "Easy Returns"
+msgstr "Easy Returns"
+
+msgid "30-day money-back guarantee. No questions asked."
+msgstr "30-day money-back guarantee. No questions asked."
+
+# Newsletter
+msgid "Subscribe to our Newsletter"
+msgstr "Subscribe to our Newsletter"
+
+msgid "Get exclusive deals and updates delivered to your inbox"
+msgstr "Get exclusive deals and updates delivered to your inbox"
+
+msgid "Enter your email"
+msgstr "Enter your email"
+
+msgid "Subscribe"
+msgstr "Subscribe"
+
+# Top Bar
+msgid "Free shipping on orders over"
+msgstr "Free shipping on orders over"
+
+# Footer
+msgid "Shop"
+msgstr "Shop"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "All rights reserved."
+msgstr "All rights reserved."
+
+# Maintenance
+msgid "Site under maintenance"
+msgstr "Site under maintenance"
+
+# Product List
+msgid "Sort by"
+msgstr "Sort by"
+
+msgid "Most recent"
+msgstr "Most recent"
+
+msgid "Price: low to high"
+msgstr "Price: low to high"
+
+msgid "Price: high to low"
+msgstr "Price: high to low"
+
+msgid "Name: A to Z"
+msgstr "Name: A to Z"
+
+msgid "Best sellers"
+msgstr "Best sellers"
+
+msgid "Filters"
+msgstr "Filters"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Price Range"
+msgstr "Price Range"
+
+msgid "Apply"
+msgstr "Apply"
+
+msgid "Reset filters"
+msgstr "Reset filters"
+
+msgid "No products found"
+msgstr "No products found"
+
+# Product Detail
+msgid "Description"
+msgstr "Description"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Specifications"
+msgstr "Specifications"
+
+msgid "Quantity"
+msgstr "Quantity"
+
+msgid "Related Products"
+msgstr "Related Products"
+
+msgid "You may also like"
+msgstr "You may also like"
+
+msgid "You save"
+msgstr "You save"
+
+# Cart
+msgid "Shopping Cart"
+msgstr "Shopping Cart"
+
+msgid "Your cart is empty"
+msgstr "Your cart is empty"
+
+msgid "Continue Shopping"
+msgstr "Continue Shopping"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Subtotal"
+msgstr "Subtotal"
+
+msgid "Shipping"
+msgstr "Shipping"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Proceed to Checkout"
+msgstr "Proceed to Checkout"
+
+msgid "View Cart"
+msgstr "View Cart"
+
+msgid "Free shipping!"
+msgstr "Free shipping!"
+
+# Checkout
+msgid "Checkout"
+msgstr "Checkout"
+
+msgid "Billing Address"
+msgstr "Billing Address"
+
+msgid "Shipping Address"
+msgstr "Shipping Address"
+
+msgid "Payment Method"
+msgstr "Payment Method"
+
+msgid "Order Summary"
+msgstr "Order Summary"
+
+msgid "Place Order"
+msgstr "Place Order"
+
+# Authentication
+msgid "Sign Up"
+msgstr "Sign Up"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid "First Name"
+msgstr "First Name"
+
+msgid "Last Name"
+msgstr "Last Name"
+
+msgid "Remember me"
+msgstr "Remember me"
+
+msgid "Forgot password?"
+msgstr "Forgot password?"
+
+msgid "Don't have an account?"
+msgstr "Don't have an account?"
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+# Reviews
+msgid "Reviews"
+msgstr "Reviews"
+
+msgid "Write a Review"
+msgstr "Write a Review"
+
+msgid "Your Rating"
+msgstr "Your Rating"
+
+msgid "Your Review"
+msgstr "Your Review"
+
+msgid "Submit Review"
+msgstr "Submit Review"
+
+# Wishlist
+msgid "Wishlist"
+msgstr "Wishlist"
+
+msgid "Your wishlist is empty"
+msgstr "Your wishlist is empty"
+
+msgid "Move to Cart"
+msgstr "Move to Cart"
+
+# Contact
+msgid "Get in Touch"
+msgstr "Get in Touch"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Subject"
+msgstr "Subject"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Send Message"
+msgstr "Send Message"
+
+# Misc
+msgid "Back"
+msgstr "Back"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "items"
+msgstr "items"
+
+# Registration
+msgid "Create Account"
+msgstr "Create Account"
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Please correct the errors below."
+msgstr "Please correct the errors below."
+
+msgid "First name"
+msgstr "First name"
+
+msgid "Last name"
+msgstr "Last name"
+
+msgid "Minimum 8 characters"
+msgstr "Minimum 8 characters"
+
+msgid "Confirm password"
+msgstr "Confirm password"
+
+msgid "I accept the"
+msgstr "I accept the"
+
+msgid "Terms and Conditions"
+msgstr "Terms and Conditions"
+
+msgid "and the"
+msgstr "and the"
+
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+msgid "Create my account"
+msgstr "Create my account"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "Connexion"
+msgstr "Login"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Create one"
+msgstr "Create one"
+
+# Page titles
+msgid "Page Not Found"
+msgstr "Page Not Found"
+
+msgid "Back to Home"
+msgstr "Back to Home"
+
+msgid "Oops!"
+msgstr "Oops!"
+
+msgid "The page you're looking for doesn't exist."
+msgstr "The page you're looking for doesn't exist."
+
+# Legal
+msgid "Legal Notice"
+msgstr "Legal Notice"
+
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+msgid "About"
+msgstr "About"
+
+# Profile
+msgid "Update Profile"
+msgstr "Update Profile"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+# French texts that need translation to English
+msgid "Accueil"
+msgstr "Home"
+
+msgid "À propos"
+msgstr "About"
+
+msgid "Contactez-nous"
+msgstr "Contact us"
+
+msgid "Advanced Search"
+msgstr "Advanced Search"

@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Contact" %} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">{% trans "Accueil" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans "Contact" %}</li>
+        </ol>
+    </nav>
+
+    <h1 class="h2 mb-4 text-center">{% trans "Contactez-nous" %}</h1>
+    
+    <div class="row g-4">
+        <!-- Informations de contact -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        {% trans "Nos coordonnées" %}
+                    </h3>
+                    
+                    <!-- Contacts dynamiques -->
+                    {% if contacts %}
+                    <div class="mb-4">
+                        {% for contact in contacts %}
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3 text-primary fs-4">
+                                {% if contact.contact_type == 'email' %}
+                                <i class="bi bi-envelope"></i>
+                                {% elif contact.contact_type == 'phone' %}
+                                <i class="bi bi-telephone"></i>
+                                {% elif contact.contact_type == 'mobile' %}
+                                <i class="bi bi-phone"></i>
+                                {% elif contact.contact_type == 'whatsapp' %}
+                                <i class="bi bi-whatsapp"></i>
+                                {% else %}
+                                <i class="bi bi-chat-dots"></i>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>{{ contact.label }}</strong><br>
+                                {% if contact.contact_type == 'email' %}
+                                <a href="mailto:{{ contact.value }}">{{ contact.value }}</a>
+                                {% elif contact.contact_type == 'whatsapp' %}
+                                <a href="https://wa.me/{{ contact.value|cut:' '|cut:'+' }}" target="_blank">{{ contact.value }}</a>
+                                {% elif contact.contact_type in 'phone,mobile' %}
+                                <a href="tel:{{ contact.value }}">{{ contact.value }}</a>
+                                {% else %}
+                                {{ contact.value }}
+                                {% endif %}
+                                {% if contact.is_primary %}
+                                <span class="badge bg-success ms-2">{% trans "Principal" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Adresses dynamiques -->
+                    {% if addresses %}
+                    <div class="mb-4">
+                        <h5 class="h6 text-muted mb-3">{% trans "Nos adresses" %}</h5>
+                        {% for address in addresses %}
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3 text-primary fs-4">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div>
+                                <strong>{{ address.label }}</strong><br>
+                                {{ address.street_line1 }}<br>
+                                {% if address.street_line2 %}{{ address.street_line2 }}<br>{% endif %}
+                                {{ address.postal_code }} {{ address.city }}<br>
+                                {{ address.country }}
+                                {% if address.is_primary %}
+                                <span class="badge bg-success ms-2">{% trans "Principal" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Champs personnalisés pour la page contact -->
+                    {% if contact_fields %}
+                    <div class="mt-4 pt-4 border-top">
+                        {% for field in contact_fields %}
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="me-3 text-primary fs-4">
+                                <i class="bi {{ field.icon|default:'bi-info-circle' }}"></i>
+                            </div>
+                            <div>
+                                <strong>{{ field.label }}</strong><br>
+                                {{ field.value|linebreaks }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Horaires -->
+                    {% if site_settings.opening_hours %}
+                    <div class="mt-4 pt-4 border-top">
+                        <h5 class="h6 text-muted mb-3">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            {% trans "Horaires d'ouverture" %}
+                        </h5>
+                        <p class="mb-0">{{ site_settings.opening_hours|linebreaks }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Réseaux sociaux -->
+                    {% if social_links.facebook or social_links.instagram or social_links.twitter %}
+                    <div class="mt-4 pt-4 border-top">
+                        <h5 class="h6 text-muted mb-3">{% trans "Suivez-nous" %}</h5>
+                        <div class="d-flex gap-3">
+                            {% if social_links.facebook %}
+                            <a href="{{ social_links.facebook }}" class="text-primary fs-4" target="_blank" title="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.instagram %}
+                            <a href="{{ social_links.instagram }}" class="text-danger fs-4" target="_blank" title="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.twitter %}
+                            <a href="{{ social_links.twitter }}" class="text-info fs-4" target="_blank" title="Twitter">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                            {% endif %}
+                            {% if social_links.whatsapp %}
+                            <a href="https://wa.me/{{ social_links.whatsapp|cut:' '|cut:'+' }}" class="text-success fs-4" target="_blank" title="WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formulaire de contact -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">
+                        <i class="bi bi-envelope text-primary"></i>
+                        {% trans "Envoyez-nous un message" %}
+                    </h3>
+                    
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" action="{% url 'core:contact' %}">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">{% trans "Nom complet" %} *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">{% trans "Email" %} *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="subject" class="form-label">{% trans "Sujet" %}</label>
+                                <select class="form-select" id="subject" name="subject">
+                                    <option value="">{% trans "Sélectionnez un sujet" %}</option>
+                                    <option value="Question sur une commande">{% trans "Question sur une commande" %}</option>
+                                    <option value="Question sur un produit">{% trans "Question sur un produit" %}</option>
+                                    <option value="Retour ou échange">{% trans "Retour ou échange" %}</option>
+                                    <option value="Problème technique">{% trans "Problème technique" %}</option>
+                                    <option value="Partenariat">{% trans "Partenariat" %}</option>
+                                    <option value="Autre">{% trans "Autre" %}</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="message" class="form-label">{% trans "Message" %} *</label>
+                                <textarea class="form-control" id="message" name="message" rows="6" required 
+                                          placeholder="{% trans 'Décrivez votre demande en détail...' %}"></textarea>
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-send me-2"></i>
+                                    {% trans "Envoyer le message" %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Carte Google Maps si coordonnées disponibles -->
+    {% if primary_address.latitude and primary_address.longitude %}
+    <div class="mt-5">
+        <h3 class="h5 mb-3">{% trans "Notre localisation" %}</h3>
+        <div class="ratio ratio-21x9">
+            <iframe 
+                src="https://maps.google.com/maps?q={{ primary_address.latitude }},{{ primary_address.longitude }}&z=15&output=embed"
+                style="border: 0; border-radius: 8px;"
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

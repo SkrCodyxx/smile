@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Mentions Légales - {{ site_name|default:'Smile Shop' }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="mb-4">Mentions Légales</h1>
+            <p class="text-muted mb-5">Informations légales et politique de confidentialité</p>
+            
+            <!-- Éditeur du site -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">1. Éditeur du site</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Smile Shop</strong></p>
+                    <p>
+                        Adresse : 123 Rue du Commerce, 75001 Paris, France<br>
+                        Email : contact@smile-shop.com<br>
+                        Téléphone : +33 1 23 45 67 89
+                    </p>
+                    <p>
+                        SIRET : 123 456 789 00012<br>
+                        Numéro TVA : FR12 345678901<br>
+                        Capital social : 10 000 €
+                    </p>
+                    <p>
+                        Directeur de la publication : [Nom du responsable]
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Hébergement -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">2. Hébergement</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Le site smile-shop.com est hébergé par :<br>
+                        [Nom de l'hébergeur]<br>
+                        [Adresse de l'hébergeur]<br>
+                        [Contact de l'hébergeur]
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Protection des données -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">3. Protection des données personnelles</h4>
+                </div>
+                <div class="card-body">
+                    <h5>3.1 Responsable du traitement</h5>
+                    <p>
+                        Smile Shop est responsable du traitement des données personnelles collectées 
+                        sur ce site, conformément au Règlement Général sur la Protection des Données (RGPD).
+                    </p>
+                    
+                    <h5>3.2 Données collectées</h5>
+                    <p>Nous collectons les données suivantes :</p>
+                    <ul>
+                        <li>Données d'identification (nom, prénom, email, téléphone)</li>
+                        <li>Données de livraison (adresse postale)</li>
+                        <li>Données de commande (historique d'achats)</li>
+                        <li>Données de connexion (adresse IP, navigateur)</li>
+                    </ul>
+                    
+                    <h5>3.3 Finalités du traitement</h5>
+                    <p>Vos données sont collectées pour :</p>
+                    <ul>
+                        <li>Traiter vos commandes et assurer leur livraison</li>
+                        <li>Gérer votre compte client</li>
+                        <li>Vous envoyer des communications relatives à vos commandes</li>
+                        <li>Améliorer nos services et notre site</li>
+                        <li>Respecter nos obligations légales</li>
+                    </ul>
+                    
+                    <h5>3.4 Durée de conservation</h5>
+                    <p>
+                        Les données personnelles sont conservées pendant la durée de la relation 
+                        commerciale et jusqu'à 3 ans après le dernier achat pour les données marketing.
+                        Les données de facturation sont conservées 10 ans conformément aux obligations légales.
+                    </p>
+                    
+                    <h5>3.5 Vos droits</h5>
+                    <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+                    <ul>
+                        <li><strong>Droit d'accès :</strong> obtenir une copie de vos données</li>
+                        <li><strong>Droit de rectification :</strong> corriger des données inexactes</li>
+                        <li><strong>Droit à l'effacement :</strong> demander la suppression de vos données</li>
+                        <li><strong>Droit à la portabilité :</strong> recevoir vos données dans un format structuré</li>
+                        <li><strong>Droit d'opposition :</strong> vous opposer à certains traitements</li>
+                        <li><strong>Droit de limitation :</strong> limiter le traitement de vos données</li>
+                    </ul>
+                    <p>
+                        Pour exercer vos droits, contactez-nous à : <a href="mailto:contact@smile-shop.com">contact@smile-shop.com</a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Cookies -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">4. Politique de cookies</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Notre site utilise des cookies pour améliorer votre expérience de navigation.
+                    </p>
+                    
+                    <h5>4.1 Cookies essentiels</h5>
+                    <p>
+                        Ces cookies sont nécessaires au fonctionnement du site (authentification, panier).
+                        Ils ne peuvent pas être désactivés.
+                    </p>
+                    
+                    <h5>4.2 Cookies analytiques</h5>
+                    <p>
+                        Ces cookies nous permettent de mesurer l'audience du site et d'améliorer nos services.
+                        Vous pouvez les refuser via les paramètres de votre navigateur.
+                    </p>
+                    
+                    <h5>4.3 Gestion des cookies</h5>
+                    <p>
+                        Vous pouvez gérer vos préférences de cookies à tout moment via les paramètres 
+                        de votre navigateur ou en nous contactant.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Propriété intellectuelle -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">5. Propriété intellectuelle</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        L'ensemble du contenu du site (textes, images, vidéos, logos, marques) 
+                        est protégé par le droit de la propriété intellectuelle.
+                    </p>
+                    <p>
+                        Toute reproduction ou représentation, totale ou partielle, du site ou de son contenu, 
+                        par quelque procédé que ce soit, sans autorisation préalable, est interdite.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Contact -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">6. Contact</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Pour toute question concernant ces mentions légales ou vos données personnelles, 
+                        vous pouvez nous contacter :
+                    </p>
+                    <ul>
+                        <li>Par email : <a href="mailto:contact@smile-shop.com">contact@smile-shop.com</a></li>
+                        <li>Par courrier : Smile Shop, 123 Rue du Commerce, 75001 Paris</li>
+                        <li>Via notre <a href="{% url 'shop:contact' %}">formulaire de contact</a></li>
+                    </ul>
+                    <p class="mb-0">
+                        En cas de litige, vous pouvez également saisir la CNIL : 
+                        <a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

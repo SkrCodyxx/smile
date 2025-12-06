@@ -1,0 +1,510 @@
+# Smile Shop - Kreyòl Ayisyen (Haitian Creole) Translations
+msgid ""
+msgstr ""
+"Project-Id-Version: Smile Shop 1.0\n"
+"Language: ht\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Navigation
+msgid "Home"
+msgstr "Lakay"
+
+msgid "Products"
+msgstr "Pwodwi yo"
+
+msgid "Categories"
+msgstr "Kategori yo"
+
+msgid "No categories"
+msgstr "Pa gen kategori"
+
+msgid "Contact"
+msgstr "Kontakte nou"
+
+msgid "Cart"
+msgstr "Panye"
+
+msgid "Login"
+msgstr "Konekte"
+
+msgid "Register"
+msgstr "Enskri"
+
+msgid "Logout"
+msgstr "Dekonekte"
+
+msgid "My Profile"
+msgstr "Pwofil mwen"
+
+msgid "My Orders"
+msgstr "Kòmand mwen yo"
+
+msgid "My Invoices"
+msgstr "Fakti mwen yo"
+
+msgid "My Wishlist"
+msgstr "Lis swè mwen"
+
+msgid "Admin"
+msgstr "Administrasyon"
+
+# Search
+msgid "Search products..."
+msgstr "Chèche pwodwi..."
+
+msgid "Search"
+msgstr "Chèche"
+
+# Hero Section
+msgid "Welcome to"
+msgstr "Byenveni sou"
+
+msgid "Your Online Store"
+msgstr "Magazen anliy ou"
+
+msgid "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
+msgstr "Dekouvri pwodwi kalite nou yo nan pri enbatab. Livrezon rapid ak peman sekirize garanti."
+
+msgid "Shop Now"
+msgstr "Achte kounye a"
+
+msgid "About Us"
+msgstr "Sou nou"
+
+msgid "Browse Products"
+msgstr "Gade pwodwi yo"
+
+# Categories
+msgid "Shop by"
+msgstr "Achte pa"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Find exactly what you're looking for"
+msgstr "Jwenn egzakteman sa w ap chèche a"
+
+msgid "products"
+msgstr "pwodwi"
+
+# Products
+msgid "Featured Products"
+msgstr "Pwodwi espesyal yo"
+
+msgid "Our best picks for you"
+msgstr "Meyè chwa nou yo pou ou"
+
+msgid "View All"
+msgstr "Gade tout"
+
+msgid "New Arrivals"
+msgstr "Nouvo pwodwi yo"
+
+msgid "The latest additions to our collection"
+msgstr "Dènye pwodwi ki ajoute nan koleksyon nou"
+
+msgid "Add to wishlist"
+msgstr "Ajoute nan lis swè"
+
+msgid "View details"
+msgstr "Gade detay yo"
+
+msgid "Add to Cart"
+msgstr "Mete nan panye"
+
+msgid "Add to cart"
+msgstr "Mete nan panye"
+
+msgid "In stock"
+msgstr "Disponib"
+
+msgid "Low stock"
+msgstr "Ti kantite"
+
+msgid "Out of stock"
+msgstr "Pa disponib"
+
+# Features
+msgid "Why Choose"
+msgstr "Poukisa chwazi"
+
+msgid "Us"
+msgstr "Nou"
+
+msgid "We're committed to providing the best shopping experience"
+msgstr "Nou angaje pou ba ou meyè eksperyans acha"
+
+msgid "Fast Delivery"
+msgstr "Livrezon rapid"
+
+msgid "Free shipping on orders over 50€. Express delivery available."
+msgstr "Livrezon gratis pou kòmand plis pase 50€. Livrezon ekspres disponib."
+
+msgid "Secure Payment"
+msgstr "Peman sekirize"
+
+msgid "Your data is protected with SSL encryption. Multiple payment options."
+msgstr "Done ou yo pwoteje ak kriptaj SSL. Plizyè opsyon peman."
+
+msgid "Easy Returns"
+msgstr "Retounen fasil"
+
+msgid "30-day money-back guarantee. No questions asked."
+msgstr "Garanti ranbousman 30 jou. San kesyon."
+
+# Newsletter
+msgid "Subscribe to our Newsletter"
+msgstr "Abòne nan bilten nou"
+
+msgid "Get exclusive deals and updates delivered to your inbox"
+msgstr "Resevwa òf eksklizif ak mizajou nan bwat imel ou"
+
+msgid "Enter your email"
+msgstr "Antre imel ou"
+
+msgid "Subscribe"
+msgstr "Abòne"
+
+# Top Bar
+msgid "Free shipping on orders over"
+msgstr "Livrezon gratis pou kòmand plis pase"
+
+# Footer
+msgid "Shop"
+msgstr "Magazen"
+
+msgid "All Products"
+msgstr "Tout pwodwi yo"
+
+msgid "Account"
+msgstr "Kont"
+
+msgid "Information"
+msgstr "Enfòmasyon"
+
+msgid "All rights reserved."
+msgstr "Tout dwa rezève."
+
+# Maintenance
+msgid "Site under maintenance"
+msgstr "Sit la anba antretyen"
+
+# Product List
+msgid "Sort by"
+msgstr "Triye pa"
+
+msgid "Most recent"
+msgstr "Pi resan"
+
+msgid "Price: low to high"
+msgstr "Pri: ba a wo"
+
+msgid "Price: high to low"
+msgstr "Pri: wo a ba"
+
+msgid "Name: A to Z"
+msgstr "Non: A a Z"
+
+msgid "Best sellers"
+msgstr "Pi bon lavant"
+
+msgid "Filters"
+msgstr "Filt yo"
+
+msgid "Price Range"
+msgstr "Echèl pri"
+
+msgid "Apply"
+msgstr "Aplike"
+
+msgid "Reset filters"
+msgstr "Efase filt yo"
+
+msgid "No products found"
+msgstr "Pa jwenn okenn pwodwi"
+
+# Product Detail
+msgid "Description"
+msgstr "Deskripsyon"
+
+msgid "Details"
+msgstr "Detay yo"
+
+msgid "Specifications"
+msgstr "Espesifikasyon yo"
+
+msgid "Quantity"
+msgstr "Kantite"
+
+msgid "Related Products"
+msgstr "Pwodwi ki gen rapò"
+
+msgid "You may also like"
+msgstr "Ou ka renmen tou"
+
+msgid "You save"
+msgstr "Ou ekonomize"
+
+# Cart
+msgid "Shopping Cart"
+msgstr "Panye acha"
+
+msgid "Your cart is empty"
+msgstr "Panye ou vid"
+
+msgid "Continue Shopping"
+msgstr "Kontinye achte"
+
+msgid "Remove"
+msgstr "Retire"
+
+msgid "Subtotal"
+msgstr "Sou-total"
+
+msgid "Shipping"
+msgstr "Livrezon"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Proceed to Checkout"
+msgstr "Kontinye pou peye"
+
+msgid "View Cart"
+msgstr "Gade panye"
+
+msgid "Free shipping!"
+msgstr "Livrezon gratis!"
+
+# Checkout
+msgid "Checkout"
+msgstr "Peman"
+
+msgid "Billing Address"
+msgstr "Adrès faktirasyon"
+
+msgid "Shipping Address"
+msgstr "Adrès livrezon"
+
+msgid "Payment Method"
+msgstr "Mòd peman"
+
+msgid "Order Summary"
+msgstr "Rezime kòmand"
+
+msgid "Place Order"
+msgstr "Pase kòmand"
+
+# Authentication
+msgid "Sign Up"
+msgstr "Enskri"
+
+msgid "Email"
+msgstr "Imèl"
+
+msgid "Password"
+msgstr "Modpas"
+
+msgid "Confirm Password"
+msgstr "Konfime modpas"
+
+msgid "First Name"
+msgstr "Prenon"
+
+msgid "Last Name"
+msgstr "Non"
+
+msgid "Remember me"
+msgstr "Sonje m"
+
+msgid "Forgot password?"
+msgstr "Bliye modpas?"
+
+msgid "Don't have an account?"
+msgstr "Ou pa gen kont?"
+
+msgid "Already have an account?"
+msgstr "Ou gen kont deja?"
+
+# Reviews
+msgid "Reviews"
+msgstr "Avi yo"
+
+msgid "Write a Review"
+msgstr "Ekri yon avi"
+
+msgid "Your Rating"
+msgstr "Nòt ou"
+
+msgid "Your Review"
+msgstr "Avi ou"
+
+msgid "Submit Review"
+msgstr "Soumèt avi"
+
+# Wishlist
+msgid "Wishlist"
+msgstr "Lis swè"
+
+msgid "Your wishlist is empty"
+msgstr "Lis swè ou vid"
+
+msgid "Move to Cart"
+msgstr "Mete nan panye"
+
+# Contact
+msgid "Get in Touch"
+msgstr "Kontakte nou"
+
+msgid "Name"
+msgstr "Non"
+
+msgid "Subject"
+msgstr "Sijè"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Send Message"
+msgstr "Voye mesaj"
+
+# Misc
+msgid "Back"
+msgstr "Retounen"
+
+msgid "Next"
+msgstr "Pwochen"
+
+msgid "Previous"
+msgstr "Avan"
+
+msgid "Save"
+msgstr "Sovgade"
+
+msgid "Cancel"
+msgstr "Anile"
+
+msgid "Delete"
+msgstr "Efase"
+
+msgid "Edit"
+msgstr "Modifye"
+
+msgid "Close"
+msgstr "Fèmen"
+
+msgid "Yes"
+msgstr "Wi"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Loading..."
+msgstr "Ap chaje..."
+
+msgid "Error"
+msgstr "Erè"
+
+msgid "Success"
+msgstr "Siksè"
+
+msgid "Warning"
+msgstr "Avètisman"
+
+msgid "Info"
+msgstr "Enfòmasyon"
+
+# Registration / Account
+msgid "Create Account"
+msgstr "Kreye kont"
+
+msgid "Join"
+msgstr "Rantre nan"
+
+msgid "Please correct the errors below."
+msgstr "Tanpri korije erè ki anba yo."
+
+msgid "First name"
+msgstr "Premye non"
+
+msgid "Last name"
+msgstr "Siyati"
+
+msgid "Minimum 8 characters"
+msgstr "Minimòm 8 karaktè"
+
+msgid "Confirm password"
+msgstr "Konfime modpas"
+
+msgid "I accept the"
+msgstr "Mwen aksepte"
+
+msgid "Terms and Conditions"
+msgstr "Tèm ak Kondisyon"
+
+msgid "and the"
+msgstr "ak"
+
+msgid "Privacy Policy"
+msgstr "Politik Konfidansyalite"
+
+msgid "Create my account"
+msgstr "Kreye kont mwen"
+
+msgid "Sign in"
+msgstr "Konekte"
+
+msgid "Connexion"
+msgstr "Koneksyon"
+
+msgid "Username"
+msgstr "Non itilizatè"
+
+msgid "Create one"
+msgstr "Kreye youn"
+
+# Page titles
+msgid "Page Not Found"
+msgstr "Paj pa jwenn"
+
+msgid "Back to Home"
+msgstr "Retounen lakay"
+
+msgid "Oops!"
+msgstr "Ouch!"
+
+msgid "The page you're looking for doesn't exist."
+msgstr "Paj ou ap chèche a pa egziste."
+
+# Legal
+msgid "Legal Notice"
+msgstr "Manti Legal"
+
+msgid "Terms of Service"
+msgstr "Tèm Sèvis"
+
+msgid "About"
+msgstr "Sou nou"
+
+# Profile
+msgid "Update Profile"
+msgstr "Mete pwofil ajou"
+
+msgid "Change Password"
+msgstr "Chanje modpas"
+
+# French texts
+msgid "Accueil"
+msgstr "Lakay"
+
+msgid "À propos"
+msgstr "Sou nou"
+
+msgid "Contactez-nous"
+msgstr "Kontakte nou"
+
+msgid "Advanced Search"
+msgstr "Rechèch avanse"
