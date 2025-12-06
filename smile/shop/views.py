@@ -278,11 +278,16 @@ def mini_cart(request):
 @login_required
 def checkout(request):
     """Page de commande"""
+    from core.models import PaymentSettings
+    
     cart = get_or_create_cart(request)
     
     if cart.total_items == 0:
         messages.warning(request, _('Your cart is empty'))
         return redirect('shop:cart')
+    
+    # Récupérer les méthodes de paiement actives
+    payment_settings = PaymentSettings.get_settings()
     
     subtotal = cart.subtotal
     shipping = 0  # Livraison à déterminer après
@@ -353,6 +358,7 @@ def checkout(request):
         'shipping': shipping,
         'tax': tax,
         'total': total,
+        'payment_settings': payment_settings,
     }
     return render(request, 'shop/checkout.html', context)
 
@@ -360,15 +366,22 @@ def checkout(request):
 def order_success(request, order_id):
     """Page de confirmation de commande avec instructions de paiement"""
     from invoicing.models import Order
+    from core.models import PaymentSettings, SiteSettings
     
     order = get_object_or_404(Order, id=order_id)
     
-    # Récupérer les numéros de paiement depuis settings
-    moncash_number = getattr(settings, 'MONCASH_NUMBER', '37773508')
-    natcash_number = getattr(settings, 'NATCASH_NUMBER', '37773508')
-    moncash_name = getattr(settings, 'MONCASH_NAME', 'SMILE SHOP')
-    natcash_name = getattr(settings, 'NATCASH_NAME', 'SMILE SHOP')
-    whatsapp_number = getattr(settings, 'WHATSAPP_BUSINESS_NUMBER', '50937773508')
+    # Récupérer les paramètres de paiement depuis la base de données
+    payment_settings = PaymentSettings.get_settings()
+    site_settings = SiteSettings.get_settings()
+    
+    # Numéros MonCash/NatCash depuis l'admin
+    moncash_number = payment_settings.moncash_number or ''
+    natcash_number = payment_settings.natcash_number or ''
+    moncash_name = payment_settings.moncash_name or 'SMILE SHOP'
+    natcash_name = payment_settings.natcash_name or 'SMILE SHOP'
+    
+    # WhatsApp depuis les settings du site
+    whatsapp_number = site_settings.whatsapp_number if hasattr(site_settings, 'whatsapp_number') else getattr(settings, 'WHATSAPP_BUSINESS_NUMBER', '')
     
     context = {
         'order': order,

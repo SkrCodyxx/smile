@@ -396,9 +396,38 @@ class PaymentSettingsAdmin(admin.ModelAdmin):
     """Configuration des paiements"""
     
     fieldsets = (
-        ('💳 PayPal', {
+        ('📱 MonCash (Digicel)', {
+            'fields': ('moncash_enabled', 'moncash_number', 'moncash_name'),
+            'description': '''
+            <div class="help" style="background:#ffe6e6; padding:10px; border-radius:5px; margin-bottom:10px;">
+                <strong style="color:#dc3545;">🔴 MonCash - Digicel Haiti</strong><br>
+                Entrez votre numéro MonCash pour recevoir les paiements.<br>
+                Le client fera un transfert vers ce numéro.
+            </div>
+            ''',
+        }),
+        ('📱 NatCash (Natcom)', {
+            'fields': ('natcash_enabled', 'natcash_number', 'natcash_name'),
+            'description': '''
+            <div class="help" style="background:#e6f3ff; padding:10px; border-radius:5px; margin-bottom:10px;">
+                <strong style="color:#0d6efd;">🔵 NatCash - Natcom Haiti</strong><br>
+                Entrez votre numéro NatCash pour recevoir les paiements.
+            </div>
+            ''',
+        }),
+        ('💵 Paiement à la livraison', {
+            'fields': ('cod_enabled', 'cod_fee'),
+            'description': '''
+            <div class="help" style="background:#e6ffe6; padding:10px; border-radius:5px; margin-bottom:10px;">
+                <strong style="color:#198754;">💰 Cash on Delivery</strong><br>
+                Le client paie en espèces à la réception de sa commande.
+            </div>
+            ''',
+        }),
+        ('💳 PayPal (International)', {
             'fields': ('paypal_enabled', 'paypal_mode', 'paypal_client_id', 
                       'paypal_client_secret', 'paypal_webhook_id'),
+            'classes': ('collapse',),
             'description': '''
             <div class="help">
                 <strong>Configuration PayPal:</strong><br>
@@ -409,7 +438,7 @@ class PaymentSettingsAdmin(admin.ModelAdmin):
             </div>
             ''',
         }),
-        ('💳 Stripe', {
+        ('💳 Stripe (International)', {
             'fields': ('stripe_enabled', 'stripe_mode', 'stripe_public_key', 
                       'stripe_secret_key', 'stripe_webhook_secret'),
             'classes': ('collapse',),
@@ -425,10 +454,6 @@ class PaymentSettingsAdmin(admin.ModelAdmin):
         ('🏦 Virement bancaire', {
             'fields': ('bank_transfer_enabled', 'bank_name', 'bank_account_holder',
                       'bank_iban', 'bank_bic'),
-            'classes': ('collapse',),
-        }),
-        ('💵 Paiement à la livraison', {
-            'fields': ('cod_enabled', 'cod_fee'),
             'classes': ('collapse',),
         }),
         ('⚙️ Options', {

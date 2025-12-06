@@ -290,6 +290,30 @@ class PaymentSettings(models.Model):
     """
     Configuration des paiements - Singleton
     """
+    # ============================================
+    # PAIEMENT MOBILE HAITI
+    # ============================================
+    # MonCash (Digicel)
+    moncash_enabled = models.BooleanField('MonCash activé', default=True)
+    moncash_number = models.CharField('Numéro MonCash', max_length=20, blank=True,
+                                      help_text='Ex: 37773508 (sans code pays)')
+    moncash_name = models.CharField('Nom sur MonCash', max_length=100, blank=True,
+                                    help_text='Nom affiché lors du transfert')
+    
+    # NatCash (Natcom)
+    natcash_enabled = models.BooleanField('NatCash activé', default=True)
+    natcash_number = models.CharField('Numéro NatCash', max_length=20, blank=True,
+                                      help_text='Ex: 37773508 (sans code pays)')
+    natcash_name = models.CharField('Nom sur NatCash', max_length=100, blank=True,
+                                    help_text='Nom affiché lors du transfert')
+    
+    # Paiement à la livraison
+    cod_enabled = models.BooleanField('Paiement à la livraison', default=True)
+    cod_fee = models.DecimalField('Frais paiement à la livraison', max_digits=10, decimal_places=2, default=0)
+    
+    # ============================================
+    # PAIEMENT INTERNATIONAL (optionnel)
+    # ============================================
     # PayPal
     paypal_enabled = models.BooleanField('PayPal activé', default=False)
     paypal_mode = models.CharField('Mode PayPal', max_length=10, 
@@ -315,12 +339,8 @@ class PaymentSettings(models.Model):
     bank_bic = models.CharField('BIC/SWIFT', max_length=20, blank=True)
     bank_account_holder = models.CharField('Titulaire du compte', max_length=200, blank=True)
     
-    # Paiement à la livraison
-    cod_enabled = models.BooleanField('Paiement à la livraison', default=False)
-    cod_fee = models.DecimalField('Frais paiement à la livraison', max_digits=10, decimal_places=2, default=0)
-    
     # Options générales
-    currency = models.CharField('Devise', max_length=3, default='EUR')
+    currency = models.CharField('Devise', max_length=3, default='HTG')
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -354,14 +374,24 @@ class PaymentSettings(models.Model):
     def available_methods(self):
         """Retourne les méthodes de paiement actives"""
         methods = []
+        # Paiement à la livraison en premier (le plus utilisé en Haïti)
+        if self.cod_enabled:
+            methods.append({'id': 'cod', 'name': 'Paiement à la livraison', 'icon': 'bi-cash-stack'})
+        # MonCash
+        if self.moncash_enabled and self.moncash_number:
+            methods.append({'id': 'moncash', 'name': 'MonCash', 'icon': 'bi-phone'})
+        # NatCash
+        if self.natcash_enabled and self.natcash_number:
+            methods.append({'id': 'natcash', 'name': 'NatCash', 'icon': 'bi-phone'})
+        # PayPal
         if self.paypal_enabled:
             methods.append({'id': 'paypal', 'name': 'PayPal', 'icon': 'bi-paypal'})
+        # Stripe
         if self.stripe_enabled:
             methods.append({'id': 'stripe', 'name': 'Carte bancaire', 'icon': 'bi-credit-card'})
+        # Virement bancaire
         if self.bank_transfer_enabled:
             methods.append({'id': 'bank', 'name': 'Virement bancaire', 'icon': 'bi-bank'})
-        if self.cod_enabled:
-            methods.append({'id': 'cod', 'name': 'Paiement à la livraison', 'icon': 'bi-cash'})
         return methods
 
 
