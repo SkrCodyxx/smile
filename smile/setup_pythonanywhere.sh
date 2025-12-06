@@ -56,11 +56,11 @@ echo "🌍 Création des données initiales..."
 python manage.py shell --settings=$SETTINGS << 'PYTHON'
 from core.models import Language, Currency
 
-# Langues
+# Langues (sans emojis pour compatibilité MySQL)
 languages_data = [
-    ('fr', 'Français', 'Français', '🇫🇷', True, 1),
-    ('en', 'English', 'English', '🇬🇧', False, 2),
-    ('ht', 'Haitian Creole', 'Kreyòl Ayisyen', '🇭🇹', False, 3),
+    ('fr', 'Francais', 'Francais', 'FR', True, 1),
+    ('en', 'English', 'English', 'EN', False, 2),
+    ('ht', 'Haitian Creole', 'Kreyol Ayisyen', 'HT', False, 3),
 ]
 for code, name, native_name, flag, default, order in languages_data:
     obj, created = Language.objects.get_or_create(
@@ -75,13 +75,13 @@ for code, name, native_name, flag, default, order in languages_data:
         }
     )
     if created:
-        print(f"✅ Langue créée: {native_name}")
+        print(f"Langue creee: {native_name}")
     else:
-        print(f"ℹ️ Langue existante: {native_name}")
+        print(f"Langue existante: {native_name}")
 
-# Devises
+# Devises (symboles ASCII pour compatibilite MySQL)
 currencies_data = [
-    ('EUR', 'Euro', '€', 1.0, True),
+    ('EUR', 'Euro', 'EUR', 1.0, True),
     ('USD', 'US Dollar', '$', 1.08, False),
     ('CAD', 'Canadian Dollar', 'CA$', 1.47, False),
     ('HTG', 'Haitian Gourde', 'G', 142.50, False),
@@ -98,12 +98,12 @@ for code, name, symbol, rate, default in currencies_data:
         }
     )
     if created:
-        print(f"✅ Devise créée: {name}")
+        print(f"Devise creee: {name}")
     else:
-        print(f"ℹ️ Devise existante: {name}")
+        print(f"Devise existante: {name}")
 
 print("")
-print("🎉 Données initiales configurées!")
+print("Donnees initiales configurees!")
 PYTHON
 
 echo ""
