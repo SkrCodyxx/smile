@@ -1,17 +1,24 @@
-# 🚀 Guide de Déploiement - PythonAnywhere + Supabase
+# 🚀 Guide de Déploiement - PythonAnywhere
 
-## 📋 Informations du projet
+## 📋 Informations
 
-- **Username PythonAnywhere** : `smile`
-- **Base de données** : Supabase PostgreSQL (gratuit)
-- **URL Supabase** : `db.crieerueopsntuhraatj.supabase.co`
-- **Repo GitHub** : `https://github.com/SkrCodyxx/smile.git`
+- **Site** : https://smile.pythonanywhere.com
+- **Username** : `smile`
+- **Base de données** : MySQL PythonAnywhere (gratuit)
 
 ---
 
-## Étape 1: Cloner le projet
+## 1️⃣ Créer la base de données MySQL
 
-Dans la console Bash PythonAnywhere :
+1. Va dans l'onglet **"Databases"** sur PythonAnywhere
+2. Crée un mot de passe MySQL : `Sm!le2000Sm!`
+3. Clique **"Initialize MySQL"**
+4. Crée une nouvelle base : `smile_db`
+   - Nom complet : `smile$smile_db`
+
+---
+
+## 2️⃣ Cloner le projet
 
 ```bash
 cd ~
@@ -21,7 +28,7 @@ cd smile/smile
 
 ---
 
-## Étape 2: Créer l'environnement virtuel
+## 3️⃣ Créer l'environnement virtuel
 
 ```bash
 mkvirtualenv --python=/usr/bin/python3.10 smileenv
@@ -31,7 +38,7 @@ pip install -r requirements.txt
 
 ---
 
-## Étape 3: Appliquer les migrations (vers Supabase)
+## 4️⃣ Appliquer les migrations
 
 ```bash
 python manage.py migrate --settings=smile.settings_pythonanywhere
@@ -39,7 +46,7 @@ python manage.py migrate --settings=smile.settings_pythonanywhere
 
 ---
 
-## Étape 4: Collecter les fichiers statiques
+## 5️⃣ Collecter les fichiers statiques
 
 ```bash
 python manage.py collectstatic --noinput --settings=smile.settings_pythonanywhere
@@ -47,7 +54,7 @@ python manage.py collectstatic --noinput --settings=smile.settings_pythonanywher
 
 ---
 
-## Étape 5: Créer un superuser
+## 6️⃣ Créer un superuser
 
 ```bash
 python manage.py createsuperuser --settings=smile.settings_pythonanywhere
@@ -55,7 +62,7 @@ python manage.py createsuperuser --settings=smile.settings_pythonanywhere
 
 ---
 
-## Étape 6: Créer les données initiales
+## 7️⃣ Créer les données initiales
 
 ```bash
 python manage.py shell --settings=smile.settings_pythonanywhere << 'EOF'
@@ -77,31 +84,24 @@ EOF
 
 ---
 
-## Étape 7: Configurer l'application Web
+## 8️⃣ Configurer l'application Web
 
-### 7.1 Créer l'app web
-1. Va dans l'onglet **"Web"**
-2. Clique **"Add a new web app"**
-3. Clique **"Next"** (accepte le domaine `smile.pythonanywhere.com`)
-4. Choisis **"Manual configuration"**
-5. Sélectionne **Python 3.10**
+### 8.1 Créer l'app web
+1. Onglet **"Web"** → **"Add a new web app"**
+2. **"Next"** (accepte `smile.pythonanywhere.com`)
+3. **"Manual configuration"** → **Python 3.10**
 
-### 7.2 Configurer les chemins
+### 8.2 Configurer les chemins
 
-Dans la section **"Code"** :
-- **Source code** : `/home/smile/smile/smile`
-- **Working directory** : `/home/smile/smile/smile`
+| Paramètre | Valeur |
+|-----------|--------|
+| **Source code** | `/home/smile/smile/smile` |
+| **Working directory** | `/home/smile/smile/smile` |
+| **Virtualenv** | `/home/smile/.virtualenvs/smileenv` |
 
-### 7.3 Configurer le virtualenv
+### 8.3 Éditer le fichier WSGI
 
-Dans la section **"Virtualenv"** :
-- Chemin : `/home/smile/.virtualenvs/smileenv`
-
-### 7.4 Éditer le fichier WSGI
-
-Clique sur le lien du fichier WSGI (`/var/www/smile_pythonanywhere_com_wsgi.py`)
-
-**Supprime TOUT le contenu** et remplace par :
+Clique sur le lien WSGI et remplace TOUT par :
 
 ```python
 import os
@@ -115,20 +115,14 @@ if path not in sys.path:
 # Variables d'environnement
 os.environ['DJANGO_SETTINGS_MODULE'] = 'smile.settings_pythonanywhere'
 os.environ['SECRET_KEY'] = 'smile-secret-key-2024-production-change-me'
-os.environ['DATABASE_URL'] = 'postgresql://postgres.crieerueopsntuhraatj:Sm%21le2000Sm%21@aws-0-eu-central-1.pooler.supabase.com:6543/postgres'
+os.environ['DB_PASSWORD'] = 'Sm!le2000Sm!'
 
 # Application WSGI
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 ```
 
-**Sauvegarde le fichier !**
-
----
-
-## Étape 8: Configurer les fichiers statiques
-
-Dans l'onglet **"Web"**, section **"Static files"**, clique "Add" :
+### 8.4 Configurer les fichiers statiques
 
 | URL | Directory |
 |-----|-----------|
@@ -137,23 +131,21 @@ Dans l'onglet **"Web"**, section **"Static files"**, clique "Add" :
 
 ---
 
-## Étape 9: Lancer le site ! 🎉
+## 9️⃣ Lancer le site ! 🎉
 
-1. Clique le gros bouton vert **"Reload"** en haut de la page
-2. Visite ton site : **https://smile.pythonanywhere.com**
+1. Clique **"Reload"** (bouton vert)
+2. Visite : **https://smile.pythonanywhere.com**
 3. Admin : **https://smile.pythonanywhere.com/admin**
 
 ---
 
 ## 🔄 Mettre à jour le site
 
-Quand tu fais des changements sur GitHub :
-
 ```bash
 cd ~/smile
 git pull
-workon smileenv
 cd smile
+workon smileenv
 python manage.py migrate --settings=smile.settings_pythonanywhere
 python manage.py collectstatic --noinput --settings=smile.settings_pythonanywhere
 ```
@@ -165,15 +157,11 @@ Puis clique **"Reload"** dans l'onglet Web.
 ## ❓ Dépannage
 
 ### Erreur 500 ?
-Regarde les logs :
-- Dans l'onglet **Web** → **Error log**
-- Ou : `cat /var/log/smile.pythonanywhere.com.error.log`
+- Onglet **Web** → **Error log**
 
-### "DisallowedHost" ?
-Vérifie que `ALLOWED_HOSTS` contient `.pythonanywhere.com`
-
-### Base de données ne se connecte pas ?
-Vérifie l'URL Supabase dans le fichier WSGI
+### Base de données ?
+- Vérifie que `smile$smile_db` existe dans l'onglet Databases
+- Vérifie le mot de passe MySQL
 
 ### Fichiers statiques cassés ?
 ```bash
@@ -181,24 +169,3 @@ workon smileenv
 cd ~/smile/smile
 python manage.py collectstatic --noinput --settings=smile.settings_pythonanywhere
 ```
-Puis **Reload**.
-
----
-
-## ✅ Checklist finale
-
-- [ ] Code cloné dans `/home/smile/smile`
-- [ ] Virtualenv `smileenv` créé
-- [ ] Dépendances installées
-- [ ] Migrations appliquées (Supabase)
-- [ ] Fichiers statiques collectés
-- [ ] Superuser créé
-- [ ] App web configurée
-- [ ] WSGI configuré
-- [ ] Static files configurés
-- [ ] Site rechargé et fonctionnel ! 🎉
-
----
-
-**Ton site** : https://smile.pythonanywhere.com
-**Admin** : https://smile.pythonanywhere.com/admin

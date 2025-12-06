@@ -1,11 +1,10 @@
 """
-Django settings for Smile E-commerce - PYTHONANYWHERE + SUPABASE
-================================================================
-Configuration optimisée pour PythonAnywhere (plan gratuit) avec Supabase PostgreSQL
+Django settings for Smile E-commerce - PYTHONANYWHERE
+=====================================================
+Configuration pour PythonAnywhere (plan gratuit) avec MySQL
 """
 import os
 from pathlib import Path
-import dj_database_url
 
 # Import des settings de base
 from .settings import *
@@ -14,10 +13,11 @@ from .settings import *
 # SÉCURITÉ PRODUCTION
 # =============================================================================
 DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-pythonanywhere-env')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'smile-secret-key-2024-change-me-in-production')
 
-# Remplace 'TONUSERNAME' par ton nom d'utilisateur PythonAnywhere
+# Username PythonAnywhere: smile
 ALLOWED_HOSTS = [
+    'smile.pythonanywhere.com',
     '.pythonanywhere.com',
     'localhost',
     '127.0.0.1',
@@ -31,18 +31,25 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 # =============================================================================
-# BASE DE DONNÉES - SUPABASE PostgreSQL (GRATUIT)
+# BASE DE DONNÉES - MySQL PythonAnywhere (GRATUIT)
 # =============================================================================
-# Utilise le Transaction Pooler (port 6543) car PythonAnywhere gratuit ne supporte pas IPv6
-# Format: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
-
-DATABASE_URL = os.environ.get(
-    'DATABASE_URL',
-    'postgresql://postgres.crieerueopsntuhraatj:Sm%21le2000Sm%21@aws-0-eu-central-1.pooler.supabase.com:6543/postgres'
-)
+# Username: smile
+# Database: smile$smile_db
+# Host: smile.mysql.pythonanywhere-services.com
 
 DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'smile$smile_db',
+        'USER': 'smile',
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'Sm!le2000Sm!'),
+        'HOST': 'smile.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    }
 }
 
 # =============================================================================
@@ -61,8 +68,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # =============================================================================
 # FICHIERS STATIQUES
 # =============================================================================
-# PythonAnywhere sert les fichiers statiques directement
-
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -99,7 +104,7 @@ LOGGING = {
 # CSRF - Trusts pour PythonAnywhere
 # =============================================================================
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.pythonanywhere.com',
+    'https://smile.pythonanywhere.com',
 ]
 
 # =============================================================================
