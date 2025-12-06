@@ -57,16 +57,46 @@ python manage.py shell --settings=$SETTINGS << 'PYTHON'
 from core.models import Language, Currency
 
 # Langues
-for code, name, default in [('fr', 'Français', True), ('en', 'English', False), ('ht', 'Kreyòl Ayisyen', False)]:
-    obj, created = Language.objects.get_or_create(code=code, defaults={'name': name, 'is_active': True, 'is_default': default})
+languages_data = [
+    ('fr', 'Français', 'Français', '🇫🇷', True, 1),
+    ('en', 'English', 'English', '🇬🇧', False, 2),
+    ('ht', 'Haitian Creole', 'Kreyòl Ayisyen', '🇭🇹', False, 3),
+]
+for code, name, native_name, flag, default, order in languages_data:
+    obj, created = Language.objects.get_or_create(
+        code=code, 
+        defaults={
+            'name': name, 
+            'native_name': native_name,
+            'flag_emoji': flag,
+            'is_active': True, 
+            'is_default': default,
+            'order': order
+        }
+    )
     if created:
-        print(f"✅ Langue créée: {name}")
+        print(f"✅ Langue créée: {native_name}")
     else:
-        print(f"ℹ️ Langue existante: {name}")
+        print(f"ℹ️ Langue existante: {native_name}")
 
 # Devises
-for code, name, symbol, rate, default in [('EUR', 'Euro', '€', 1.0, True), ('USD', 'Dollar US', '$', 1.09, False), ('CAD', 'Dollar Canadien', 'CA$', 1.49, False), ('HTG', 'Gourde Haïtienne', 'G', 143.50, False)]:
-    obj, created = Currency.objects.get_or_create(code=code, defaults={'name': name, 'symbol': symbol, 'rate': rate, 'is_active': True, 'is_default': default})
+currencies_data = [
+    ('EUR', 'Euro', '€', 1.0, True),
+    ('USD', 'US Dollar', '$', 1.08, False),
+    ('CAD', 'Canadian Dollar', 'CA$', 1.47, False),
+    ('HTG', 'Haitian Gourde', 'G', 142.50, False),
+]
+for code, name, symbol, rate, default in currencies_data:
+    obj, created = Currency.objects.get_or_create(
+        code=code, 
+        defaults={
+            'name': name, 
+            'symbol': symbol, 
+            'exchange_rate': rate, 
+            'is_active': True, 
+            'is_default': default
+        }
+    )
     if created:
         print(f"✅ Devise créée: {name}")
     else:
