@@ -5,25 +5,39 @@ Application e-commerce complète avec gestion de stock et facturation, développ
 ![Django](https://img.shields.io/badge/Django-4.2-green?logo=django)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?logo=bootstrap)
-![Deploy](https://img.shields.io/badge/Deploy-Render.com-46E3B7?logo=render)
+![Deploy](https://img.shields.io/badge/Deploy-PythonAnywhere-1D9FD7)
+![Database](https://img.shields.io/badge/Database-Supabase-3ECF8E?logo=supabase)
 
-## 🌐 Déploiement sur Render.com
+## 🌐 Déploiement
 
-### Méthode Blueprint (Recommandé)
+### Production : PythonAnywhere + Supabase (GRATUIT)
 
-1. **Push** ce repo sur GitHub
-2. Connectez-vous à [Render.com](https://render.com)
-3. Cliquez sur **New** → **Blueprint**
-4. Sélectionnez votre repo
-5. Render créera automatiquement:
-   - 🖥️ Web Service (Django + Gunicorn)
-   - 🗄️ PostgreSQL Database
+- **Site** : https://smile.pythonanywhere.com
+- **Base de données** : Supabase PostgreSQL
+- **Hébergement** : PythonAnywhere (plan gratuit)
 
-### Variables d'environnement (configurées automatiquement)
-- `DATABASE_URL` - URL PostgreSQL
-- `SECRET_KEY` - Générée automatiquement
-- `DEBUG=False`
-- `ALLOWED_HOSTS=.onrender.com`
+📖 Voir le guide complet : [DEPLOIEMENT_PYTHONANYWHERE.md](DEPLOIEMENT_PYTHONANYWHERE.md)
+
+### Commandes rapides sur PythonAnywhere :
+
+```bash
+# Cloner le projet
+git clone https://github.com/SkrCodyxx/smile.git
+cd smile/smile
+
+# Créer l'environnement virtuel
+mkvirtualenv --python=/usr/bin/python3.10 smileenv
+pip install -r requirements.txt
+
+# Migrations vers Supabase
+python manage.py migrate --settings=smile.settings_pythonanywhere
+
+# Fichiers statiques
+python manage.py collectstatic --noinput --settings=smile.settings_pythonanywhere
+
+# Créer admin
+python manage.py createsuperuser --settings=smile.settings_pythonanywhere
+```
 
 ## 🏗️ Architecture
 
