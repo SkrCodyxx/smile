@@ -1,54 +1,58 @@
 [
     {
         "model": "core.deliveryzone",
-        "pk": 1,
         "fields": {
             "name": "Zone 1 - Port-au-Prince Centre",
             "areas": "Port-au-Prince, Pétion-Ville, Delmas",
-            "delivery_time": "Même jour ou lendemain",
+            "delivery_time_min": 0,
+            "delivery_time_max": 1,
+            "delivery_cost": 0,
             "cost_note": "Contactez-nous",
             "order": 1,
             "is_active": true,
-            "is_recommended": true
+            "notes": "Zone principale - Livraison rapide"
         }
     },
     {
         "model": "core.deliveryzone",
-        "pk": 2,
         "fields": {
             "name": "Zone 2 - Périphérie",
             "areas": "Carrefour, Tabarre, Croix-des-Bouquets",
-            "delivery_time": "1-2 jours",
+            "delivery_time_min": 1,
+            "delivery_time_max": 2,
+            "delivery_cost": 0,
             "cost_note": "Contactez-nous",
             "order": 2,
             "is_active": true,
-            "is_recommended": false
+            "notes": ""
         }
     },
     {
         "model": "core.deliveryzone",
-        "pk": 3,
         "fields": {
             "name": "Zone 3 - Grandes Villes",
             "areas": "Cap-Haïtien, Les Cayes, Jacmel",
-            "delivery_time": "2-5 jours",
+            "delivery_time_min": 2,
+            "delivery_time_max": 5,
+            "delivery_cost": 0,
             "cost_note": "Contactez-nous",
             "order": 3,
             "is_active": true,
-            "is_recommended": false
+            "notes": ""
         }
     },
     {
         "model": "core.deliveryzone",
-        "pk": 4,
         "fields": {
             "name": "Zone 4 - Autres Régions",
             "areas": "Autres régions d'Haïti",
-            "delivery_time": "3-7 jours",
+            "delivery_time_min": 3,
+            "delivery_time_max": 7,
+            "delivery_cost": 0,
             "cost_note": "Contactez-nous",
             "order": 4,
             "is_active": true,
-            "is_recommended": false
+            "notes": "Délais variables selon la localisation"
         }
     }
 ]

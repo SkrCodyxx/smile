@@ -83,16 +83,11 @@
                             </thead>
                             <tbody>
                                 {% for zone in delivery_zones %}
-                                <tr{% if zone.is_recommended %} class="table-success"{% endif %}>
-                                    <td>
-                                        <strong>{{ zone.name }}</strong>
-                                        {% if zone.is_recommended %}
-                                        <span class="badge bg-success ms-1">{% trans "Recommended" %}</span>
-                                        {% endif %}
-                                    </td>
+                                <tr>
+                                    <td><strong>{{ zone.name }}</strong></td>
                                     <td>{{ zone.areas }}</td>
-                                    <td>{{ zone.delivery_time }}</td>
-                                    <td>{{ zone.cost_note }}</td>
+                                    <td>{{ zone.delivery_estimate }}</td>
+                                    <td>{{ zone.cost_display }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
