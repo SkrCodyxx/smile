@@ -1,10 +1,11 @@
 """
-Django settings for Smile E-commerce - PYTHONANYWHERE
-=====================================================
-Configuration optimisée pour PythonAnywhere (plan gratuit)
+Django settings for Smile E-commerce - PYTHONANYWHERE + SUPABASE
+================================================================
+Configuration optimisée pour PythonAnywhere (plan gratuit) avec Supabase PostgreSQL
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Import des settings de base
 from .settings import *
@@ -30,24 +31,19 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 # =============================================================================
-# BASE DE DONNÉES - MySQL (gratuit sur PythonAnywhere)
+# BASE DE DONNÉES - SUPABASE PostgreSQL (GRATUIT)
 # =============================================================================
-# Format: TONUSERNAME$smile_db
-# Va dans l'onglet "Databases" sur PythonAnywhere pour créer ta DB
+# Ton projet Supabase: crieerueopsntuhraatj
+# Va dans Supabase Dashboard → Settings → Database → Connection string
+# Utilise le "Transaction pooler" (port 6543) pour PythonAnywhere
+
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://postgres:Sm%21le2000Sm%21@db.crieerueopsntuhraatj.supabase.co:5432/postgres'
+)
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'TONUSERNAME$smile_db'),
-        'USER': os.environ.get('DB_USER', 'TONUSERNAME'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),  # Ton mot de passe MySQL
-        'HOST': os.environ.get('DB_HOST', 'TONUSERNAME.mysql.pythonanywhere-services.com'),
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
+    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 }
 
 # =============================================================================

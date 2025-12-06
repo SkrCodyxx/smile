@@ -1,26 +1,31 @@
 version: '3.8'
 
 services:
-  # Base de données PostgreSQL (interne uniquement)
-  db:
-    image: postgres:15-alpine
-    container_name: smile_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: smile_user
-      POSTGRES_PASSWORD: smile_password_2024
-      POSTGRES_DB: smile_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - smile_internal
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U smile_user -d smile_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    expose:
-      - "5432"
+  # ==========================================================================
+  # BASE DE DONNÉES LOCALE - COMMENTÉE (Utilise Supabase en production)
+  # ==========================================================================
+  # Pour utiliser la DB locale, décommentez cette section et changez DATABASE_URL
+  # dans le service web vers: postgres://smile_user:smile_password_2024@db:5432/smile_db
+  # --------------------------------------------------------------------------
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: smile_db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: smile_user
+  #     POSTGRES_PASSWORD: smile_password_2024
+  #     POSTGRES_DB: smile_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - smile_internal
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U smile_user -d smile_db"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   expose:
+  #     - "5432"
 
   # Redis pour le cache et les sessions (interne uniquement)
   redis:
@@ -49,7 +54,12 @@ services:
     environment:
       DEBUG: "False"
       SECRET_KEY: "smile-secret-key-change-in-production-2024"
-      DATABASE_URL: "postgres://smile_user:smile_password_2024@db:5432/smile_db"
+      # =======================================================================
+      # SUPABASE PostgreSQL - Base de données cloud gratuite
+      # =======================================================================
+      DATABASE_URL: "postgresql://postgres:Sm%21le2000Sm%21@db.crieerueopsntuhraatj.supabase.co:5432/postgres"
+      # Pour utiliser la DB locale Docker, commentez la ligne ci-dessus et décommentez:
+      # DATABASE_URL: "postgres://smile_user:smile_password_2024@db:5432/smile_db"
       REDIS_URL: "redis://redis:6379/0"
       ALLOWED_HOSTS: "localhost,127.0.0.1,smile_web"
     volumes:
@@ -58,8 +68,9 @@ services:
     networks:
       - smile_internal
     depends_on:
-      db:
-        condition: service_healthy
+      # Commenté car on utilise Supabase
+      # db:
+      #   condition: service_healthy
       redis:
         condition: service_healthy
     expose:
@@ -82,7 +93,7 @@ services:
       - "80:80"
 
 volumes:
-  postgres_data:
+  # postgres_data:  # Commenté - utilise Supabase
   redis_data:
   static_data:
   media_data:
