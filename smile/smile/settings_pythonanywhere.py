@@ -40,7 +40,7 @@ SESSION_COOKIE_SECURE = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smile$smile_db',
+        'NAME': 'smile$smiledb',
         'USER': 'smile',
         'PASSWORD': os.environ.get('DB_PASSWORD', 'Sm!le2000Sm!'),
         'HOST': 'smile.mysql.pythonanywhere-services.com',

@@ -4,7 +4,7 @@ WSGI config for Smile E-commerce on PythonAnywhere
 Copie ce contenu dans l'onglet "Web" → "WSGI configuration file"
 
 Username PythonAnywhere: smile
-Base de données: MySQL PythonAnywhere (gratuit)
+Base de données: MySQL PythonAnywhere - smile$smiledb
 """
 import os
 import sys
