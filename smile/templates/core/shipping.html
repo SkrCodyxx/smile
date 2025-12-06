@@ -70,6 +70,7 @@
                     <h4 class="mb-0"><i class="bi bi-geo-alt me-2"></i>{% trans "Delivery Zones in Haiti" %}</h4>
                 </div>
                 <div class="card-body">
+                    {% if delivery_zones %}
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -81,33 +82,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong>{% trans "Zone 1" %}</strong></td>
-                                    <td>{% trans "Port-au-Prince, Pétion-Ville, Delmas" %}</td>
-                                    <td>{% trans "Same day or next day" %}</td>
-                                    <td>{% trans "Contact us" %}</td>
+                                {% for zone in delivery_zones %}
+                                <tr{% if zone.is_recommended %} class="table-success"{% endif %}>
+                                    <td>
+                                        <strong>{{ zone.name }}</strong>
+                                        {% if zone.is_recommended %}
+                                        <span class="badge bg-success ms-1">{% trans "Recommended" %}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ zone.areas }}</td>
+                                    <td>{{ zone.delivery_time }}</td>
+                                    <td>{{ zone.cost_note }}</td>
                                 </tr>
-                                <tr>
-                                    <td><strong>{% trans "Zone 2" %}</strong></td>
-                                    <td>{% trans "Carrefour, Tabarre, Croix-des-Bouquets" %}</td>
-                                    <td>{% trans "1-2 days" %}</td>
-                                    <td>{% trans "Contact us" %}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>{% trans "Zone 3" %}</strong></td>
-                                    <td>{% trans "Cap-Haïtien, Les Cayes, Jacmel" %}</td>
-                                    <td>{% trans "2-5 days" %}</td>
-                                    <td>{% trans "Contact us" %}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>{% trans "Zone 4" %}</strong></td>
-                                    <td>{% trans "Other regions" %}</td>
-                                    <td>{% trans "3-7 days" %}</td>
-                                    <td>{% trans "Contact us" %}</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        {% trans "Contact us via WhatsApp to know if we deliver in your area." %}
+                    </div>
+                    {% endif %}
                     <p class="text-muted mt-3 mb-0">
                         <i class="bi bi-info-circle me-2"></i>
                         {% trans "Delivery costs vary based on location and order size. Contact us via WhatsApp for exact pricing." %}

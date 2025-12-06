@@ -480,6 +480,70 @@ class ShippingMethodAdmin(admin.ModelAdmin):
 
 
 # ============================================
+# ZONES DE LIVRAISON HAÏTI
+# ============================================
+
+from .models import DeliveryZone
+
+@admin.register(DeliveryZone)
+class DeliveryZoneAdmin(admin.ModelAdmin):
+    """
+    Gestion des zones de livraison en Haïti
+    Activez/désactivez les zones où vous livrez
+    """
+    
+    list_display = ('zone_status', 'name', 'areas_preview', 'delivery_estimate', 'cost_display', 'is_active', 'order')
+    list_display_links = ('zone_status', 'name')
+    list_editable = ('is_active', 'order')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'areas', 'notes')
+    ordering = ('order', 'name')
+    
+    actions = ['activate_zones', 'deactivate_zones']
+
+    fieldsets = (
+        ('🗺️ Zone de livraison', {
+            'fields': ('name', 'areas'),
+            'description': 'Définissez le nom et les quartiers/zones couverts',
+        }),
+        ('⏱️ Délais de livraison', {
+            'fields': ('delivery_time_min', 'delivery_time_max'),
+            'description': 'Temps estimé pour livrer dans cette zone',
+        }),
+        ('💰 Coût de livraison', {
+            'fields': ('delivery_cost', 'cost_note'),
+            'description': 'Laissez le coût à 0 et utilisez "cost_note" pour afficher "Contactez-nous"',
+        }),
+        ('⚙️ Statut', {
+            'fields': ('is_active', 'order', 'notes'),
+            'description': 'Activez/désactivez la zone et définissez l\'ordre d\'affichage',
+        }),
+    )
+
+    def zone_status(self, obj):
+        if obj.is_active:
+            return '✅'
+        return '❌'
+    zone_status.short_description = ''
+
+    def areas_preview(self, obj):
+        if len(obj.areas) > 40:
+            return obj.areas[:40] + '...'
+        return obj.areas or '-'
+    areas_preview.short_description = 'Zones couvertes'
+
+    @admin.action(description='✅ Activer les zones sélectionnées')
+    def activate_zones(self, request, queryset):
+        count = queryset.update(is_active=True)
+        self.message_user(request, f'{count} zone(s) activée(s)')
+
+    @admin.action(description='❌ Désactiver les zones sélectionnées')
+    def deactivate_zones(self, request, queryset):
+        count = queryset.update(is_active=False)
+        self.message_user(request, f'{count} zone(s) désactivée(s)')
+
+
+# ============================================
 # CHAMPS PERSONNALISÉS (illimités)
 # ============================================
 

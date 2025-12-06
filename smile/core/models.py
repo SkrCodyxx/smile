@@ -395,6 +395,77 @@ class ShippingMethod(models.Model):
         return f"{self.delivery_days_min}-{self.delivery_days_max} jours"
 
 
+class DeliveryZone(models.Model):
+    """
+    Zones de livraison en Haïti - Gérables depuis l'admin
+    Permet d'activer/désactiver les zones où on livre
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField('Nom de la zone', max_length=100,
+                            help_text='Ex: Port-au-Prince, Cap-Haïtien')
+    areas = models.TextField('Zones/Quartiers couverts', blank=True,
+                             help_text='Ex: Pétion-Ville, Delmas, Tabarre')
+    delivery_time_min = models.PositiveIntegerField('Délai min (jours)', default=1)
+    delivery_time_max = models.PositiveIntegerField('Délai max (jours)', default=2)
+    delivery_cost = models.DecimalField('Coût de livraison', max_digits=10, decimal_places=2, 
+                                        default=0, blank=True,
+                                        help_text='0 = Contactez-nous pour le prix')
+    cost_note = models.CharField('Note sur le prix', max_length=200, blank=True,
+                                 help_text='Ex: "À partir de 500 HTG" ou "Contactez-nous"')
+    is_active = models.BooleanField('Zone active', default=True,
+                                    help_text='Décocher pour désactiver la livraison dans cette zone')
+    order = models.PositiveIntegerField('Ordre d\'affichage', default=0)
+    notes = models.TextField('Notes internes', blank=True,
+                             help_text='Notes visibles uniquement dans l\'admin')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Zone de livraison'
+        verbose_name_plural = 'Zones de livraison'
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        status = "✓" if self.is_active else "✗"
+        return f"{status} {self.name}"
+
+    @property
+    def delivery_estimate(self):
+        """Retourne l'estimation de délai"""
+        if self.delivery_time_min == self.delivery_time_max:
+            return f"{self.delivery_time_min} jour(s)"
+        return f"{self.delivery_time_min}-{self.delivery_time_max} jours"
+
+    @property
+    def cost_display(self):
+        """Retourne le coût formaté ou la note"""
+        if self.cost_note:
+            return self.cost_note
+        if self.delivery_cost == 0:
+            return "Contactez-nous"
+        return f"{self.delivery_cost} HTG"
+
+    @classmethod
+    def get_active_zones(cls):
+        """Retourne les zones actives (avec cache)"""
+        zones = cache.get('active_delivery_zones')
+        if zones is None:
+            zones = list(cls.objects.filter(is_active=True).order_by('order', 'name'))
+            cache.set('active_delivery_zones', zones, 3600)  # Cache 1h
+        return zones
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Invalider le cache
+        cache.delete('active_delivery_zones')
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        # Invalider le cache
+        cache.delete('active_delivery_zones')
+
+
 class CustomField(models.Model):
     """
     Champs personnalisés - Pour ajouter n'importe quelle info

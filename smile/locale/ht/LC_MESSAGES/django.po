@@ -65,8 +65,11 @@ msgstr "Byenveni sou"
 msgid "Your Online Store"
 msgstr "Magazen anliy ou"
 
+msgid "Discover our quality products at the best prices. Payment on delivery or via WhatsApp."
+msgstr "Dekouvri pwodwi kalite nou yo nan pi bon pri. Peye lè ou resevwa oswa sou WhatsApp."
+
 msgid "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
-msgstr "Dekouvri pwodwi kalite nou yo nan pri enbatab. Livrezon rapid ak peman sekirize garanti."
+msgstr "Dekouvri pwodwi kalite nou yo nan pi bon pri. Peye lè ou resevwa oswa sou WhatsApp."
 
 msgid "Shop Now"
 msgstr "Achte kounye a"
@@ -137,23 +140,41 @@ msgstr "Nou"
 msgid "We're committed to providing the best shopping experience"
 msgstr "Nou angaje pou ba ou meyè eksperyans acha"
 
+msgid "Delivery in Haiti"
+msgstr "Livrezon nan Ayiti"
+
+msgid "We deliver throughout Haiti. Contact us via WhatsApp for delivery details."
+msgstr "Nou livre nan tout Ayiti. Kontakte nou sou WhatsApp pou detay livrezon."
+
+msgid "Cash on Delivery"
+msgstr "Peye lè ou resevwa"
+
+msgid "Pay when you receive your order. No advance payment required."
+msgstr "Peye lè ou resevwa kòmand ou. Pa gen peman davans."
+
+msgid "WhatsApp Support"
+msgstr "Sipò WhatsApp"
+
+msgid "Order directly via WhatsApp. Quick response and personalized service!"
+msgstr "Kòmande dirèkteman sou WhatsApp. Repons rapid ak sèvis pèsonalize!"
+
 msgid "Fast Delivery"
-msgstr "Livrezon rapid"
+msgstr "Livrezon nan Ayiti"
 
 msgid "Free shipping on orders over 50€. Express delivery available."
-msgstr "Livrezon gratis pou kòmand plis pase 50€. Livrezon ekspres disponib."
+msgstr "Nou livre nan tout Ayiti. Kontakte nou sou WhatsApp."
 
 msgid "Secure Payment"
-msgstr "Peman sekirize"
+msgstr "Peye lè ou resevwa"
 
 msgid "Your data is protected with SSL encryption. Multiple payment options."
-msgstr "Done ou yo pwoteje ak kriptaj SSL. Plizyè opsyon peman."
+msgstr "Peye lè ou resevwa kòmand ou. Pa gen peman davans."
 
 msgid "Easy Returns"
-msgstr "Retounen fasil"
+msgstr "Sipò WhatsApp"
 
 msgid "30-day money-back guarantee. No questions asked."
-msgstr "Garanti ranbousman 30 jou. San kesyon."
+msgstr "Kòmande dirèkteman sou WhatsApp. Repons rapid!"
 
 # Newsletter
 msgid "Subscribe to our Newsletter"
@@ -508,3 +529,145 @@ msgstr "Kontakte nou"
 
 msgid "Advanced Search"
 msgstr "Rechèch avanse"
+
+# Haiti-specific translations (Kreyòl)
+msgid "Delivery Information"
+msgstr "Enfòmasyon sou Livrezon"
+
+msgid "How we deliver your orders in Haiti"
+msgstr "Kijan nou livre kòmand ou yo nan Ayiti"
+
+msgid "WhatsApp Order"
+msgstr "Kòmand sou WhatsApp"
+
+msgid "Contact us directly on WhatsApp to place your order"
+msgstr "Kontakte nou dirèkteman sou WhatsApp pou pase kòmand ou"
+
+msgid "Quick response"
+msgstr "Repons rapid"
+
+msgid "Personalized service"
+msgstr "Sèvis pèsonalize"
+
+msgid "Real-time updates"
+msgstr "Mizajou an tan reyèl"
+
+msgid "No advance payment"
+msgstr "Pa gen peman davans"
+
+msgid "Verify before paying"
+msgstr "Verifye anvan ou peye"
+
+msgid "Cash or mobile money"
+msgstr "Kach oswa lajan mobil"
+
+msgid "Delivery Zones in Haiti"
+msgstr "Zòn livrezon nan Ayiti"
+
+msgid "Port-au-Prince, Pétion-Ville, Delmas"
+msgstr "Pòtoprens, Petyonvil, Delma"
+
+msgid "Same day or next day"
+msgstr "Menm jou oswa demen"
+
+msgid "Carrefour, Tabarre, Croix-des-Bouquets"
+msgstr "Kafou, Taba, Kwadèboukè"
+
+msgid "1-2 days"
+msgstr "1-2 jou"
+
+msgid "Cap-Haïtien, Les Cayes, Jacmel"
+msgstr "Okap, Okay, Jakmèl"
+
+msgid "2-5 days"
+msgstr "2-5 jou"
+
+msgid "Other regions"
+msgstr "Lòt rejyon yo"
+
+msgid "3-7 days"
+msgstr "3-7 jou"
+
+msgid "Contact us"
+msgstr "Kontakte nou"
+
+msgid "Delivery costs vary based on location and order size. Contact us via WhatsApp for exact pricing."
+msgstr "Pri livrezon varye selon kote ou ye ak gwosè kòmand lan. Kontakte nou sou WhatsApp pou pri egzak."
+
+msgid "Order Processing"
+msgstr "Tretman kòmand"
+
+msgid "Orders are processed as soon as we receive them. We will contact you via WhatsApp to confirm your order and arrange delivery."
+msgstr "Nou trete kòmand yo kou nou resevwa yo. Nou pral kontakte ou sou WhatsApp pou konfime kòmand ou epi òganize livrezon."
+
+msgid "Delivery Location"
+msgstr "Kote livrezon"
+
+msgid "We will arrange a convenient pickup point or delivery location with you. Please provide accurate contact information."
+msgstr "Nou pral jwenn yon kote ki pratik pou ou vin chèche oswa pou nou livre. Tanpri bay enfòmasyon kontak egzak."
+
+msgid "Stay Reachable"
+msgstr "Rete disponib"
+
+msgid "Please keep your phone available. Our delivery person will contact you when arriving with your order."
+msgstr "Tanpri kenbe telefòn ou disponib. Moun ki pral livre a pral rele ou lè l rive ak kòmand ou."
+
+msgid "Verify Your Order"
+msgstr "Verifye kòmand ou"
+
+msgid "Please check your items upon delivery before making payment. Contact us immediately if there's any issue."
+msgstr "Tanpri tcheke bagay yo lè ou resevwa anvan ou peye. Kontakte nou imedyatman si gen nenpòt pwoblèm."
+
+msgid "Order via WhatsApp!"
+msgstr "Kòmande sou WhatsApp!"
+
+msgid "The easiest way to order and get updates"
+msgstr "Fason ki pi fasil pou kòmande epi jwenn mizajou"
+
+msgid "Contact Us Now"
+msgstr "Kontakte nou kounye a"
+
+msgid "Hello! I would like to place an order."
+msgstr "Bonjou! Mwen ta renmen pase yon kòmand."
+
+msgid "Have questions about delivery?"
+msgstr "Ou gen kesyon sou livrezon?"
+
+msgid "Port-au-Prince area:"
+msgstr "Zòn Pòtoprens:"
+
+msgid "Other regions:"
+msgstr "Lòt rejyon yo:"
+
+msgid "2-7 days depending on location"
+msgstr "2-7 jou selon kote ou ye"
+
+msgid "Delivery costs vary based on location. Contact us for exact pricing."
+msgstr "Pri livrezon varye selon kote ou ye. Kontakte nou pou pri egzak."
+
+msgid "We will contact you via WhatsApp with updates on your order status. You can also message us anytime to check on your order."
+msgstr "Nou pral kontakte ou sou WhatsApp ak mizajou sou kòmand ou. Ou ka ekri nou nenpòt lè pou tcheke kòmand ou."
+
+msgid "We will contact you via WhatsApp to arrange delivery."
+msgstr "Nou pral kontakte ou sou WhatsApp pou òganize livrezon."
+
+msgid "Shipping costs vary based on your location in Haiti and order size. Contact us via WhatsApp for exact pricing."
+msgstr "Pri livrezon varye selon kote ou ye nan Ayiti ak gwosè kòmand lan. Kontakte nou sou WhatsApp pou pri egzak."
+
+msgid "Products are delivered in Haiti. Delivery arrangements will be made via WhatsApp."
+msgstr "Pwodwi yo livre nan Ayiti. N ap òganize livrezon sou WhatsApp."
+
+msgid "Recommended"
+msgstr "Rekòmande"
+
+msgid "Areas"
+msgstr "Zòn yo"
+
+msgid "Delivery Time"
+msgstr "Tan livrezon"
+
+msgid "Cost"
+msgstr "Pri"
+
+msgid "Zone"
+msgstr "Zòn"

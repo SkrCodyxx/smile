@@ -65,8 +65,11 @@ msgstr "Welcome to"
 msgid "Your Online Store"
 msgstr "Your Online Store"
 
+msgid "Discover our quality products at the best prices. Payment on delivery or via WhatsApp."
+msgstr "Discover our quality products at the best prices. Payment on delivery or via WhatsApp."
+
 msgid "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
-msgstr "Discover our quality products at unbeatable prices. Fast delivery and secure payment guaranteed."
+msgstr "Discover our quality products at the best prices. Payment on delivery or via WhatsApp."
 
 msgid "Shop Now"
 msgstr "Shop Now"
@@ -143,23 +146,41 @@ msgstr "Us"
 msgid "We're committed to providing the best shopping experience"
 msgstr "We're committed to providing the best shopping experience"
 
+msgid "Delivery in Haiti"
+msgstr "Delivery in Haiti"
+
+msgid "We deliver throughout Haiti. Contact us via WhatsApp for delivery details."
+msgstr "We deliver throughout Haiti. Contact us via WhatsApp for delivery details."
+
+msgid "Cash on Delivery"
+msgstr "Cash on Delivery"
+
+msgid "Pay when you receive your order. No advance payment required."
+msgstr "Pay when you receive your order. No advance payment required."
+
+msgid "WhatsApp Support"
+msgstr "WhatsApp Support"
+
+msgid "Order directly via WhatsApp. Quick response and personalized service!"
+msgstr "Order directly via WhatsApp. Quick response and personalized service!"
+
 msgid "Fast Delivery"
-msgstr "Fast Delivery"
+msgstr "Delivery in Haiti"
 
 msgid "Free shipping on orders over 50€. Express delivery available."
-msgstr "Free shipping on orders over 50€. Express delivery available."
+msgstr "We deliver throughout Haiti. Contact us via WhatsApp."
 
 msgid "Secure Payment"
-msgstr "Secure Payment"
+msgstr "Cash on Delivery"
 
 msgid "Your data is protected with SSL encryption. Multiple payment options."
-msgstr "Your data is protected with SSL encryption. Multiple payment options."
+msgstr "Pay when you receive your order. No advance payment required."
 
 msgid "Easy Returns"
-msgstr "Easy Returns"
+msgstr "WhatsApp Support"
 
 msgid "30-day money-back guarantee. No questions asked."
-msgstr "30-day money-back guarantee. No questions asked."
+msgstr "Order directly via WhatsApp. Quick response!"
 
 # Newsletter
 msgid "Subscribe to our Newsletter"
@@ -517,3 +538,145 @@ msgstr "Contact us"
 
 msgid "Advanced Search"
 msgstr "Advanced Search"
+
+# Haiti-specific translations
+msgid "Delivery Information"
+msgstr "Delivery Information"
+
+msgid "How we deliver your orders in Haiti"
+msgstr "How we deliver your orders in Haiti"
+
+msgid "WhatsApp Order"
+msgstr "WhatsApp Order"
+
+msgid "Contact us directly on WhatsApp to place your order"
+msgstr "Contact us directly on WhatsApp to place your order"
+
+msgid "Quick response"
+msgstr "Quick response"
+
+msgid "Personalized service"
+msgstr "Personalized service"
+
+msgid "Real-time updates"
+msgstr "Real-time updates"
+
+msgid "No advance payment"
+msgstr "No advance payment"
+
+msgid "Verify before paying"
+msgstr "Verify before paying"
+
+msgid "Cash or mobile money"
+msgstr "Cash or mobile money"
+
+msgid "Delivery Zones in Haiti"
+msgstr "Delivery Zones in Haiti"
+
+msgid "Port-au-Prince, Pétion-Ville, Delmas"
+msgstr "Port-au-Prince, Pétion-Ville, Delmas"
+
+msgid "Same day or next day"
+msgstr "Same day or next day"
+
+msgid "Carrefour, Tabarre, Croix-des-Bouquets"
+msgstr "Carrefour, Tabarre, Croix-des-Bouquets"
+
+msgid "1-2 days"
+msgstr "1-2 days"
+
+msgid "Cap-Haïtien, Les Cayes, Jacmel"
+msgstr "Cap-Haïtien, Les Cayes, Jacmel"
+
+msgid "2-5 days"
+msgstr "2-5 days"
+
+msgid "Other regions"
+msgstr "Other regions"
+
+msgid "3-7 days"
+msgstr "3-7 days"
+
+msgid "Contact us"
+msgstr "Contact us"
+
+msgid "Delivery costs vary based on location and order size. Contact us via WhatsApp for exact pricing."
+msgstr "Delivery costs vary based on location and order size. Contact us via WhatsApp for exact pricing."
+
+msgid "Order Processing"
+msgstr "Order Processing"
+
+msgid "Orders are processed as soon as we receive them. We will contact you via WhatsApp to confirm your order and arrange delivery."
+msgstr "Orders are processed as soon as we receive them. We will contact you via WhatsApp to confirm your order and arrange delivery."
+
+msgid "Delivery Location"
+msgstr "Delivery Location"
+
+msgid "We will arrange a convenient pickup point or delivery location with you. Please provide accurate contact information."
+msgstr "We will arrange a convenient pickup point or delivery location with you. Please provide accurate contact information."
+
+msgid "Stay Reachable"
+msgstr "Stay Reachable"
+
+msgid "Please keep your phone available. Our delivery person will contact you when arriving with your order."
+msgstr "Please keep your phone available. Our delivery person will contact you when arriving with your order."
+
+msgid "Verify Your Order"
+msgstr "Verify Your Order"
+
+msgid "Please check your items upon delivery before making payment. Contact us immediately if there's any issue."
+msgstr "Please check your items upon delivery before making payment. Contact us immediately if there's any issue."
+
+msgid "Order via WhatsApp!"
+msgstr "Order via WhatsApp!"
+
+msgid "The easiest way to order and get updates"
+msgstr "The easiest way to order and get updates"
+
+msgid "Contact Us Now"
+msgstr "Contact Us Now"
+
+msgid "Hello! I would like to place an order."
+msgstr "Hello! I would like to place an order."
+
+msgid "Have questions about delivery?"
+msgstr "Have questions about delivery?"
+
+msgid "Port-au-Prince area:"
+msgstr "Port-au-Prince area:"
+
+msgid "Other regions:"
+msgstr "Other regions:"
+
+msgid "2-7 days depending on location"
+msgstr "2-7 days depending on location"
+
+msgid "Delivery costs vary based on location. Contact us for exact pricing."
+msgstr "Delivery costs vary based on location. Contact us for exact pricing."
+
+msgid "We will contact you via WhatsApp with updates on your order status. You can also message us anytime to check on your order."
+msgstr "We will contact you via WhatsApp with updates on your order status. You can also message us anytime to check on your order."
+
+msgid "We will contact you via WhatsApp to arrange delivery."
+msgstr "We will contact you via WhatsApp to arrange delivery."
+
+msgid "Shipping costs vary based on your location in Haiti and order size. Contact us via WhatsApp for exact pricing."
+msgstr "Shipping costs vary based on your location in Haiti and order size. Contact us via WhatsApp for exact pricing."
+
+msgid "Products are delivered in Haiti. Delivery arrangements will be made via WhatsApp."
+msgstr "Products are delivered in Haiti. Delivery arrangements will be made via WhatsApp."
+
+msgid "Recommended"
+msgstr "Recommended"
+
+msgid "Areas"
+msgstr "Areas"
+
+msgid "Delivery Time"
+msgstr "Delivery Time"
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "Zone"
+msgstr "Zone"

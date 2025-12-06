@@ -118,9 +118,12 @@ def faq_page(request):
 
 def shipping_page(request):
     """Informations de livraison"""
+    from .models import DeliveryZone
     shipping_content = LegalPage.objects.filter(page_type='shipping', is_active=True).first()
+    delivery_zones = DeliveryZone.get_active_zones()
     return render(request, 'core/shipping.html', {
         'shipping_content': shipping_content,
+        'delivery_zones': delivery_zones,
     })
 
 
