@@ -18,6 +18,7 @@ urlpatterns = [
     
     # Commande
     path('checkout/', views.checkout, name='checkout'),
+    path('order/success/<uuid:order_id>/', views.order_success, name='order_success'),
     
     # Compte utilisateur
     path('register/', views.register, name='register'),

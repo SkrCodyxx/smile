@@ -24,6 +24,12 @@ class Order(models.Model):
         ('failed', '❌ Échoué'),
         ('refunded', '💰 Remboursée'),
     ]
+    
+    PAYMENT_METHOD_CHOICES = [
+        ('cod', '💵 Paiement à la livraison'),
+        ('moncash', '📱 MonCash'),
+        ('natcash', '📱 NatCash'),
+    ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order_number = models.CharField('N° Commande', max_length=50, unique=True, blank=True)
@@ -32,6 +38,9 @@ class Order(models.Model):
     
     status = models.CharField('Statut', max_length=20, choices=STATUS_CHOICES, default='pending')
     payment_status = models.CharField('Paiement', max_length=20, choices=PAYMENT_STATUS, default='pending')
+    payment_method = models.CharField('Méthode de paiement', max_length=20, choices=PAYMENT_METHOD_CHOICES, default='cod')
+    payment_reference = models.CharField('Référence paiement', max_length=100, blank=True,
+                                         help_text='Numéro de transaction MonCash/NatCash')
     
     # Montants
     subtotal = models.DecimalField('Sous-total', max_digits=10, decimal_places=2)

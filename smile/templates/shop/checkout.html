@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Commande - {{ site_name|default:'Smile Shop' }}{% endblock %}
+{% block title %}{% trans "Checkout" %} - {{ site_name|default:'Smile Shop' }}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="h3 mb-4"><i class="bi bi-credit-card"></i> Finaliser ma commande</h1>
+    <h1 class="h3 mb-4"><i class="bi bi-cart-check"></i> {% trans "Complete Your Order" %}</h1>
     
     <form method="post">
         {% csrf_token %}
@@ -14,31 +15,32 @@
                 <!-- Adresse de livraison -->
                 <div class="card mb-4">
                     <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Adresse de livraison</h5>
+                        <h5 class="mb-0"><i class="bi bi-geo-alt text-primary"></i> {% trans "Delivery Address" %}</h5>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Prénom</label>
+                                <label class="form-label">{% trans "First Name" %}</label>
                                 <input type="text" class="form-control" name="first_name" 
                                        value="{{ user.first_name }}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Nom</label>
+                                <label class="form-label">{% trans "Last Name" %}</label>
                                 <input type="text" class="form-control" name="last_name" 
                                        value="{{ user.last_name }}" required>
                             </div>
                             <div class="col-12">
-                                <label class="form-label">Adresse</label>
-                                <textarea class="form-control" name="shipping_address" rows="3" 
-                                          required placeholder="Numéro, rue, code postal, ville"></textarea>
+                                <label class="form-label">{% trans "Address" %}</label>
+                                <textarea class="form-control" name="shipping_address" rows="2" 
+                                          required placeholder="{% trans 'Street, neighborhood, city' %}"></textarea>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Téléphone</label>
-                                <input type="tel" class="form-control" name="phone" required>
+                                <label class="form-label">{% trans "Phone" %} <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" name="phone" required
+                                       placeholder="Ex: 37 77 35 08">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">{% trans "Email" %}</label>
                                 <input type="email" class="form-control" name="email" 
                                        value="{{ user.email }}" required>
                             </div>
@@ -46,22 +48,63 @@
                     </div>
                 </div>
                 
-                <!-- Adresse de facturation -->
+                <!-- Méthode de paiement -->
                 <div class="card mb-4">
                     <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-receipt"></i> Adresse de facturation</h5>
+                        <h5 class="mb-0"><i class="bi bi-credit-card text-primary"></i> {% trans "Payment Method" %}</h5>
                     </div>
                     <div class="card-body">
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="same_address" checked 
-                                   onclick="toggleBillingAddress()">
-                            <label class="form-check-label" for="same_address">
-                                Identique à l'adresse de livraison
-                            </label>
-                        </div>
-                        <div id="billing_address_form" style="display: none;">
-                            <textarea class="form-control" name="billing_address" rows="3" 
-                                      placeholder="Adresse de facturation"></textarea>
+                        <div class="row g-3">
+                            <!-- Paiement à la livraison -->
+                            <div class="col-12">
+                                <div class="form-check payment-option p-3 border rounded">
+                                    <input class="form-check-input" type="radio" name="payment_method" 
+                                           id="payment_cod" value="cod" checked>
+                                    <label class="form-check-label w-100" for="payment_cod">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-cash-stack fs-3 text-success me-3"></i>
+                                            <div>
+                                                <strong>{% trans "Cash on Delivery" %}</strong>
+                                                <p class="text-muted mb-0 small">{% trans "Pay when you receive your order" %}</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- MonCash -->
+                            <div class="col-12">
+                                <div class="form-check payment-option p-3 border rounded">
+                                    <input class="form-check-input" type="radio" name="payment_method" 
+                                           id="payment_moncash" value="moncash">
+                                    <label class="form-check-label w-100" for="payment_moncash">
+                                        <div class="d-flex align-items-center">
+                                            <span class="fs-3 me-3">📱</span>
+                                            <div>
+                                                <strong class="text-danger">MonCash</strong>
+                                                <p class="text-muted mb-0 small">{% trans "Pay via Digicel MonCash" %}</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- NatCash -->
+                            <div class="col-12">
+                                <div class="form-check payment-option p-3 border rounded">
+                                    <input class="form-check-input" type="radio" name="payment_method" 
+                                           id="payment_natcash" value="natcash">
+                                    <label class="form-check-label w-100" for="payment_natcash">
+                                        <div class="d-flex align-items-center">
+                                            <span class="fs-3 me-3">📱</span>
+                                            <div>
+                                                <strong class="text-primary">NatCash</strong>
+                                                <p class="text-muted mb-0 small">{% trans "Pay via Natcom NatCash" %}</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -69,11 +112,11 @@
                 <!-- Notes -->
                 <div class="card">
                     <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-chat-text"></i> Notes (optionnel)</h5>
+                        <h5 class="mb-0"><i class="bi bi-chat-text text-primary"></i> {% trans "Notes" %} ({% trans "optional" %})</h5>
                     </div>
                     <div class="card-body">
                         <textarea class="form-control" name="notes" rows="2" 
-                                  placeholder="Instructions de livraison, commentaires..."></textarea>
+                                  placeholder="{% trans 'Delivery instructions, comments...' %}"></textarea>
                     </div>
                 </div>
             </div>
@@ -81,8 +124,8 @@
             <!-- Récapitulatif -->
             <div class="col-lg-4">
                 <div class="card sticky-top" style="top: 80px;">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Votre commande</h5>
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-receipt"></i> {% trans "Order Summary" %}</h5>
                     </div>
                     <div class="card-body">
                         <!-- Articles -->
@@ -92,42 +135,34 @@
                                 {{ item.product.name }}
                                 <small class="text-muted">x{{ item.quantity }}</small>
                             </span>
-                            <span>{{ item.total_price }} €</span>
+                            <span>{{ item.total_price }} HTG</span>
                         </div>
                         {% endfor %}
                         
                         <hr>
                         
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Sous-total</span>
-                            <span>{{ subtotal }} €</span>
+                            <span>{% trans "Subtotal" %}</span>
+                            <span>{{ subtotal }} HTG</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>TVA (20%)</span>
-                            <span>{{ tax|floatformat:2 }} €</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Livraison</span>
-                            {% if shipping == 0 %}
-                            <span class="text-success">Gratuit</span>
-                            {% else %}
-                            <span>{{ shipping }} €</span>
-                            {% endif %}
+                            <span>{% trans "Delivery" %}</span>
+                            <span class="text-muted">{% trans "To be determined" %}</span>
                         </div>
                         
                         <hr>
                         
                         <div class="d-flex justify-content-between mb-4">
                             <strong class="fs-5">Total</strong>
-                            <strong class="fs-5 text-primary">{{ total|floatformat:2 }} €</strong>
+                            <strong class="fs-5 text-primary">{{ total|floatformat:0 }} HTG</strong>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary w-100 btn-lg">
-                            <i class="bi bi-check-circle"></i> Confirmer la commande
+                        <button type="submit" class="btn btn-success w-100 btn-lg">
+                            <i class="bi bi-check-circle"></i> {% trans "Confirm Order" %}
                         </button>
                         
                         <p class="text-muted text-center mt-3 small">
-                            <i class="bi bi-shield-check"></i> Paiement sécurisé
+                            <i class="bi bi-whatsapp text-success"></i> {% trans "You will receive order confirmation via WhatsApp" %}
                         </p>
                     </div>
                 </div>
@@ -136,13 +171,19 @@
     </form>
 </div>
 
-{% block extra_js %}
-<script>
-function toggleBillingAddress() {
-    const form = document.getElementById('billing_address_form');
-    const checkbox = document.getElementById('same_address');
-    form.style.display = checkbox.checked ? 'none' : 'block';
+<style>
+.payment-option {
+    cursor: pointer;
+    transition: all 0.2s;
 }
-</script>
-{% endblock %}
+.payment-option:hover {
+    border-color: #0d6efd !important;
+    background-color: #f8f9fa;
+}
+.form-check-input:checked + .form-check-label .payment-option,
+.form-check-input:checked ~ .payment-option {
+    border-color: #0d6efd !important;
+    background-color: #e7f1ff;
+}
+</style>
 {% endblock %}

@@ -80,6 +80,16 @@ WHATSAPP_BUSINESS_NUMBER = '50937773508'  # Format: code pays + numéro
 
 
 # ==============================================================================
+# 5b. PAIEMENT MOBILE - MonCash & NatCash
+# ==============================================================================
+# TODO: Remplacez par vos vrais numéros
+MONCASH_NUMBER = '37773508'  # Votre numéro MonCash (sans code pays)
+NATCASH_NUMBER = '37773508'  # Votre numéro NatCash (sans code pays)
+MONCASH_NAME = 'SMILE SHOP'  # Nom affiché sur MonCash
+NATCASH_NAME = 'SMILE SHOP'  # Nom affiché sur NatCash
+
+
+# ==============================================================================
 # 6. FICHIERS STATIQUES ET MEDIA
 # ==============================================================================
 STATIC_URL = '/static/'

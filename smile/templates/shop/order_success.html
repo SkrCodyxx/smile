@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Payment Instructions" %} - {{ order.order_number }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Success Message -->
+    <div class="text-center mb-5">
+        <div class="display-1 text-success mb-3">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h1 class="h2 mb-3">{% trans "Order Confirmed!" %}</h1>
+        <p class="lead text-muted">{% trans "Order" %} <strong>#{{ order.order_number }}</strong></p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            {% if order.payment_method == 'cod' %}
+            <!-- Paiement à la livraison -->
+            <div class="card border-success mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-cash-stack"></i> {% trans "Cash on Delivery" %}</h5>
+                </div>
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-truck display-4 text-success mb-3"></i>
+                    <h4>{% trans "You will pay when you receive your order" %}</h4>
+                    <p class="text-muted mb-4">
+                        {% trans "Prepare the exact amount in cash. Our delivery person will contact you before delivery." %}
+                    </p>
+                    <div class="alert alert-info">
+                        <strong>{% trans "Total to pay" %}:</strong> 
+                        <span class="fs-4">{{ order.total|floatformat:0 }} HTG</span>
+                    </div>
+                </div>
+            </div>
+
+            {% elif order.payment_method == 'moncash' %}
+            <!-- MonCash -->
+            <div class="card border-danger mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">📱 {% trans "Pay with MonCash" %}</h5>
+                </div>
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center mb-4 mb-md-0">
+                            <div class="bg-light rounded p-4">
+                                <p class="text-muted mb-2">{% trans "Send payment to" %}:</p>
+                                <h2 class="text-danger mb-2">{{ moncash_number }}</h2>
+                                <p class="mb-0"><strong>{{ moncash_name }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">{% trans "Instructions" %}:</h5>
+                            <ol class="mb-4">
+                                <li>{% trans "Open MonCash app on your phone" %}</li>
+                                <li>{% trans "Select 'Send Money'" %}</li>
+                                <li>{% trans "Enter the number" %}: <strong>{{ moncash_number }}</strong></li>
+                                <li>{% trans "Enter the amount" %}: <strong>{{ order.total|floatformat:0 }} HTG</strong></li>
+                                <li>{% trans "Confirm the transfer" %}</li>
+                                <li>{% trans "Send us the transaction ID via WhatsApp" %}</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <strong>{% trans "Important" %}:</strong> 
+                        {% trans "After payment, send us the transaction number via WhatsApp to confirm your order." %}
+                    </div>
+                </div>
+            </div>
+
+            {% elif order.payment_method == 'natcash' %}
+            <!-- NatCash -->
+            <div class="card border-primary mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📱 {% trans "Pay with NatCash" %}</h5>
+                </div>
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center mb-4 mb-md-0">
+                            <div class="bg-light rounded p-4">
+                                <p class="text-muted mb-2">{% trans "Send payment to" %}:</p>
+                                <h2 class="text-primary mb-2">{{ natcash_number }}</h2>
+                                <p class="mb-0"><strong>{{ natcash_name }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">{% trans "Instructions" %}:</h5>
+                            <ol class="mb-4">
+                                <li>{% trans "Dial *202# on your Natcom phone" %}</li>
+                                <li>{% trans "Select 'Send Money'" %}</li>
+                                <li>{% trans "Enter the number" %}: <strong>{{ natcash_number }}</strong></li>
+                                <li>{% trans "Enter the amount" %}: <strong>{{ order.total|floatformat:0 }} HTG</strong></li>
+                                <li>{% trans "Confirm with your PIN" %}</li>
+                                <li>{% trans "Send us the transaction ID via WhatsApp" %}</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <strong>{% trans "Important" %}:</strong> 
+                        {% trans "After payment, send us the transaction number via WhatsApp to confirm your order." %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Order Summary -->
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-receipt"></i> {% trans "Order Summary" %}</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless mb-0">
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>{{ item.product_name }} <small class="text-muted">x{{ item.quantity }}</small></td>
+                            <td class="text-end">{{ item.total_price|floatformat:0 }} HTG</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="border-top">
+                            <td><strong>Total</strong></td>
+                            <td class="text-end"><strong class="text-primary fs-5">{{ order.total|floatformat:0 }} HTG</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- WhatsApp Contact -->
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body text-center py-4">
+                    <h5><i class="bi bi-whatsapp"></i> {% trans "Questions? Contact us on WhatsApp" %}</h5>
+                    <a href="https://wa.me/{{ whatsapp_number }}?text={% trans 'Hello, I just placed order' %} %23{{ order.order_number }}" 
+                       class="btn btn-light btn-lg mt-3" target="_blank">
+                        <i class="bi bi-whatsapp text-success"></i> {% trans "Chat on WhatsApp" %}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Continue Shopping -->
+            <div class="text-center">
+                <a href="{% url 'shop:home' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> {% trans "Continue Shopping" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

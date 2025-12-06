@@ -281,30 +281,44 @@ def checkout(request):
     cart = get_or_create_cart(request)
     
     if cart.total_items == 0:
-        messages.warning(request, 'Votre panier est vide')
+        messages.warning(request, _('Your cart is empty'))
         return redirect('shop:cart')
     
     subtotal = cart.subtotal
-    shipping = 0 if subtotal >= settings.FREE_SHIPPING_THRESHOLD else settings.SHIPPING_COST
-    tax = subtotal * (settings.TAX_RATE / 100)
+    shipping = 0  # Livraison à déterminer après
+    tax = 0  # Pas de TVA en Haïti
     total = subtotal + shipping + tax
     
     if request.method == 'POST':
         # Créer la commande
         from invoicing.models import Order, OrderItem
         
+        # Récupérer les infos du formulaire
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        phone = request.POST.get('phone', '')
+        email = request.POST.get('email', '')
+        shipping_address = request.POST.get('shipping_address', '')
+        payment_method = request.POST.get('payment_method', 'cod')
+        notes = request.POST.get('notes', '')
+        
+        # Construire l'adresse complète
+        full_address = f"{first_name} {last_name}\n{shipping_address}\nTél: {phone}\nEmail: {email}"
+        
         order = Order.objects.create(
-            user=request.user,
+            user=request.user if request.user.is_authenticated else None,
             subtotal=subtotal,
             tax_amount=tax,
             shipping_amount=shipping,
             total=total,
-            shipping_address=request.POST.get('shipping_address', ''),
-            billing_address=request.POST.get('billing_address', ''),
-            notes=request.POST.get('notes', ''),
+            shipping_address=full_address,
+            billing_address=full_address,
+            payment_method=payment_method,
+            notes=notes,
         )
         
         # Créer les articles de commande
+        items_text = ""
         for item in cart.items.all():
             OrderItem.objects.create(
                 order=order,
@@ -315,6 +329,7 @@ def checkout(request):
                 unit_price=item.product.price,
                 total_price=item.total_price,
             )
+            items_text += f"• {item.quantity}x {item.product.name}\n"
             
             # Décrémenter le stock
             if item.product.track_stock:
@@ -329,8 +344,8 @@ def checkout(request):
         # Vider le panier
         cart.items.all().delete()
         
-        messages.success(request, f'Commande #{order.order_number} créée avec succès!')
-        return redirect('invoicing:order_detail', order_id=order.id)
+        # Rediriger vers la page de succès avec instructions de paiement
+        return redirect('shop:order_success', order_id=order.id)
     
     context = {
         'cart': cart,
@@ -340,6 +355,30 @@ def checkout(request):
         'total': total,
     }
     return render(request, 'shop/checkout.html', context)
+
+
+def order_success(request, order_id):
+    """Page de confirmation de commande avec instructions de paiement"""
+    from invoicing.models import Order
+    
+    order = get_object_or_404(Order, id=order_id)
+    
+    # Récupérer les numéros de paiement depuis settings
+    moncash_number = getattr(settings, 'MONCASH_NUMBER', '37773508')
+    natcash_number = getattr(settings, 'NATCASH_NUMBER', '37773508')
+    moncash_name = getattr(settings, 'MONCASH_NAME', 'SMILE SHOP')
+    natcash_name = getattr(settings, 'NATCASH_NAME', 'SMILE SHOP')
+    whatsapp_number = getattr(settings, 'WHATSAPP_BUSINESS_NUMBER', '50937773508')
+    
+    context = {
+        'order': order,
+        'moncash_number': moncash_number,
+        'natcash_number': natcash_number,
+        'moncash_name': moncash_name,
+        'natcash_name': natcash_name,
+        'whatsapp_number': whatsapp_number,
+    }
+    return render(request, 'shop/order_success.html', context)
 
 
 # ============================================
