@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande livree</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 40px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .icon { font-size: 64px; margin-bottom: 10px; }
+        .content { padding: 30px; }
+        .success-box { background: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; padding: 25px; margin: 20px 0; text-align: center; }
+        .btn { display: inline-block; background: #7c3aed; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
+        .btn-outline { background: transparent; border: 2px solid #7c3aed; color: #7c3aed; }
+        .review-box { background: #fef3c7; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+        .stars { font-size: 32px; color: #f59e0b; }
+        .footer { background: #1a1a1a; color: #888; padding: 20px; text-align: center; font-size: 12px; }
+        .footer a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p class="icon">✅</p>
+            <h1>Commande livree!</h1>
+            <p>Votre colis est arrive</p>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour {{ order.first_name|default:order.email }},</p>
+            
+            <div class="success-box">
+                <p style="font-size: 18px;">Votre commande <strong>#{{ order.order_number }}</strong> a ete livree avec succes!</p>
+                <p>Livree le {{ delivery_date|date:"d/m/Y" }}</p>
+            </div>
+            
+            <p>Nous esperons que vous etes satisfait(e) de votre achat!</p>
+            
+            <div class="review-box">
+                <p class="stars">⭐⭐⭐⭐⭐</p>
+                <p><strong>Donnez votre avis!</strong></p>
+                <p>Votre avis nous aide a ameliorer nos services et aide les autres clients.</p>
+                <a href="{{ site_url }}/orders/{{ order.id }}/review/" class="btn">Laisser un avis</a>
+            </div>
+            
+            <h3>Besoin d'aide?</h3>
+            <p>Si vous avez un probleme avec votre commande:</p>
+            <ul>
+                <li>Article endommage ou defectueux</li>
+                <li>Produit ne correspond pas a la description</li>
+                <li>Piece manquante</li>
+            </ul>
+            <p>Contactez-nous dans les 14 jours pour un retour ou un echange.</p>
+            
+            <p style="text-align: center;">
+                <a href="{{ site_url }}/contact/" class="btn btn-outline">Nous contacter</a>
+                <a href="{{ site_url }}/shop/" class="btn">Commander a nouveau</a>
+            </p>
+            
+            <p>Merci de votre confiance!<br>L'equipe {{ site_name }}</p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 {{ site_name }}. Tous droits reserves.</p>
+            <p><a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

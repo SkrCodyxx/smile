@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier abandonne</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .icon { font-size: 48px; margin-bottom: 10px; }
+        .content { padding: 30px; }
+        .cart-items { background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #e5e7eb; }
+        .cart-item:last-child { border-bottom: none; }
+        .item-image { width: 60px; height: 60px; background: #e5e7eb; border-radius: 8px; }
+        .total-row { font-size: 20px; font-weight: bold; text-align: right; padding-top: 15px; color: #7c3aed; }
+        .btn { display: inline-block; background: #7c3aed; color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; margin: 10px 0; font-size: 16px; }
+        .discount-box { background: #fef3c7; border: 2px dashed #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+        .discount-code { font-size: 24px; font-weight: bold; color: #f59e0b; letter-spacing: 2px; }
+        .footer { background: #1a1a1a; color: #888; padding: 20px; text-align: center; font-size: 12px; }
+        .footer a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p class="icon">🛒</p>
+            <h1>Vous avez oublie quelque chose!</h1>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour {{ user.first_name|default:"cher client" }},</p>
+            
+            <p>Vous avez laisse des articles dans votre panier! Ils vous attendent toujours...</p>
+            
+            <div class="cart-items">
+                {% for item in cart_items %}
+                <div class="cart-item">
+                    <div class="item-image">📦</div>
+                    <div style="flex: 1;">
+                        <strong>{{ item.product.name }}</strong>
+                        <p style="margin: 5px 0; color: #888;">Quantite: {{ item.quantity }}</p>
+                    </div>
+                    <div style="font-weight: bold;">{{ item.total }} EUR</div>
+                </div>
+                {% endfor %}
+                <div class="total-row">
+                    Total: {{ cart_total }} EUR
+                </div>
+            </div>
+            
+            {% if discount_code %}
+            <div class="discount-box">
+                <p>🎁 <strong>Offre speciale pour vous!</strong></p>
+                <p>Utilisez ce code pour {{ discount_percent }}% de reduction:</p>
+                <p class="discount-code">{{ discount_code }}</p>
+                <p><small>Valable 48h</small></p>
+            </div>
+            {% endif %}
+            
+            <p style="text-align: center;">
+                <a href="{{ site_url }}/cart/" class="btn">Finaliser ma commande</a>
+            </p>
+            
+            <p><strong>Pourquoi commander chez nous?</strong></p>
+            <ul>
+                <li>✅ Paiement 100% securise</li>
+                <li>✅ Livraison rapide</li>
+                <li>✅ Service client reactif via WhatsApp</li>
+                <li>✅ Satisfait ou rembourse</li>
+            </ul>
+            
+            <p>Des questions? Contactez-nous!</p>
+            
+            <p>A bientot!<br>L'equipe {{ site_name }}</p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 {{ site_name }}. Tous droits reserves.</p>
+            <p><a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

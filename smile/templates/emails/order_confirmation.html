@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de commande</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 30px; }
+        .order-box { background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .order-number { font-size: 24px; font-weight: bold; color: #7c3aed; }
+        .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .items-table th, .items-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .items-table th { background: #f8f9fa; }
+        .total-row { font-weight: bold; font-size: 18px; }
+        .btn { display: inline-block; background: #7c3aed; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+        .footer { background: #1a1a1a; color: #888; padding: 20px; text-align: center; font-size: 12px; }
+        .footer a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ site_name }}</h1>
+            <p>Merci pour votre commande!</p>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour {{ order.first_name|default:order.email }},</p>
+            
+            <p>Nous avons bien recu votre commande et nous la preparons avec soin.</p>
+            
+            <div class="order-box">
+                <p>Numero de commande:</p>
+                <p class="order-number">#{{ order.order_number }}</p>
+                <p>Date: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+            </div>
+            
+            <h3>Details de votre commande:</h3>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantite</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ item.product_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total }} EUR</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2">Sous-total</td>
+                        <td>{{ order.subtotal }} EUR</td>
+                    </tr>
+                    {% if order.shipping_cost %}
+                    <tr>
+                        <td colspan="2">Livraison</td>
+                        <td>{{ order.shipping_cost }} EUR</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="total-row">
+                        <td colspan="2">TOTAL</td>
+                        <td>{{ order.total }} EUR</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            {% if order.shipping_address %}
+            <h3>Adresse de livraison:</h3>
+            <p>
+                {{ order.shipping_address }}<br>
+                {{ order.shipping_city }}, {{ order.shipping_postal_code }}<br>
+                {{ order.shipping_country }}
+            </p>
+            {% endif %}
+            
+            <p>
+                <a href="{{ site_url }}/orders/{{ order.id }}/" class="btn">Suivre ma commande</a>
+            </p>
+            
+            <p>Des questions? Contactez-nous par WhatsApp ou email.</p>
+            
+            <p>A bientot!<br>L'equipe {{ site_name }}</p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 {{ site_name }}. Tous droits reserves.</p>
+            <p><a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

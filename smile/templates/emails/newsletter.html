@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); color: white; padding: 40px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 30px; }
+        .product-grid { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+        .product-card { flex: 1; min-width: 150px; background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; }
+        .product-card img { max-width: 100%; border-radius: 8px; }
+        .product-price { font-size: 18px; font-weight: bold; color: #7c3aed; }
+        .old-price { text-decoration: line-through; color: #888; font-size: 14px; }
+        .promo-banner { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; border-radius: 12px; padding: 30px; margin: 20px 0; text-align: center; }
+        .promo-code { font-size: 32px; font-weight: bold; letter-spacing: 3px; background: white; color: #ef4444; padding: 10px 20px; border-radius: 8px; display: inline-block; }
+        .btn { display: inline-block; background: #7c3aed; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+        .social-links { text-align: center; padding: 20px; }
+        .social-links a { display: inline-block; margin: 0 10px; font-size: 24px; text-decoration: none; }
+        .footer { background: #1a1a1a; color: #888; padding: 20px; text-align: center; font-size: 12px; }
+        .footer a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ site_name }}</h1>
+            <p>{{ newsletter_title|default:"Les dernieres nouveautes!" }}</p>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour {{ subscriber.name|default:"cher client" }},</p>
+            
+            {{ newsletter_content|safe }}
+            
+            {% if promo_code %}
+            <div class="promo-banner">
+                <h2>🎉 OFFRE EXCLUSIVE!</h2>
+                <p>{{ promo_percent }}% de reduction avec le code:</p>
+                <p class="promo-code">{{ promo_code }}</p>
+                <p><small>Valable jusqu'au {{ promo_expiry|date:"d/m/Y" }}</small></p>
+            </div>
+            {% endif %}
+            
+            {% if featured_products %}
+            <h3>Produits en vedette</h3>
+            <div class="product-grid">
+                {% for product in featured_products %}
+                <div class="product-card">
+                    {% if product.image %}
+                    <img src="{{ site_url }}{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <h4 style="margin: 10px 0 5px;">{{ product.name }}</h4>
+                    {% if product.compare_at_price %}
+                    <p class="old-price">{{ product.compare_at_price }} EUR</p>
+                    {% endif %}
+                    <p class="product-price">{{ product.price }} EUR</p>
+                    <a href="{{ site_url }}{{ product.get_absolute_url }}" class="btn" style="font-size: 12px; padding: 8px 15px;">Voir</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <p style="text-align: center;">
+                <a href="{{ site_url }}/shop/" class="btn">Voir tous les produits</a>
+            </p>
+            
+            <div class="social-links">
+                <p>Suivez-nous:</p>
+                <a href="#">📘</a>
+                <a href="#">📸</a>
+                <a href="#">💬</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 {{ site_name }}. Tous droits reserves.</p>
+            <p><a href="{{ site_url }}">{{ site_url }}</a></p>
+            <p><small><a href="{{ site_url }}/newsletter/unsubscribe/?email={{ subscriber.email }}">Se desabonner</a></small></p>
+        </div>
+    </div>
+</body>
+</html>

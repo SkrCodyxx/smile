@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle facture</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: #1f2937; color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 30px; }
+        .invoice-box { background: #f8f9fa; border-radius: 8px; padding: 25px; margin: 20px 0; }
+        .invoice-number { font-size: 24px; font-weight: bold; color: #7c3aed; }
+        .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .items-table th, .items-table td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .items-table th { background: #f8f9fa; font-weight: 600; }
+        .total-section { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .grand-total { font-size: 24px; font-weight: bold; color: #7c3aed; }
+        .btn { display: inline-block; background: #7c3aed; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
+        .btn-secondary { background: #6b7280; }
+        .footer { background: #1a1a1a; color: #888; padding: 20px; text-align: center; font-size: 12px; }
+        .footer a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 Facture {{ site_name }}</h1>
+        </div>
+        
+        <div class="content">
+            <p>Bonjour {{ invoice.order.first_name|default:invoice.order.email }},</p>
+            
+            <p>Veuillez trouver ci-joint votre facture.</p>
+            
+            <div class="invoice-box">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                    <div>
+                        <p>Numero de facture:</p>
+                        <p class="invoice-number">{{ invoice.invoice_number }}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p>Date: {{ invoice.created_at|date:"d/m/Y" }}</p>
+                        <p>Commande: #{{ invoice.order.order_number }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Details</h3>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th style="text-align: center;">Qte</th>
+                        <th style="text-align: right;">Prix</th>
+                        <th style="text-align: right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in invoice.order.items.all %}
+                    <tr>
+                        <td>{{ item.product_name }}</td>
+                        <td style="text-align: center;">{{ item.quantity }}</td>
+                        <td style="text-align: right;">{{ item.unit_price }} EUR</td>
+                        <td style="text-align: right;">{{ item.total }} EUR</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="total-section">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Sous-total HT:</span>
+                    <span>{{ invoice.subtotal_ht|default:invoice.order.subtotal }} EUR</span>
+                </div>
+                {% if invoice.tax_amount %}
+                <div style="display: flex; justify-content: space-between;">
+                    <span>TVA ({{ invoice.tax_rate|default:"20" }}%):</span>
+                    <span>{{ invoice.tax_amount }} EUR</span>
+                </div>
+                {% endif %}
+                {% if invoice.order.shipping_cost %}
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Livraison:</span>
+                    <span>{{ invoice.order.shipping_cost }} EUR</span>
+                </div>
+                {% endif %}
+                <hr style="margin: 15px 0;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span><strong>TOTAL TTC:</strong></span>
+                    <span class="grand-total">{{ invoice.total|default:invoice.order.total }} EUR</span>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px;">
+                <a href="{{ site_url }}/invoices/{{ invoice.id }}/" class="btn">Voir la facture</a>
+                <a href="{{ site_url }}/invoices/{{ invoice.id }}/pdf/" class="btn btn-secondary">Telecharger PDF</a>
+            </p>
+            
+            <p>Merci pour votre confiance!<br>L'equipe {{ site_name }}</p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 {{ site_name }}. Tous droits reserves.</p>
+            <p><a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>
