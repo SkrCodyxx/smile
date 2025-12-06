@@ -388,7 +388,7 @@
         }
         
         .logo {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 800;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
@@ -397,12 +397,21 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .logo img {
-            height: 40px;
-            border-radius: 8px;
+            height: 45px;
+            border-radius: 10px;
         }
         
         .nav-menu {
@@ -1761,11 +1770,11 @@
                 <!-- Logo -->
                 <a class="logo" href="{% url 'shop:home' %}">
                     {% if site_logo %}
-                    <img src="{{ site_logo.url }}" alt="{{ site_name }}">
+                    <img src="{{ site_logo.url }}" alt="Smile">
                     {% else %}
-                    <i class="bi bi-bag-heart-fill"></i>
+                    <span class="logo-icon">ðŸ˜Š</span>
                     {% endif %}
-                    {{ site_name|default:'Smile Shop' }}
+                    <span>Smile</span>
                 </a>
                 
                 <!-- Mobile Toggle -->
@@ -1958,11 +1967,11 @@
                     <div class="footer-brand">
                         <div class="footer-logo">
                             {% if site_logo %}
-                            <img src="{{ site_logo.url }}" alt="{{ site_name }}">
+                            <img src="{{ site_logo.url }}" alt="Smile">
                             {% else %}
-                            <i class="bi bi-bag-heart-fill"></i>
+                            <span class="logo-icon">ðŸ˜Š</span>
                             {% endif %}
-                            {{ site_name|default:'Smile Shop' }}
+                            <span>Smile</span>
                         </div>
                         <p class="footer-desc">
                             {{ site_slogan|default:"Votre boutique en ligne de confiance. Découvrez nos produits de qualité et profitez d'une expérience d'achat exceptionnelle." }}
